@@ -133,19 +133,17 @@ fi
 mkdir -p .repo/local_manifests
 rm -f .repo/local_manifest.xml
 
-rm -rf $WORKSPACE/build_env
-git clone https://github.com/CyanogenMod/cm_build_config.git $WORKSPACE/build_env
-check_result "Bootstrap failed"
-
-if [ -f $WORKSPACE/build_env/bootstrap.sh ]
-then
-  bash $WORKSPACE/build_env/bootstrap.sh
-fi
-
-cp $WORKSPACE/build_env/$REPO_BRANCH.xml .repo/local_manifests/dyn-$REPO_BRANCH.xml
+cp $WORKSPACE/hudson/$REPO_BRANCH.xml .repo/local_manifests/dyn-$REPO_BRANCH.xml
 
 echo Core Manifest:
 cat .repo/manifest.xml
+
+echo Local Manifests:
+for i in .repo/local_manifests/*.xml
+do
+  echo --- ${i}
+  cat ${i}
+done
 
 ## TEMPORARY: Some kernels are building _into_ the source tree and messing
 ## up posterior syncs due to changes
