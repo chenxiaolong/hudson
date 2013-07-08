@@ -116,14 +116,8 @@ repo init -u $SYNC_PROTO://github.com/CyanogenMod/android.git -b $CORE_BRANCH $M
 check_result "repo init failed."
 
 # make sure ccache is in PATH
-if [[ "$REPO_BRANCH" =~ "jellybean" || $REPO_BRANCH =~ "cm-10" ]]
-then
 export PATH="$PATH:/$PWD/prebuilts/misc/$(uname|awk '{print tolower($0)}')-x86/ccache"
 export CCACHE_DIR=~/.jb_ccache
-else
-export PATH="$PATH:/$PWD/prebuilt/$(uname|awk '{print tolower($0)}')-x86/ccache"
-export CCACHE_DIR=~/.ics_ccache
-fi
 
 if [ -f ~/.jenkins_profile ]
 then
@@ -211,7 +205,6 @@ then
   export CM_EXPERIMENTAL=true
 elif [ "$RELEASE_TYPE" = "CM_RELEASE" ]
 then
-  # ics needs this
   export CM_RELEASE=true
 fi
 
