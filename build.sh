@@ -220,20 +220,6 @@ then
   export CM_EXPERIMENTAL=true
 fi
 
-if [ ! -z "$GERRIT_CHANGES" ]
-then
-  export CM_EXPERIMENTAL=true
-  IS_HTTP=$(echo $GERRIT_CHANGES | grep http)
-  if [ -z "$IS_HTTP" ]
-  then
-    python $WORKSPACE/hudson/repopick.py $GERRIT_CHANGES
-    check_result "gerrit picks failed."
-  else
-    python $WORKSPACE/hudson/repopick.py $(curl $GERRIT_CHANGES)
-    check_result "gerrit picks failed."
-  fi
-fi
-
 if [ ! "$(ccache -s|grep -E 'max cache size'|awk '{print $4}')" = "10.0" ]
 then
   ccache -M 10G
