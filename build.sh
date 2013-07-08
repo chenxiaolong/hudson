@@ -207,19 +207,12 @@ fi
 
 if [ "$RELEASE_TYPE" = "CM_NIGHTLY" ]
 then
-  if [ "$REPO_BRANCH" = "gingerbread" ]
-  then
-    export CYANOGEN_NIGHTLY=true
-  else
-    export CM_NIGHTLY=true
-  fi
+  export CM_NIGHTLY=true
 elif [ "$RELEASE_TYPE" = "CM_EXPERIMENTAL" ]
 then
   export CM_EXPERIMENTAL=true
 elif [ "$RELEASE_TYPE" = "CM_RELEASE" ]
 then
-  # gingerbread needs this
-  export CYANOGEN_RELEASE=true
   # ics needs this
   export CM_RELEASE=true
 fi
