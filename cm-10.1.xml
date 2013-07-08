@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+
+  <remote fetch="http://github.com/"
+          name="github" />
+
+  <project path="vendor/samsung"
+           name="TheMuppets/proprietary_vendor_samsung"
+           remote="github"
+           revision="cm-10.1" />
+
+</manifest>
