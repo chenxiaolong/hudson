@@ -81,7 +81,7 @@ common_prebuild() {
   if [ ${TIME_SINCE_LAST_CLEAN} -gt "24" -o ${CLEAN} = "true" ]; then
     echo "Cleaning!"
     touch .clean
-    #make clobber
+    make clobber
   else
     echo "Skipping clean: ${TIME_SINCE_LAST_CLEAN} hours since last clean."
   fi
