@@ -54,12 +54,12 @@ common_postsync() {
 
 # Commands to run before build
 common_prebuild() {
+  set +e
+
   . build/envsetup.sh
 
   # Set up tree for device
-  set +e
   lunch ${LUNCH}
-  set -e
 
   # Archive the manifests
   repo manifest -o "${WORKSPACE}/archive/manifest.xml" -r
@@ -78,16 +78,20 @@ common_prebuild() {
   TIME_SINCE_LAST_CLEAN=$(expr $(date +%s) - ${LAST_CLEAN})
   # convert this to hours
   TIME_SINCE_LAST_CLEAN=$(expr ${TIME_SINCE_LAST_CLEAN} / 60 / 60)
-  if [ ${TIME_SINCE_LAST_CLEAN} -gt "24" -o ${CLEAN} = "true" ]; then
+  if [ "${TIME_SINCE_LAST_CLEAN}" -gt "24" -o "${CLEAN}" = "true" ]; then
     echo "Cleaning!"
     touch .clean
+    set -e
     make clobber
+    set +e
   else
     echo "Skipping clean: ${TIME_SINCE_LAST_CLEAN} hours since last clean."
   fi
 
   # Save current branch
   echo "${REPO_BRANCH}" > .last_branch
+
+  set -e
 }
 
 common_build() {
