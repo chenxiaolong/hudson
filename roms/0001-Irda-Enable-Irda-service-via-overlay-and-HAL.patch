@@ -1,0 +1,149 @@
+From 14f25a1affb0927873cb1bac6335fbfc1cf72bde Mon Sep 17 00:00:00 2001
+From: Timo Wendt <timo@tjwendt.de>
+Date: Mon, 24 Jun 2013 23:01:37 +0200
+Subject: [PATCH] Irda: Enable Irda service via overlay and HAL
+
+This change depends on the Irda Service added to be added to framworks/base,
+this is done via change Id4da55cfbd297fa46c50aa8a6af9cd4d056086cd
+
+It now uses HAL to communicate with the IR interface.
+
+PatchSet 4: Cleanup
+
+PatchSet 5: Renamed the mothod to send_ircode
+
+Change-Id: I56e768f4f18dfd66202dfc09401022e2f1589779
+---
+ irda/Android.mk                                    | 13 ++++
+ irda/irda.c                                        | 70 ++++++++++++++++++++++
+ jf-common.mk                                       |  3 +
+ .../frameworks/base/core/res/res/values/config.xml |  4 ++
+ 4 files changed, 90 insertions(+)
+ create mode 100755 irda/Android.mk
+ create mode 100644 irda/irda.c
+
+diff --git a/irda/Android.mk b/irda/Android.mk
+new file mode 100755
+index 0000000..6d3c598
+--- /dev/null
++++ b/irda/Android.mk
+@@ -0,0 +1,13 @@
++LOCAL_PATH := $(call my-dir)
++
++# HAL module implemenation stored in
++# hw/<POWERS_HARDWARE_MODULE_ID>.<ro.hardware>.so
++include $(CLEAR_VARS)
++
++LOCAL_PRELINK_MODULE := false
++LOCAL_MODULE_PATH := $(TARGET_OUT_SHARED_LIBRARIES)/hw
++LOCAL_SHARED_LIBRARIES := liblog libcutils libhardware libdl
++LOCAL_SRC_FILES := irda.c
++LOCAL_MODULE:= irda.msm8960
++LOCAL_MODULE_TAGS := optional
++include $(BUILD_SHARED_LIBRARY)
+diff --git a/irda/irda.c b/irda/irda.c
+new file mode 100644
+index 0000000..a7d3cb3
+--- /dev/null
++++ b/irda/irda.c
+@@ -0,0 +1,70 @@
++/*
++ * Copyright (C) 2013 Cyanogenmod Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#include <errno.h>
++
++#define  LOG_TAG  "irda"
++#include <cutils/log.h>
++#include <cutils/sockets.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <hardware/irda.h>
++
++#define   IRDA_DEBUG   1
++
++int fd = 0;
++
++void irda__send_ircode(char* buffer, int length)
++{
++    int retval;
++
++    retval = write(fd, buffer, length);
++
++    return;
++}
++
++static int open_irda(const struct hw_module_t* module, char const* name,
++        struct hw_device_t** device)
++{
++    struct irda_device_t *dev = malloc(sizeof(struct irda_device_t));
++    memset(dev, 0, sizeof(*dev));
++
++    dev->common.tag = HARDWARE_DEVICE_TAG;
++    dev->common.version = 0;
++    dev->common.module = (struct hw_module_t*)module;
++    dev->send_ircode = irda__send_ircode;
++
++    *device = (struct hw_device_t*) dev;
++
++    fd = open("/sys/class/sec/sec_ir/ir_send", O_RDWR);
++
++    return 0;
++}
++
++static struct hw_module_methods_t irda_module_methods = {
++    .open = open_irda
++};
++
++struct hw_module_t HAL_MODULE_INFO_SYM = {
++    .tag = HARDWARE_MODULE_TAG,
++    .module_api_version = 1,
++    .hal_api_version = 0,
++    .id = IRDA_HARDWARE_MODULE_ID,
++    .name = "Irda HW Module",
++    .author = "The CyanogenMod Project",
++    .methods = &irda_module_methods,
++};
+diff --git a/jf-common.mk b/jf-common.mk
+index d63802c..065a95d 100644
+--- a/jf-common.mk
++++ b/jf-common.mk
+@@ -102,6 +102,9 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+ # Lights
+ PRODUCT_PACKAGES += lights.msm8960
+ 
++# Irda
++PRODUCT_PACKAGES += irda.msm8960
++
+ # Increase the HWUI font cache since we have tons of RAM
+ PRODUCT_PROPERTY_OVERRIDES += \
+     ro.hwui.text_cache_width=2048
+diff --git a/overlay/frameworks/base/core/res/res/values/config.xml b/overlay/frameworks/base/core/res/res/values/config.xml
+index be0d0ca..9eb3a37 100644
+--- a/overlay/frameworks/base/core/res/res/values/config.xml
++++ b/overlay/frameworks/base/core/res/res/values/config.xml
+@@ -247,4 +247,8 @@
+     <!-- Panel auto-brightness configuration value -->
+     <integer name="config_panelAutoBrightnessValue">1</integer>
+ 
++    <!-- True if the Irda service should be started at system start. This currently only
++         supports Samsung Galaxy S4. -->
++    <bool name="config_enableIrdaManagerService">true</bool>
++
+ </resources>
+-- 
+1.8.3.2
+

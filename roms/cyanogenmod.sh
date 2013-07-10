@@ -53,16 +53,42 @@ cyanogenmod_prebuild() {
   rm -f "${OUT}"/cm-*.zip*
 
   pushd frameworks/base/
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/80/44580/9 && git cherry-pick FETCH_HEAD
+  git checkout github/cm-10.1
+  git clean -fdx
+  git diff | patch -p1 -R
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/80/44580/9 && git cherry-pick FETCH_HEAD
+  git am ${WORKSPACE}/hudson/roms/0001-Irda-Add-Irda-System-Service-for-Samsung-devices.patch
   popd
 
   pushd hardware/libhardware/
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_libhardware refs/changes/83/44783/4 && git checkout FETCH_HEAD
+  git checkout github/cm-10.1
+  git clean -fdx
+  git diff | patch -p1 -R
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_libhardware refs/changes/83/44783/4 && git checkout FETCH_HEAD
+  rm -f include/hardware/irda.h
+  git am ${WORKSPACE}/hudson/roms/0001-Irda-Added-IrDA-HAL-Library.patch
   popd
 
   pushd device/samsung/jf-common/
-  git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/91/44691/5 && git checkout FETCH_HEAD
+  git checkout github/cm-10.1
+  git clean -fdx
+  git diff | patch -p1 -R
+  #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/91/44691/5 && git checkout FETCH_HEAD
+  git am ${WORKSPACE}/hudson/roms/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
   popd
+
+  if grep -q jfltexx <<< ${LUNCH}; then
+    # Commit causes carrier bug for jfltexx/GT-I9505
+    pushd device/samsung/jf-common/
+    echo "REVERTING d84f305295d56b71ef6c09c94f1294bbf67a289c"
+    git revert --no-edit d84f305295d56b71ef6c09c94f1294bbf67a289c
+    popd
+
+    pushd vendor/samsung/
+    echo "CHECKING OUT eed3c8115518b45902c00f43c222c32cd3e18e46"
+    git checkout eed3c8115518b45902c00f43c222c32cd3e18e46
+    popd
+  fi
 }
 
 cyanogenmod_postbuild() {
