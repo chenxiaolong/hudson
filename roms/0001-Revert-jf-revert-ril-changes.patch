@@ -1,0 +1,82 @@
+From fbd8f5b0f0eb181c1f400c53b1538c1170f47030 Mon Sep 17 00:00:00 2001
+From: chenxiaolong <chenxiaolong@master>
+Date: Sun, 21 Jul 2013 17:01:09 -0400
+Subject: [PATCH] Revert "jf: revert ril changes"
+
+This reverts commit d84f305295d56b71ef6c09c94f1294bbf67a289c.
+
+Conflicts:
+	jf-common.mk
+	proprietary-files.txt
+
+Change-Id: I9d8c874be6c9a7386bff9691a8a3b3c08aad60aa
+---
+ common-proprietary-files.txt | 21 +++++++++++----------
+ jf-common.mk                 |  2 +-
+ proprietary-files.txt        |  2 --
+ 3 files changed, 12 insertions(+), 13 deletions(-)
+
+diff --git a/common-proprietary-files.txt b/common-proprietary-files.txt
+index d2bba9c..06f0258 100644
+--- a/common-proprietary-files.txt
++++ b/common-proprietary-files.txt
+@@ -75,24 +75,25 @@ lib/libdiag.so
+ lib/libdsutils.so
+ lib/libdsi_netctrl.so
+ lib/libfactoryutil.so
+-lib/libidl.so
++vendor/lib/libidl.so
+ lib/libnetmgr.so
+ lib/libomission_avoidance.so
+ lib/libqdi.so
+ lib/libqdp.so
+-lib/libqmi.so
+-lib/libqmiservices.so
+-lib/libqmi_cci.so
+-lib/libqmi_common_so.so
+-lib/libqmi_csi.so
+-lib/libqmi_encdec.so
+-lib/libqcci_legacy.so
+-lib/libqmi_client_qmux.so
++vendor/lib/libqmi.so
++vendor/lib/libqmiservices.so
++vendor/lib/libqmi_cci.so
++vendor/lib/libqmi_common_so.so
++vendor/lib/libqmi_csi.so
++vendor/lib/libqmi_encdec.so
++vendor/lib/libqcci_legacy.so
++vendor/lib/libqmi_client_qmux.so
+ lib/libreference-ril.so
+ lib/libril-qcril-hook-oem.so
+ lib/libsecril-client.so
+ lib/libtime_genoff.so
+-
++lib/libril-qc-qmi-1.so
++lib/libril.so
+ 
+ # GPS
+ lib/libloc_api_v02.so
+diff --git a/jf-common.mk b/jf-common.mk
+index 589d063..178a259 100644
+--- a/jf-common.mk
++++ b/jf-common.mk
+@@ -168,7 +168,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
+     persist.rild.nitz_short_ons_1="" \
+     persist.rild.nitz_short_ons_2="" \
+     persist.rild.nitz_short_ons_3="" \
+-    ro.telephony.ril.v3=newDriverCall
++    ro.telephony.ril.v3=googleEditionSS
+ 
+ # call common msm8960
+ $(call inherit-product, device/samsung/msm8960-common/msm8960.mk)
+diff --git a/proprietary-files.txt b/proprietary-files.txt
+index bb1bced..9466bd2 100644
+--- a/proprietary-files.txt
++++ b/proprietary-files.txt
+@@ -1,3 +1 @@
+ # put anything that cannot be in jf-common
+-lib/libril-qc-qmi-1.so
+-lib/libril.so
+-- 
+1.8.3.3
+

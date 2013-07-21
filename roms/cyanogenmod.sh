@@ -81,7 +81,8 @@ cyanogenmod_prebuild() {
     # Commit causes carrier bug for jfltexx/GT-I9505
     pushd device/samsung/jf-common/
     echo "REVERTING d84f305295d56b71ef6c09c94f1294bbf67a289c"
-    git revert --no-edit d84f305295d56b71ef6c09c94f1294bbf67a289c
+    #git revert --no-edit d84f305295d56b71ef6c09c94f1294bbf67a289c
+    git am ${WORKSPACE}/hudson/roms/0001-Revert-jf-revert-ril-changes.patch
     popd
 
     pushd vendor/samsung/
