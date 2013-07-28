@@ -1,0 +1,508 @@
+From 3019c8e5705e671f1496b2814a7fdfb4971a48d8 Mon Sep 17 00:00:00 2001
+From: Timo Wendt <timo@tjwendt.de>
+Date: Sat, 22 Jun 2013 23:04:00 +0200
+Subject: [PATCH] Irda: Add Irda System Service for Samsung devices
+
+Add Irda System Service that is compatible with the Samsung devices
+.
+This is not a perfect solution yet, but it does work and should therefore be a starting point.
+I do not know how to make this code exclusive to the S4, maybe someone can help me out with that.
+
+PatchSet 2: Now the Irda service is not started by default. It can be enabled via overlay.
+
+PatchSet 3: Rebase
+
+PatchSet 4: It now uses a HAL module to communicate with sysfs. However it currently
+fails when loading the module
+
+PatchSet 5: Corrected a typo in a comment
+
+PatchSet 6: Cleanup
+
+PatchSet 7: Renamed native method to send_ircode_native
+
+Patchset 8: Renamed commit message to indicate general applicability to Samsung devices
+including n80xx.  Need to determine how to handle HTC and Sony...  Also added logging
+when module load fails or device opening fails.
+
+PatchSet 9: Fix missing semicolon causing breakage in the build
+
+Change-Id: I321a2914818c705a9fadbb28691d9141cbdfb99c
+---
+ Android.mk                                         |  1 +
+ core/java/android/app/ContextImpl.java             |  9 ++
+ core/java/android/content/Context.java             | 15 ++++
+ core/java/android/hardware/IIrdaManager.aidl       | 28 ++++++
+ core/java/android/hardware/IrdaManager.java        | 77 +++++++++++++++++
+ core/res/res/values/config.xml                     |  3 +
+ core/res/res/values/symbols.xml                    |  3 +
+ .../com/android/server/IrdaManagerService.java     | 71 ++++++++++++++++
+ services/java/com/android/server/SystemServer.java | 11 +++
+ services/jni/Android.mk                            |  1 +
+ .../jni/com_android_server_IrdaManagerService.cpp  | 99 ++++++++++++++++++++++
+ services/jni/onload.cpp                            |  2 +
+ 12 files changed, 320 insertions(+)
+ create mode 100644 core/java/android/hardware/IIrdaManager.aidl
+ create mode 100644 core/java/android/hardware/IrdaManager.java
+ create mode 100644 services/java/com/android/server/IrdaManagerService.java
+ create mode 100644 services/jni/com_android_server_IrdaManagerService.cpp
+
+diff --git a/Android.mk b/Android.mk
+index e1663e5..e31e23f 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -65,6 +65,7 @@ LOCAL_SRC_FILES += \
+ 	core/java/android/app/IActivityController.aidl \
+ 	core/java/android/app/IActivityPendingResult.aidl \
+ 	core/java/android/app/IAlarmManager.aidl \
++	core/java/android/hardware/IIrdaManager.aidl \
+ 	core/java/android/app/IBackupAgent.aidl \
+ 	core/java/android/app/IInstrumentationWatcher.aidl \
+ 	core/java/android/app/INotificationManager.aidl \
+diff --git a/core/java/android/app/ContextImpl.java b/core/java/android/app/ContextImpl.java
+index 6cdd43f..e25f78a 100644
+--- a/core/java/android/app/ContextImpl.java
++++ b/core/java/android/app/ContextImpl.java
+@@ -87,6 +87,8 @@ import android.os.Handler;
+ import android.os.IBinder;
+ import android.os.IPowerManager;
+ import android.os.IUserManager;
++import android.hardware.IIrdaManager;
++import android.hardware.IrdaManager;
+ import android.os.Looper;
+ import android.os.PowerManager;
+ import android.os.Process;
+@@ -574,6 +576,13 @@ class ContextImpl extends Context {
+                     IFmTransmitter service = IFmTransmitter.Stub.asInterface(b);
+                     return new FmTransmitterImpl(service);
+                 }});
++
++        registerService(IRDA_SERVICE, new StaticServiceFetcher() {
++                public Object createStaticService() {
++                    IBinder b = ServiceManager.getService(IRDA_SERVICE);
++                    IIrdaManager service = IIrdaManager.Stub.asInterface(b);
++                    return new IrdaManager(service);
++                }});
+     }
+ 
+     static ContextImpl getImpl(Context context) {
+diff --git a/core/java/android/content/Context.java b/core/java/android/content/Context.java
+index 62de8a0..57e2ad1 100644
+--- a/core/java/android/content/Context.java
++++ b/core/java/android/content/Context.java
+@@ -1769,6 +1769,9 @@ public abstract class Context {
+      *  <dt> {@link #ALARM_SERVICE} ("alarm")
+      *  <dd> A {@link android.app.AlarmManager} for receiving intents at the
+      *  time of your choosing.
++     *  <dt> {@link #IRDA_SERVICE} ("irda")
++     *  <dd> A {@link android.hardware.IrdaManager} for sending IR codes
++     *  with the IR emitter
+      *  <dt> {@link #NOTIFICATION_SERVICE} ("notification")
+      *  <dd> A {@link android.app.NotificationManager} for informing the user
+      *   of background events.
+@@ -1816,6 +1819,8 @@ public abstract class Context {
+      * @see android.os.PowerManager
+      * @see #ALARM_SERVICE
+      * @see android.app.AlarmManager
++     * @see #IRDA_SERVICE
++     * @see android.hardware.IrdaManager
+      * @see #NOTIFICATION_SERVICE
+      * @see android.app.NotificationManager
+      * @see #KEYGUARD_SERVICE
+@@ -1909,6 +1914,16 @@ public abstract class Context {
+ 
+     /**
+      * Use with {@link #getSystemService} to retrieve a
++     * {@link android.hardware.IrdaManager} for sending IR codes
++     * with the IR emitter
++     *
++     * @see #getSystemService
++     * @see android.hardware.IrdaManager
++     */
++    public static final String IRDA_SERVICE = "irda";
++
++    /**
++     * Use with {@link #getSystemService} to retrieve a
+      * {@link android.app.NotificationManager} for informing the user of
+      * background events.
+      *
+diff --git a/core/java/android/hardware/IIrdaManager.aidl b/core/java/android/hardware/IIrdaManager.aidl
+new file mode 100644
+index 0000000..5d18f2a
+--- /dev/null
++++ b/core/java/android/hardware/IIrdaManager.aidl
+@@ -0,0 +1,28 @@
++/* //device/java/android/android/hardware/IIrdaManager.aidl
++**
++** Copyright 2006, The Android Open Source Project
++**
++** Licensed under the Apache License, Version 2.0 (the "License");
++** you may not use this file except in compliance with the License.
++** You may obtain a copy of the License at
++**
++**     http://www.apache.org/licenses/LICENSE-2.0
++**
++** Unless required by applicable law or agreed to in writing, software
++** distributed under the License is distributed on an "AS IS" BASIS,
++** WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++** See the License for the specific language governing permissions and
++** limitations under the License.
++*/
++package android.hardware;
++
++/**
++ * System private API for talking with the irda service.
++ *
++ * {@hide}
++ */
++interface IIrdaManager {
++    void write_irsend(String code);
++}
++
++
+diff --git a/core/java/android/hardware/IrdaManager.java b/core/java/android/hardware/IrdaManager.java
+new file mode 100644
+index 0000000..7b59f3d
+--- /dev/null
++++ b/core/java/android/hardware/IrdaManager.java
+@@ -0,0 +1,77 @@
++/*
++ * Copyright (C) 2007 The Android Open Source Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package android.hardware;
++
++import android.os.RemoteException;
++
++/**
++ * This class provides access to the system irda services.
++ *
++ * <p>You do not
++ * instantiate this class directly; instead, retrieve it through
++ * {@link android.content.Context#getSystemService
++ * Context.getSystemService(Context.IRDA_SERVICE)}.
++ */
++public class IrdaManager
++{
++    private final IIrdaManager mService;
++
++    /**
++     * package private on purpose
++     */
++    public IrdaManager(IIrdaManager service) {
++        mService = service;
++    }
++
++    /**
++     * Send IR code via the emitter
++     *
++     * The format of the code can be converted from the pronto format
++     * as follows
++     *
++     * Example pronto code:
++     * 0000 006D 0000 0022 00AC 00AB 0015 0041 0015 0041 0015 0041 0015
++     * 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041
++     * 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015
++     * 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0016 0015 0016
++     * 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015
++     * 0041 0015 0041 0015 0016 0015 0689
++     *
++     * 1. word 0000: not needed
++     * 2. word 006D: this has to be converted to the frequency as follows:
++     *    first vonvert it to decimal 109
++     *    now caculate the frequency 1000000/(109 * .241246) = 38000 rounded
++     * 3. word 0000: not needed
++     * 4. word 0022: not needed
++     * all the remaining numbers have to be converted to decimal
++     *
++     * now build a comma separated string without spaces with the frequency
++     * and the remaining numbers as follows:
++     *
++     * 38000,172,171,21,65,21,65,21,65,21,22,21,22,21,22,21,22,21,22,21,65,
++     * 21,65,21,65,21,22,21,22,21,22,21,22,21,22,21,22,21,22,21,22,21,65,21,
++     * 65,21,22,21,22,21,65,21,65,21,65,21,65,21,22,21,22,21,65,21,65,21,22,
++     * 21,1673
++     *
++     */
++    public void write_irsend(String code) {
++        try {
++            mService.write_irsend(code);
++        } catch (RemoteException ex) {
++        }
++    }
++}
+diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
+index 87d992d..e10d8c8 100644
+--- a/core/res/res/values/config.xml
++++ b/core/res/res/values/config.xml
+@@ -1271,4 +1271,7 @@
+          to support pie controls. -->
+     <bool name="config_allowPieService">true</bool>
+ 
++    <!-- True if the Irda service should be started at system start -->
++    <bool name="config_enableIrdaManagerService">false</bool>
++
+ </resources>
+diff --git a/core/res/res/values/symbols.xml b/core/res/res/values/symbols.xml
+index 3f8c8ed..c5183d6 100644
+--- a/core/res/res/values/symbols.xml
++++ b/core/res/res/values/symbols.xml
+@@ -2036,4 +2036,7 @@
+   <java-symbol type="string" name="privacy_guard_notification_detail" />
+   <java-symbol type="drawable" name="stat_notify_privacy_guard" />
+ 
++  <!-- Irda Service -->
++  <java-symbol type="bool" name="config_enableIrdaManagerService" />
++
+ </resources>
+diff --git a/services/java/com/android/server/IrdaManagerService.java b/services/java/com/android/server/IrdaManagerService.java
+new file mode 100644
+index 0000000..a11c922
+--- /dev/null
++++ b/services/java/com/android/server/IrdaManagerService.java
+@@ -0,0 +1,71 @@
++/*
++ * Copyright (C) 2013 The CyanogenMod Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.server;
++
++import android.content.Context;
++import android.os.Handler;
++import android.os.HandlerThread;
++import android.hardware.IIrdaManager;
++import android.os.Looper;
++import android.os.Bundle;
++import android.os.Message;
++import android.util.Log;
++
++public class IrdaManagerService extends IIrdaManager.Stub {
++    private static final String TAG = "IrdaManagerService";
++    private IrdaWorkerHandler mHandler;
++    private Looper mServiceLooper;
++    private Context mContext;
++    private int mNativePointer;
++    public IrdaManagerService(Context context) {
++        super();
++        mContext = context;
++        mNativePointer = init_native();
++        HandlerThread mWorker = new HandlerThread("IrdaServiceWorker");
++        mWorker.start();
++        mServiceLooper = mWorker.getLooper();
++        mHandler = new IrdaWorkerHandler(mServiceLooper);
++    }
++
++    public void write_irsend(String irCode) {
++        if (irCode != null) {
++            Message msg = mHandler.obtainMessage(IrdaWorkerHandler.MESSAGE_SET, irCode);
++            msg.sendToTarget();
++        }
++    }
++
++    private class IrdaWorkerHandler extends Handler {
++        private static final int MESSAGE_SET = 0;
++
++        public IrdaWorkerHandler(Looper looper) {
++            super(looper);
++        }
++
++        @Override
++        public void handleMessage(Message msg) {
++            if (msg.what == MESSAGE_SET) {
++                String irCode = (String) msg.obj;
++                byte[] buffer = irCode.getBytes();
++                send_ircode_native(mNativePointer, buffer);
++            }
++        }
++    }
++
++    private static native int init_native();
++    private static native void finalize_native(int ptr);
++    private static native void send_ircode_native(int ptr, byte[] buffer);
++}
+diff --git a/services/java/com/android/server/SystemServer.java b/services/java/com/android/server/SystemServer.java
+index 32031cb..72e8f12 100644
+--- a/services/java/com/android/server/SystemServer.java
++++ b/services/java/com/android/server/SystemServer.java
+@@ -816,6 +816,17 @@ class ServerThread extends Thread {
+             }
+ 
+             if (context.getResources().getBoolean(
++                    com.android.internal.R.bool.config_enableIrdaManagerService)) {
++                try {
++                    Slog.i(TAG, "IrdaManager Service");
++                    ServiceManager.addService("irda", new IrdaManagerService(context));
++                } catch (Throwable e) {
++                    Slog.e(TAG, "Failure starting Irda Service", e);
++                }
++            }
++
++
++            if (context.getResources().getBoolean(
+                     com.android.internal.R.bool.config_allowPieService)) {
+                 try {
+                     Slog.i(TAG, "Pie Delivery Service");
+diff --git a/services/jni/Android.mk b/services/jni/Android.mk
+index 17357ae6..eb98d62 100644
+--- a/services/jni/Android.mk
++++ b/services/jni/Android.mk
+@@ -16,6 +16,7 @@ LOCAL_SRC_FILES:= \
+     com_android_server_VibratorService.cpp \
+     com_android_server_location_GpsLocationProvider.cpp \
+     com_android_server_connectivity_Vpn.cpp \
++    com_android_server_IrdaManagerService.cpp \
+     onload.cpp
+ 
+ LOCAL_C_INCLUDES += \
+diff --git a/services/jni/com_android_server_IrdaManagerService.cpp b/services/jni/com_android_server_IrdaManagerService.cpp
+new file mode 100644
+index 0000000..28bfcb4
+--- /dev/null
++++ b/services/jni/com_android_server_IrdaManagerService.cpp
+@@ -0,0 +1,99 @@
++/*
++ * Copyright (C) 2013 CyanogenMod Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#define LOG_TAG "IrdaManagerService"
++
++#include "jni.h"
++#include "JNIHelp.h"
++#include "android_runtime/AndroidRuntime.h"
++
++#include <utils/misc.h>
++#include <utils/Log.h>
++#include <hardware/hardware.h>
++#include <hardware/irda.h>
++
++#include <stdio.h>
++
++namespace android
++{
++
++irda_device_t* irda_dev;
++
++static jint init_native(JNIEnv *env, jobject clazz)
++{
++    int err;
++    hw_module_t* module;
++    irda_device_t* dev = NULL;
++
++    err = hw_get_module(IRDA_HARDWARE_MODULE_ID, (hw_module_t const**)&module);
++    if (err == 0) {
++        ALOGI("Got IRDA module.");
++        if (module->methods->open(module, "", ((hw_device_t**) &dev)) != 0) {
++            ALOGE("Unable to open IRDA device.");
++            return 0;
++        }
++    }
++    else {
++        ALOGE("Could not get IRDA HAL module.");
++    }
++    ALOGI("Opened IRDA module.");
++    return (jint)dev;
++}
++
++static void finalize_native(JNIEnv *env, jobject clazz, int ptr)
++{
++    irda_device_t* dev = (irda_device_t*)ptr;
++
++    if (dev == NULL) {
++        return;
++    }
++
++    free(dev);
++}
++
++static void send_ircode_native(JNIEnv *env, jobject clazz, int ptr, jbyteArray buffer)
++{
++    ALOGI("Sending IR Code.");
++    irda_device_t* dev = (irda_device_t*)ptr;
++    jbyte* transmitBuffer;
++
++    transmitBuffer = env->GetByteArrayElements(buffer, NULL);
++
++    if (dev == NULL) {
++        ALOGE("dev was null in IRDA jni");
++        return;
++    }
++
++    dev->send_ircode((char*) transmitBuffer, env->GetArrayLength(buffer));
++
++    env->ReleaseByteArrayElements(buffer, transmitBuffer, 0);
++
++}
++
++static JNINativeMethod method_table[] = {
++    { "init_native", "()I", (void*)init_native },
++    { "finalize_native", "(I)V", (void*)finalize_native },
++    { "send_ircode_native", "(I[B)V", (void*)send_ircode_native },
++};
++
++int register_android_server_IrdaManagerService(JNIEnv *env)
++{
++    return jniRegisterNativeMethods(env, "com/android/server/IrdaManagerService",
++            method_table, NELEM(method_table));
++
++};
++
++};
+diff --git a/services/jni/onload.cpp b/services/jni/onload.cpp
+index 423ebd1..8345a03 100644
+--- a/services/jni/onload.cpp
++++ b/services/jni/onload.cpp
+@@ -34,6 +34,7 @@ int register_android_server_VibratorService(JNIEnv* env);
+ int register_android_server_SystemServer(JNIEnv* env);
+ int register_android_server_location_GpsLocationProvider(JNIEnv* env);
+ int register_android_server_connectivity_Vpn(JNIEnv* env);
++int register_android_server_IrdaManagerService(JNIEnv* env);
+ };
+ 
+ using namespace android;
+@@ -63,6 +64,7 @@ extern "C" jint JNI_OnLoad(JavaVM* vm, void* reserved)
+     register_android_server_SystemServer(env);
+     register_android_server_location_GpsLocationProvider(env);
+     register_android_server_connectivity_Vpn(env);
++    register_android_server_IrdaManagerService(env);
+ 
+     return JNI_VERSION_1_4;
+ }
+-- 
+1.8.3.4
+
