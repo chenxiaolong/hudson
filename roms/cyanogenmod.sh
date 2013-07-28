@@ -76,20 +76,6 @@ cyanogenmod_prebuild() {
   #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/91/44691/5 && git checkout FETCH_HEAD
   git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
   popd
-
-  if grep -q jfltexx <<< ${LUNCH}; then
-    # Commit causes carrier bug for jfltexx/GT-I9505
-    pushd device/samsung/jf-common/
-    echo "REVERTING d84f305295d56b71ef6c09c94f1294bbf67a289c"
-    #git revert --no-edit d84f305295d56b71ef6c09c94f1294bbf67a289c
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Revert-jf-revert-ril-changes.patch
-    popd
-
-    pushd vendor/samsung/
-    echo "CHECKING OUT eed3c8115518b45902c00f43c222c32cd3e18e46"
-    git checkout eed3c8115518b45902c00f43c222c32cd3e18e46
-    popd
-  fi
 }
 
 cyanogenmod_postbuild() {
