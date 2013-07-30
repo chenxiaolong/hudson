@@ -117,7 +117,7 @@ common_build() {
     ;;
   esac
 
-  schedtool -B -n 1 -e ionice -n 1 make -j${THREADS}
+  time schedtool -B -n 1 -e ionice -n 1 make -j${THREADS}
 }
 
 common_postbuild() {
