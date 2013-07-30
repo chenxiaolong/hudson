@@ -99,7 +99,7 @@ mkdir -p ${BUILD_DIR}
 cd ${BUILD_DIR}
 
 cleanup() {
-  (repo forall -c "git reset --hard") >/dev/null || true
+  #(repo forall -c "git reset --hard") >/dev/null || true
   rm -f .repo/local_manifests/dyn-*.xml
   rm -f .repo/local_manifests/roomservice.xml
 }
