@@ -112,7 +112,7 @@ common_postbuild() {
 printline() {
   CHAR="${1:0:1}"
   [ -z "${CHAR}" ] && CHAR='-'
-  COLS=$(tput cols || echo 80)
+  COLS=$(tput cols 2>/dev/null || echo 80)
   while [ "${COLS}" -gt 0 ]; do
     echo -n "${CHAR}"
     let COLS--
