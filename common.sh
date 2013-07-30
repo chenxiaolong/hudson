@@ -99,7 +99,25 @@ common_prebuild() {
 
 common_build() {
   #time mka bacon recoveryzip recoveryimage checkapi
-  time mka bacon
+  #time mka bacon
+  THREADS=$(cat /proc/cpuinfo | grep "^processor" | wc -l)
+
+  case "${MAKECORES}" in
+  DOUBLE)
+    THREADS=$(lscpu -p=core,socket | grep -v '#' | uniq | wc -l)
+    THREADS=$((${THREADS}*2))
+    ;;
+  PLUSONE)
+    THREADS=$(lscpu -p=core,socket | grep -v '#' | uniq | wc -l)
+    THREADS=$((${THREADS}+1))
+    ;;
+  DEFAULT)
+    ;;
+  *)
+    ;;
+  esac
+
+  schedtool -B -n 1 -e ionice -n 1 make -j${THREADS}
 }
 
 common_postbuild() {
