@@ -29,7 +29,7 @@ arch_checkdeps() {
     fi
   done
 
-  if [ ! -z "${NOTINSTALLED[@]}" ]; then
+  if [[ ! -z "${NOTINSTALLED[@]}" ]]; then
     echo "Missing packages: ${NOTINSTALLED[@]}"
     exit 1
   fi
