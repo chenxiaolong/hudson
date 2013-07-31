@@ -142,6 +142,10 @@ done
 
 repo sync -d -c >/dev/null
 
+set -e
+python3 ${WORKSPACE}/hudson/changelog.py
+set +e
+
 if declare -f ${ROM}_postsync >/dev/null; then
   ${ROM}_postsync
 else
