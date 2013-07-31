@@ -143,7 +143,7 @@ done
 repo sync -d -c >/dev/null
 
 set -e
-python3 ${WORKSPACE}/hudson/changelog.py
+python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH}
 set +e
 
 if declare -f ${ROM}_postsync >/dev/null; then
