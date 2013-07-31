@@ -22,10 +22,10 @@ cyanogenmod_envsetup() {
     export CM_RELEASE=true;;
   esac
 
-  if [ ! -z "${CM_EXTRAVERSION}" ]; then
-    export CM_EXPERIMENTAL=true
-    unset CM_NIGHTLY CM_RELEASE
-  fi
+#  if [ ! -z "${CM_EXTRAVERSION}" ]; then
+#    export CM_EXPERIMENTAL=true
+#    unset CM_NIGHTLY CM_RELEASE
+#  fi
 }
 
 cyanogenmod_presync() {
