@@ -76,6 +76,10 @@ cyanogenmod_prebuild() {
   #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/91/44691/5 && git checkout FETCH_HEAD
   git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
   popd
+
+  if [ ! -z "${CM_NIGHTLY}" ]; then
+    make update-api
+  fi
 }
 
 cyanogenmod_postbuild() {
