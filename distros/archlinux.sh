@@ -15,6 +15,7 @@ arch_checkdeps() {
           'ncurses'
           'schedtool'
           'perl-switch'
+          'python'
           'sdl'
           'squashfs-tools'
           'unzip'
