@@ -37,7 +37,7 @@ if not repo:
 previous_time = ""
 changes = os.environ["WORKSPACE"] + "/changes." + device
 if not os.path.exists(changes):
-  fd = open(changes, 'w')
+  fd = open(changes + '.new', 'w')
   fd.write(current_time)
   fd.close()
 
