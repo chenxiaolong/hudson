@@ -150,6 +150,6 @@ if counter == 0:
   print("NO CHANGES SINCE LAST BUILD!!!")
   sys.exit(1)
 
-fd = open(changes, 'w')
+fd = open(changes + '.new', 'w')
 fd.write(current_time)
 fd.close()

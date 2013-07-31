@@ -142,9 +142,9 @@ done
 
 repo sync -d -c >/dev/null
 
-set -e
-python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH}
-set +e
+if ! python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH}; then
+  exit 2
+fi
 
 if declare -f ${ROM}_postsync >/dev/null; then
   ${ROM}_postsync
@@ -153,6 +153,7 @@ else
 fi
 
 if declare -f ${ROM}_translatedevice >/dev/null; then
+  LUNCH_OLD=${LUNCH}
   LUNCH=$(${ROM}_translatedevice ${LUNCH})
 fi
 
@@ -173,3 +174,6 @@ if declare -f ${ROM}_postbuild >/dev/null; then
 else
   common_postbuild
 fi
+
+mv ${WORKSPACE}/changes.${LUNCH_OLD}.new \
+   ${WORKSPACE}/changes.${LUNCH_OLD}
