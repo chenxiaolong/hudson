@@ -9,4 +9,9 @@
            remote="github2"
            revision="cm-10.2" />
 
+  <project path="vendor/htc"
+           name="TheMuppets/proprietary_vendor_htc"
+           remote="github2"
+           revision="cm-10.2" />
+
 </manifest>
