@@ -79,7 +79,7 @@ common_prebuild() {
   # convert this to hours
   TIME_SINCE_LAST_CLEAN=$(expr ${TIME_SINCE_LAST_CLEAN} / 60 / 60)
 ###
-  TIME_SINCE_LAST_CLEAN=1
+  TIME_SINCE_LAST_CLEAN=25
 ###
   if [ "${TIME_SINCE_LAST_CLEAN}" -gt "24" -o "${CLEAN}" = "true" ]; then
     echo "Cleaning!"
