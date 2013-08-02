@@ -64,6 +64,10 @@ if [ -z "${RELEASE_TYPE}" ]; then
   exit 1
 fi
 
+if [ -z "${SYNC}" ]; then
+  SYNC=true
+fi
+
 # colorization fix in Jenkins
 export CL_RED="\"\033[31m\""
 export CL_GRN="\"\033[32m\""
@@ -140,7 +144,11 @@ for i in .repo/local_manifests/*.xml; do
   printline '='
 done
 
-repo sync -d -c >/dev/null
+if [ "x${SYNC}" = "xtrue" ]; then
+  repo sync -d -c >/dev/null
+else
+  echo '### repo sync disabled for this build! ###'
+fi
 
 if ! python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH}; then
   exit 2
