@@ -77,6 +77,14 @@ cyanogenmod_prebuild() {
     #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/91/44691/5 && git checkout FETCH_HEAD
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
     popd
+
+    pushd packages/apps/Gallery2/
+    git checkout github/${REPO_BRANCH}
+    git clean -fdx
+    git diff | patch -p1 -R
+    # git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Gallery2 refs/changes/87/46287/9 && git format-patch -1 FETCH_HEAD
+    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Camera-Bring-Samsung-camera-fixes-and-features-to-4..patch
+    popd
   fi
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
