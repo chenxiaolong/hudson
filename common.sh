@@ -1,7 +1,7 @@
 # Set up environment
 common_envsetup() {
-  git config --global user.name "$(whoami)"
-  git config --global user.email "$(whoami)@${NODE_NAME}"
+  #git config --global user.name "$(whoami)"
+  #git config --global user.email "$(whoami)@${NODE_NAME}"
 
   # ccache
   export USE_CCACHE=1
