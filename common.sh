@@ -61,6 +61,11 @@ common_prebuild() {
   # Set up tree for device
   lunch ${LUNCH}
 
+  # Generate changelog
+  if ! python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH_OLD}; then
+    exit 2
+  fi
+
   # Archive the manifests
   repo manifest -o "${WORKSPACE}/archive/manifest.xml" -r
 
@@ -122,6 +127,9 @@ common_build() {
 }
 
 common_postbuild() {
+  mv ${WORKSPACE}/changes.${LUNCH_OLD}.new \
+     ${WORKSPACE}/changes.${LUNCH_OLD}
+
   rm -f .repo/local_manifests/dyn-${REPO_BRANCH}.xml
   rm -f .repo/local_manifests/roomservice.xml
 }
