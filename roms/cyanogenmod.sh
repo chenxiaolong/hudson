@@ -76,6 +76,9 @@ cyanogenmod_prebuild() {
     git diff | patch -p1 -R
     #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/91/44691/5 && git checkout FETCH_HEAD
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
+
+    # git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/86/46286/1 && git format-patch -1 FETCH_HEAD
+    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-jf-move-camera-option-to-gallery2.patch
     popd
 
     pushd packages/apps/Gallery2/
