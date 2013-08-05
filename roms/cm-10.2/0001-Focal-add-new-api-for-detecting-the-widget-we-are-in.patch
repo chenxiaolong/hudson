@@ -1,0 +1,111 @@
+From f1a602e4bfd4fe605e82516763daa02deeca67aa Mon Sep 17 00:00:00 2001
+From: Shareef Ali <shareefalis@cyanogenmod.org>
+Date: Sun, 4 Aug 2013 04:31:07 -0500
+Subject: [PATCH] Focal: add new api for detecting the widget we are in.
+
+* use it for whether we are in hdr or not
+
+* Add Samsung ZSL mode
+
+Change-Id: I9558558777a11cc8f6b633e397c809aa6993ceaf
+---
+ res/values/config.xml                                     |  2 ++
+ src/org/cyanogenmod/focal/CameraManager.java              |  3 +++
+ src/org/cyanogenmod/focal/SnapshotManager.java            | 10 +++++++---
+ src/org/cyanogenmod/focal/widgets/SimpleToggleWidget.java | 15 ++++++++++++++-
+ 4 files changed, 26 insertions(+), 4 deletions(-)
+
+diff --git a/res/values/config.xml b/res/values/config.xml
+index 4356989..e2ae758 100644
+--- a/res/values/config.xml
++++ b/res/values/config.xml
+@@ -37,4 +37,6 @@
+ 
+     <!-- Whether or not to enable Samsung HDR capabilities -->
+     <bool name="config_useSamsungHDR">false</bool>
++    <!-- Whether or not to enable Samsung ZSL capabilities -->
++    <bool name="config_useSamsungZSL">false</bool>
+ </resources>
+diff --git a/src/org/cyanogenmod/focal/CameraManager.java b/src/org/cyanogenmod/focal/CameraManager.java
+index e4a5ba8..efb53f0 100644
+--- a/src/org/cyanogenmod/focal/CameraManager.java
++++ b/src/org/cyanogenmod/focal/CameraManager.java
+@@ -1022,6 +1022,9 @@ public class CameraManager {
+                 Camera.Parameters params = mCamera.getParameters();
+ 
+                 if (getResources().getBoolean(R.bool.config_qualcommZslCameraMode)) {
++                    if (getResources().getBoolean(R.bool.config_useSamsungZSL)) {
++                        mCamera.sendRawCommand(1508, 0, 0);
++                    }
+                     params.set("camera-mode", 1);
+                 }
+ 
+diff --git a/src/org/cyanogenmod/focal/SnapshotManager.java b/src/org/cyanogenmod/focal/SnapshotManager.java
+index 86dbf72..170b56b 100644
+--- a/src/org/cyanogenmod/focal/SnapshotManager.java
++++ b/src/org/cyanogenmod/focal/SnapshotManager.java
+@@ -44,6 +44,7 @@ import com.drew.metadata.Tag;
+ 
+ import org.cyanogenmod.focal.feats.AutoPictureEnhancer;
+ import org.cyanogenmod.focal.feats.PixelBuffer;
++import org.cyanogenmod.focal.widgets.SimpleToggleWidget;
+ 
+ import java.io.BufferedInputStream;
+ import java.io.ByteArrayInputStream;
+@@ -188,7 +189,8 @@ public class SnapshotManager {
+             }
+ 
+             // If we used Samsung HDR, reset exposure
+-            if (mContext.getResources().getBoolean(R.bool.config_useSamsungHDR)) {
++            if (mContext.getResources().getBoolean(R.bool.config_useSamsungHDR) &&
++                SimpleToggleWidget.isWidgetEnabled(mContext, mCameraManager, "scene-mode", "hdr")) {
+                 mCameraManager.setParameterAsync("exposure-compensation", Integer.toString(mResetExposure));
+             }
+         }
+@@ -209,7 +211,8 @@ public class SnapshotManager {
+             final SnapshotInfo snap = mSnapshotsQueue.get(0);
+ 
+             // If we have a Samsung HDR, convert from YUV422 to JPEG first
+-            if (mContext.getResources().getBoolean(R.bool.config_useSamsungHDR)) {
++            if (mContext.getResources().getBoolean(R.bool.config_useSamsungHDR) &&
++                SimpleToggleWidget.isWidgetEnabled(mContext, mCameraManager, "scene-mode", "hdr")) {
+                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                 Bitmap bm = Util.decodeYUV422P(jpegData, s.width, s.height);
+                 // TODO: Replace 90 with real JPEG compression level when we'll have that setting
+@@ -452,7 +455,8 @@ public class SnapshotManager {
+         if (mSnapshotsQueue.size() == 2) return; // No more than 2 shots at a time
+ 
+         // If we use Samsung HDR, we must set exposure level, as it corresponds to the HDR bracket
+-        if (mContext.getResources().getBoolean(R.bool.config_useSamsungHDR)) {
++        if (mContext.getResources().getBoolean(R.bool.config_useSamsungHDR) &&
++            SimpleToggleWidget.isWidgetEnabled(mContext, mCameraManager, "scene-mode", "hdr")) {
+             exposureCompensation = mCameraManager.getParameters().getMaxExposureCompensation();
+             mResetExposure = mCameraManager.getParameters().getExposureCompensation();
+         }
+diff --git a/src/org/cyanogenmod/focal/widgets/SimpleToggleWidget.java b/src/org/cyanogenmod/focal/widgets/SimpleToggleWidget.java
+index 2d7103b..4aef53c 100644
+--- a/src/org/cyanogenmod/focal/widgets/SimpleToggleWidget.java
++++ b/src/org/cyanogenmod/focal/widgets/SimpleToggleWidget.java
+@@ -257,4 +257,17 @@ public class SimpleToggleWidget extends WidgetBase implements OnClickListener {
+     public void onValueSet(String value) {
+ 
+     }
+-}
++
++    /*
++     * this checks if the widget
++     * this is basically a hash (key, value pair)
++     * @return  true if it enabled
++     */
++    public static boolean isWidgetEnabled(Context context,
++                                   CameraManager mCamManager,
++                                   String selectedKey, String value){
++        String out = SettingsStorage.getCameraSetting(context,
++                        mCamManager.getCurrentFacing(), selectedKey, "null");
++        return out.equals(value);
++    }
++}
+\ No newline at end of file
+-- 
+1.8.3.4
+
