@@ -88,14 +88,6 @@ cyanogenmod_prebuild() {
     # git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Gallery2 refs/changes/87/46287/9 && git format-patch -1 FETCH_HEAD
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Camera-Bring-Samsung-camera-fixes-and-features-to-4..patch
     popd
-
-    pushd packages/apps/Focal/
-    git checkout github/${REPO_BRANCH}
-    git clean -fdx
-    git diff | patch -p1 -R
-    # git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Focal refs/changes/86/46986/2 && git format-patch -1 FETCH_HEAD
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Focal-add-new-api-for-detecting-the-widget-we-are-in.patch
-    popd
   fi
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
