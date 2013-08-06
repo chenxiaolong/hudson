@@ -57,15 +57,15 @@ cyanogenmod_prebuild() {
     git checkout github/${REPO_BRANCH}
     git clean -fdx
     git diff | patch -p1 -R
-    #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/80/44580/9 && git cherry-pick FETCH_HEAD
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Add-Irda-System-Service-for-Samsung-devices.patch
+    #git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/70/46770/1 && git format-patch -1 FETCH_HEAD
+    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Add-Irda-System-Service.patch
     popd
 
     pushd hardware/libhardware/
     git checkout github/${REPO_BRANCH}
     git clean -fdx
     git diff | patch -p1 -R
-    #git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_libhardware refs/changes/83/44783/4 && git checkout FETCH_HEAD
+    #git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_libhardware refs/changes/71/46771/1 && git format-patch -1 FETCH_HEAD
     rm -f include/hardware/irda.h
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Added-IrDA-HAL-Library.patch
     popd
@@ -74,7 +74,7 @@ cyanogenmod_prebuild() {
     git checkout github/${REPO_BRANCH}
     git clean -fdx
     git diff | patch -p1 -R
-    #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/91/44691/5 && git checkout FETCH_HEAD
+    #git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/69/46769/1 && git format-patch -1 --stdout FETCH_HEAD
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
 
     # git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/86/46286/1 && git format-patch -1 FETCH_HEAD

@@ -1,47 +1,29 @@
-From 3019c8e5705e671f1496b2814a7fdfb4971a48d8 Mon Sep 17 00:00:00 2001
+From 101c3e7f3f5f7caa2939a205e2b07f1987c6c5b5 Mon Sep 17 00:00:00 2001
 From: Timo Wendt <timo@tjwendt.de>
 Date: Sat, 22 Jun 2013 23:04:00 +0200
-Subject: [PATCH] Irda: Add Irda System Service for Samsung devices
+Subject: [PATCH] Irda: Add Irda System Service
 
-Add Irda System Service that is compatible with the Samsung devices
-.
 This is not a perfect solution yet, but it does work and should therefore be a starting point.
-I do not know how to make this code exclusive to the S4, maybe someone can help me out with that.
+It needs work to be functional on devices other than the Galaxy S4
 
-PatchSet 2: Now the Irda service is not started by default. It can be enabled via overlay.
+* The Irda service is not started by default. It can be enabled via overlay.
+* Uses a HAL module to communicate with sysfs
 
-PatchSet 3: Rebase
-
-PatchSet 4: It now uses a HAL module to communicate with sysfs. However it currently
-fails when loading the module
-
-PatchSet 5: Corrected a typo in a comment
-
-PatchSet 6: Cleanup
-
-PatchSet 7: Renamed native method to send_ircode_native
-
-Patchset 8: Renamed commit message to indicate general applicability to Samsung devices
-including n80xx.  Need to determine how to handle HTC and Sony...  Also added logging
-when module load fails or device opening fails.
-
-PatchSet 9: Fix missing semicolon causing breakage in the build
-
-Change-Id: I321a2914818c705a9fadbb28691d9141cbdfb99c
+Change-Id: If0c4b2e59144b1f199c44add399a3f528ac11e5b
 ---
  Android.mk                                         |  1 +
  core/java/android/app/ContextImpl.java             |  9 ++
  core/java/android/content/Context.java             | 15 ++++
  core/java/android/hardware/IIrdaManager.aidl       | 28 ++++++
  core/java/android/hardware/IrdaManager.java        | 77 +++++++++++++++++
- core/res/res/values/config.xml                     |  3 +
+ core/res/res/values/config.xml                     |  2 +
  core/res/res/values/symbols.xml                    |  3 +
  .../com/android/server/IrdaManagerService.java     | 71 ++++++++++++++++
  services/java/com/android/server/SystemServer.java | 11 +++
  services/jni/Android.mk                            |  1 +
  .../jni/com_android_server_IrdaManagerService.cpp  | 99 ++++++++++++++++++++++
  services/jni/onload.cpp                            |  2 +
- 12 files changed, 320 insertions(+)
+ 12 files changed, 319 insertions(+)
  create mode 100644 core/java/android/hardware/IIrdaManager.aidl
  create mode 100644 core/java/android/hardware/IrdaManager.java
  create mode 100644 services/java/com/android/server/IrdaManagerService.java
@@ -244,16 +226,15 @@ index 0000000..7b59f3d
 +    }
 +}
 diff --git a/core/res/res/values/config.xml b/core/res/res/values/config.xml
-index 87d992d..e10d8c8 100644
+index 87d992d..82abae6 100644
 --- a/core/res/res/values/config.xml
 +++ b/core/res/res/values/config.xml
-@@ -1271,4 +1271,7 @@
+@@ -1271,4 +1271,6 @@
           to support pie controls. -->
      <bool name="config_allowPieService">true</bool>
  
 +    <!-- True if the Irda service should be started at system start -->
 +    <bool name="config_enableIrdaManagerService">false</bool>
-+
  </resources>
 diff --git a/core/res/res/values/symbols.xml b/core/res/res/values/symbols.xml
 index 3f8c8ed..c5183d6 100644
