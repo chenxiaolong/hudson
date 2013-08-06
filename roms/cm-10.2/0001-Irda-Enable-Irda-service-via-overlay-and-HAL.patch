@@ -1,4 +1,4 @@
-From ccdaa219545417143e00eb49460b757e5f89e72c Mon Sep 17 00:00:00 2001
+From b102aca66237c070a53477e6b59e8d9140bb2798 Mon Sep 17 00:00:00 2001
 From: Timo Wendt <timo@tjwendt.de>
 Date: Mon, 24 Jun 2013 23:01:37 +0200
 Subject: [PATCH] Irda: Enable Irda service via overlay and HAL
@@ -109,7 +109,7 @@ index 0000000..a7d3cb3
 +    .methods = &irda_module_methods,
 +};
 diff --git a/jf-common.mk b/jf-common.mk
-index fcee39d..185993c 100644
+index 42b0d95..eca2aa2 100644
 --- a/jf-common.mk
 +++ b/jf-common.mk
 @@ -105,6 +105,9 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -119,9 +119,9 @@ index fcee39d..185993c 100644
 +# Irda
 +PRODUCT_PACKAGES += irda.msm8960
 +
- # Increase the HWUI font cache since we have tons of RAM
+ # QC Perf
  PRODUCT_PROPERTY_OVERRIDES += \
-     ro.hwui.text_cache_width=2048
+     ro.vendor.extension_library=/system/lib/libqc-opt.so
 diff --git a/overlay/frameworks/base/core/res/res/values/config.xml b/overlay/frameworks/base/core/res/res/values/config.xml
 index 89bcf3b..cc3a200 100644
 --- a/overlay/frameworks/base/core/res/res/values/config.xml
