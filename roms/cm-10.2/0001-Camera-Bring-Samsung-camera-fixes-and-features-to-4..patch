@@ -1,4 +1,4 @@
-From d8e5fe2c3b1d23acc587d9ea13f3d8778e7feb2b Mon Sep 17 00:00:00 2001
+From 55d2ffe2e73e425f3f0284b54b8b1c5da6cb363a Mon Sep 17 00:00:00 2001
 From: Shareef Ali <shareefalis@cyanogenmod.org>
 Date: Thu, 1 Aug 2013 09:55:20 -0500
 Subject: [PATCH] Camera: Bring Samsung camera fixes and features to 4.3
@@ -241,15 +241,15 @@ Date:   Mon Dec 10 10:15:22 2012 +0700
 Change-Id: Id47fba2a9d156b157440485a0fa516871076d9f9
 ---
  Android.mk                                      |   2 -
- res/values/config.xml                           |  26 ++++
+ res/values/config.xml                           |  26 +++
  src/com/android/camera/CameraActivity.java      |  36 +++++
  src/com/android/camera/CameraManager.java       |  14 ++
  src/com/android/camera/CameraSettings.java      |  28 +++-
  src/com/android/camera/FocusOverlayManager.java |   3 +-
- src/com/android/camera/PhotoModule.java         | 192 ++++++++++++++++++------
- src/com/android/camera/Util.java                | 106 +++++++++++++
+ src/com/android/camera/PhotoModule.java         | 204 +++++++++++++++++++-----
+ src/com/android/camera/Util.java                | 106 ++++++++++++
  src/com/android/camera/VideoModule.java         |  37 ++++-
- 9 files changed, 391 insertions(+), 53 deletions(-)
+ 9 files changed, 403 insertions(+), 53 deletions(-)
 
 diff --git a/Android.mk b/Android.mk
 index c17ee04..9643f32 100644
@@ -478,7 +478,7 @@ index 8bcb52f..452684b 100644
      }
  }
 diff --git a/src/com/android/camera/PhotoModule.java b/src/com/android/camera/PhotoModule.java
-index e88645d..979e934 100644
+index e88645d..79d72d2 100644
 --- a/src/com/android/camera/PhotoModule.java
 +++ b/src/com/android/camera/PhotoModule.java
 @@ -27,6 +27,8 @@ import android.content.Intent;
@@ -596,7 +596,7 @@ index e88645d..979e934 100644
                      width = s.width;
                      height = s.height;
                  } else {
-@@ -861,6 +894,30 @@ public class PhotoModule
+@@ -861,6 +894,42 @@ public class PhotoModule
                          exif.setTag(directionRefTag);
                          exif.setTag(directionTag);
                      }
@@ -615,11 +615,23 @@ index e88645d..979e934 100644
 +                            width = x;
 +                            height = y;
 +                        }
++                        String quality = mPreferences.getString(CameraSettings.KEY_JPEG_QUALITY,
++                                                                "85");
++
++                        if (quality.equals("normal")) {
++                            quality = "65";
++                        } else if (quality.equals("fine")) {
++                            quality = "75";
++                        } else {
++                            try {
++                                Integer.parseInt(quality);
++                            } catch (Exception e) {
++                                quality = "85";
++                            }
++                        }
++
 +                        bm.compress(Bitmap.CompressFormat.JPEG,
-+                                    Integer.parseInt(
-+                                    mPreferences.getString(
-+                                    CameraSettings.KEY_JPEG_QUALITY,
-+                                    "85")),
++                                    Integer.parseInt(quality),
 +                                    baos);
 +
 +                        jpegData = baos.toByteArray();
@@ -627,7 +639,7 @@ index e88645d..979e934 100644
                      mActivity.getMediaSaveService().addImage(
                              jpegData, title, date, mLocation, width, height,
                              orientation, exif, mOnMediaSavedListener, mContentResolver);
-@@ -885,6 +942,10 @@ public class PhotoModule
+@@ -885,6 +954,10 @@ public class PhotoModule
              Log.v(TAG, "mJpegCallbackFinishTime = "
                      + mJpegCallbackFinishTime + "ms");
              mJpegPictureCallbackTime = 0;
@@ -638,7 +650,7 @@ index e88645d..979e934 100644
          }
      }
  
-@@ -1001,6 +1062,8 @@ public class PhotoModule
+@@ -1001,6 +1074,8 @@ public class PhotoModule
              animateFlash();
          }
  
@@ -647,7 +659,7 @@ index e88645d..979e934 100644
          // Set rotation and gps data.
          int orientation;
          // We need to be consistent with the framework orientation (i.e. the
-@@ -1011,6 +1074,11 @@ public class PhotoModule
+@@ -1011,6 +1086,11 @@ public class PhotoModule
              orientation = mOrientation;
          }
          mJpegRotation = Util.getJpegRotation(mCameraId, orientation);
@@ -659,7 +671,7 @@ index e88645d..979e934 100644
          mParameters.setRotation(mJpegRotation);
          Location loc = mLocationManager.getCurrentLocation();
          Util.setGpsParameters(mParameters, loc);
-@@ -1021,8 +1089,15 @@ public class PhotoModule
+@@ -1021,8 +1101,15 @@ public class PhotoModule
                  new JpegPictureCallback(loc), mCameraState,
                  mFocusManager.getFocusState());
  
@@ -675,7 +687,7 @@ index e88645d..979e934 100644
          mFaceDetectionStarted = false;
          setCameraState(SNAPSHOT_IN_PROGRESS);
          UsageStatistics.onEvent(UsageStatistics.COMPONENT_CAMERA,
-@@ -1375,7 +1450,9 @@ public class PhotoModule
+@@ -1375,7 +1462,9 @@ public class PhotoModule
          }
          stopPreview();
          // Release surface texture.
@@ -686,7 +698,7 @@ index e88645d..979e934 100644
  
          mNamedImages = null;
  
-@@ -1433,6 +1510,16 @@ public class PhotoModule
+@@ -1433,6 +1522,16 @@ public class PhotoModule
      @Override
      public void onConfigurationChanged(Configuration newConfig) {
          Log.v(TAG, "onConfigurationChanged");
@@ -703,7 +715,7 @@ index e88645d..979e934 100644
          setDisplayOrientation();
      }
  
-@@ -1597,14 +1684,18 @@ public class PhotoModule
+@@ -1597,14 +1696,18 @@ public class PhotoModule
          // ICS camera frameworks has a bug. Face detection state is not cleared
          // after taking a picture. Stop the preview to work around it. The bug
          // was fixed in JB.
@@ -726,7 +738,7 @@ index e88645d..979e934 100644
                  mCameraDevice.cancelAutoFocus();
              }
              mFocusManager.setAeAwbLock(false); // Unlock AE and AWB.
-@@ -1612,30 +1703,24 @@ public class PhotoModule
+@@ -1612,30 +1715,24 @@ public class PhotoModule
          setCameraParameters(UPDATE_PARAM_ALL);
  
          if (ApiHelper.HAS_SURFACE_TEXTURE) {
@@ -769,7 +781,7 @@ index e88645d..979e934 100644
          } else {
              mCameraDevice.setDisplayOrientation(mDisplayOrientation);
              mCameraDevice.setPreviewDisplayAsync(mUI.getSurfaceHolder());
-@@ -1646,26 +1731,15 @@ public class PhotoModule
+@@ -1646,26 +1743,15 @@ public class PhotoModule
  
          mFocusManager.onPreviewStarted();
  
@@ -800,7 +812,7 @@ index e88645d..979e934 100644
      @Override
      public void stopPreview() {
          if (mCameraDevice != null && mCameraState != PREVIEW_STOPPED) {
-@@ -1745,9 +1819,18 @@ public class PhotoModule
+@@ -1745,9 +1831,18 @@ public class PhotoModule
          if (pictureSize == null) {
              CameraSettings.initialCameraPictureSize(mActivity, mParameters);
          } else {
@@ -819,7 +831,7 @@ index e88645d..979e934 100644
          }
          Size size = mParameters.getPictureSize();
  
-@@ -1800,6 +1883,14 @@ public class PhotoModule
+@@ -1800,6 +1895,14 @@ public class PhotoModule
              }
          }
  
@@ -834,7 +846,7 @@ index e88645d..979e934 100644
          // Set JPEG quality.
          int jpegQuality = CameraProfile.getJpegEncodingQualityParameter(mCameraId,
                  CameraProfile.QUALITY_HIGH);
-@@ -1876,6 +1967,9 @@ public class PhotoModule
+@@ -1876,6 +1979,9 @@ public class PhotoModule
      private void setCameraParameters(int updateSet) {
          if ((updateSet & UPDATE_PARAM_INITIALIZE) != 0) {
              updateCameraParametersInitialize();
@@ -844,7 +856,7 @@ index e88645d..979e934 100644
          }
  
          if ((updateSet & UPDATE_PARAM_ZOOM) != 0) {
-@@ -1899,6 +1993,11 @@ public class PhotoModule
+@@ -1899,6 +2005,11 @@ public class PhotoModule
              mUpdateSet = 0;
              return;
          } else if (isCameraIdle()) {
@@ -856,7 +868,7 @@ index e88645d..979e934 100644
              setCameraParameters(mUpdateSet);
              updateSceneMode();
              mUpdateSet = 0;
-@@ -1908,6 +2007,13 @@ public class PhotoModule
+@@ -1908,6 +2019,13 @@ public class PhotoModule
                          SET_CAMERA_PARAMETERS_WHEN_IDLE, 1000);
              }
          }
