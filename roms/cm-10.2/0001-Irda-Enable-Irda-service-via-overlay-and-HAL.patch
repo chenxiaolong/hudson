@@ -1,4 +1,4 @@
-From b102aca66237c070a53477e6b59e8d9140bb2798 Mon Sep 17 00:00:00 2001
+From 1068b40eb4901885898107feaea674a280805385 Mon Sep 17 00:00:00 2001
 From: Timo Wendt <timo@tjwendt.de>
 Date: Mon, 24 Jun 2013 23:01:37 +0200
 Subject: [PATCH] Irda: Enable Irda service via overlay and HAL
