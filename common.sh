@@ -146,3 +146,38 @@ printline() {
   done
   echo
 }
+
+reset_git_state() {
+  printline '-'
+  echo "Resetting to ${1} ..."
+  git am --abort || true
+  if ! [ -z "${1}" ]; then
+    git reset --hard "${1}"
+  else
+    git reset --hard
+  fi
+  git clean -fdx
+  printline '-'
+}
+
+apply_patch_file_git() {
+  printline '-'
+  echo "Applying ${1} (with git) ..."
+  git am "${1}" || {
+    git am --abort
+    echo "Failed to apply ${1}"
+    exit 1
+  }
+  printline '-'
+}
+
+apply_patch_file() {
+  printline '-'
+  echo "Applying ${1} ..."
+  patch -p1 -i "${1}" || {
+    reset_git_state
+    echo "Failed to apply ${1}"
+    exit 1
+  }
+  printline '-'
+}
