@@ -76,6 +76,8 @@ cyanogenmod_prebuild() {
     git diff | patch -p1 -R
     # git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/69/46769/4 && git format-patch -1 FETCH_HEAD
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch || (git am --abort; exit 1)
+
+    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature-for-Samsung-WatchON.patch || (git am --abort; exit 1)
     popd
   fi
 
