@@ -80,14 +80,6 @@ cyanogenmod_prebuild() {
     # git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/86/46286/1 && git format-patch -1 FETCH_HEAD
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-jf-move-camera-option-to-gallery2.patch || (git am --abort; exit 1)
     popd
-
-    pushd packages/apps/Gallery2/
-    git checkout github/${REPO_BRANCH}
-    git clean -fdx
-    git diff | patch -p1 -R
-    # git fetch http://review.cyanogenmod.org/CyanogenMod/android_packages_apps_Gallery2 refs/changes/87/46287/9 && git format-patch -1 FETCH_HEAD
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Camera-Bring-Samsung-camera-fixes-and-features-to-4..patch || (git am --abort; exit 1)
-    popd
   fi
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
