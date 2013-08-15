@@ -1,7 +1,9 @@
-From c482e503470fc3808a0adc76ed12a93274f9cb7a Mon Sep 17 00:00:00 2001
+From f73495704877ed3e2f641ebdfa453026f7aa1d06 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Wed, 14 Aug 2013 02:38:50 -0400
-Subject: [PATCH] Expose Irda feature for Samsung WatchON
+Subject: [PATCH] Expose Irda feature
+
+Patch Set 2: Add missing backslash
 
 Change-Id: I2a3b2aabb92b1d0c86ec0974a4b939eaba689879
 ---
@@ -37,7 +39,7 @@ index 0000000..3afe1fc
 +    <feature name="com.sec.feature.irda_service" />
 +</permissions>
 diff --git a/jf-common.mk b/jf-common.mk
-index df9a982..009c2ae 100644
+index df9a982..2cf09f8 100644
 --- a/jf-common.mk
 +++ b/jf-common.mk
 @@ -30,6 +30,10 @@ PRODUCT_AAPT_PREF_CONFIG := xxhdpi
@@ -45,7 +47,7 @@ index df9a982..009c2ae 100644
  TARGET_SCREEN_WIDTH := 1080
  
 +# Expose Irda feature
-+PRODUCT_COPY_FILES +=
++PRODUCT_COPY_FILES += \
 +    device/samsung/jf-common/etc/com.sec.feature.irda_service.xml:system/etc/permissions/com.sec.feature.irda_service.xml
 +
  # Audio configuration
