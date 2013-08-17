@@ -54,37 +54,34 @@ cyanogenmod_prebuild() {
 
   if grep -q jflte <<< ${LUNCH}; then
     pushd frameworks/base/
-    git checkout github/${REPO_BRANCH}
-    git clean -fdx
-    git diff | patch -p1 -R
-    # git fetch http://review.cyanogenmod.org/CyanogenMod/android_frameworks_base refs/changes/70/46770/1 && git format-patch -1 FETCH_HEAD
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Add-Irda-System-Service.patch || (git am --abort; exit 1)
+    reset_git_state github/${REPO_BRANCH}
+
+    # http://review.cyanogenmod.org/#/c/46770/
+    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Add-Irda-System-Service.patch
     popd
 
     pushd hardware/libhardware/
-    git checkout github/${REPO_BRANCH}
-    git clean -fdx
-    git diff | patch -p1 -R
-    # git fetch http://review.cyanogenmod.org/CyanogenMod/android_hardware_libhardware refs/changes/71/46771/1 && git format-patch -1 FETCH_HEAD
-    rm -f include/hardware/irda.h
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Added-IrDA-HAL-Library.patch || (git am --abort; exit 1)
+    reset_git_state github/${REPO_BRANCH}
+
+    # http://review.cyanogenmod.org/#/c/46771/
+    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Added-IrDA-HAL-Library.patch
     popd
 
     pushd device/samsung/jf-common/
-    git checkout github/${REPO_BRANCH}
-    git clean -fdx
-    git diff | patch -p1 -R
-    # git fetch http://review.cyanogenmod.org/CyanogenMod/android_device_samsung_jf-common refs/changes/69/46769/4 && git format-patch -1 FETCH_HEAD
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch || (git am --abort; exit 1)
+    reset_git_state github/${REPO_BRANCH}
 
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch || (git am --abort; exit 1)
+    # http://review.cyanogenmod.org/#/c/46769/
+    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
+
+    # http://review.cyanogenmod.org/#/c/47908/
+    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch
     popd
 
     pushd packages/apps/Focal/
-    git checkout github/${REPO_BRANCH}
-    git clean -fdx
-    git diff | patch -p1 -R
-    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Preview-Fix-upside-down-portrait-preview.patch
+    reset_git_state github/${REPO_BRANCH}
+
+    # http://review.cyanogenmod.org/#/c/48336/
+    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Preview-Fix-upside-down-portrait-preview.patch
     popd
   fi
 
