@@ -11,6 +11,8 @@ git pull -s resolve
 
 if ! [ -z "${HUDSON_BRANCH}" ]; then
   git checkout "${HUDSON_BRANCH}"
+else
+  git checkout master
 fi
 
 exec ./build.sh
