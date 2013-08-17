@@ -79,6 +79,13 @@ cyanogenmod_prebuild() {
 
     git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch || (git am --abort; exit 1)
     popd
+
+    pushd packages/apps/Focal/
+    git checkout github/${REPO_BRANCH}
+    git clean -fdx
+    git diff | patch -p1 -R
+    git am ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Preview-Fix-upside-down-portrait-preview.patch
+    popd
   fi
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
