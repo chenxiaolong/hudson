@@ -127,8 +127,12 @@ common_build() {
 }
 
 common_postbuild() {
-  mv ${WORKSPACE}/changes.${LUNCH_OLD}.new \
-     ${WORKSPACE}/changes.${LUNCH_OLD}
+  if [ "x${UPDATE_TIMESTAMP}" = "xtrue" ]; then
+    mv ${WORKSPACE}/changes.${LUNCH_OLD}.new \
+       ${WORKSPACE}/changes.${LUNCH_OLD}
+  else
+    rm ${WORKSPACE}/changes.${LUNCH_OLD}.new
+  fi
 
   rm -f .repo/local_manifests/dyn-${REPO_BRANCH}.xml
   rm -f .repo/local_manifests/roomservice.xml
