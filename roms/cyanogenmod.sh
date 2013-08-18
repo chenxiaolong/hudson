@@ -78,9 +78,6 @@ cyanogenmod_prebuild() {
     # http://review.cyanogenmod.org/#/c/47908/
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch
     popd
-
-    # http://review.cyanogenmod.org/#/c/48336/
-    python3 ${WORKSPACE}/hudson/gerrit_changes.py 'http://review.cyanogenmod.org/#/c/48336/'
   fi
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
