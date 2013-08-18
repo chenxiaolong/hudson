@@ -79,12 +79,8 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch
     popd
 
-    pushd packages/apps/Focal/
-    reset_git_state github/${REPO_BRANCH}
-
     # http://review.cyanogenmod.org/#/c/48336/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Preview-Fix-upside-down-portrait-preview.patch
-    popd
+    python3 ${WORKSPACE}/hudson/gerrit_changes.py 'http://review.cyanogenmod.org/#/c/48336/'
   fi
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
