@@ -58,7 +58,7 @@ for change in sys.argv[1:]:
       sys.exit(1)
     change = match.group(1)
 
-  print("Cherrypicking %s/#/c/%s/ ..." % (gerrit_url, change))
+  print("Cherrypicking %s ..." % change)
 
   f = urllib.request.urlopen("%s/query?q=change:%s" % (gerrit_url, change))
   d = f.read().decode()
@@ -70,10 +70,11 @@ for change in sys.argv[1:]:
 
   d = d.split('\n')[0]
   data = json.loads(d)
-
   project = data['project']
   projectpath = ""
   number = data['number']
+
+  print("URL: %s/#/c/%s/ ..." % (gerrit_url, number))
 
   for i in repos:
     if project == i[1]:
