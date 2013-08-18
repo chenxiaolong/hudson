@@ -52,11 +52,14 @@ common_postsync() {
   fi
 }
 
+# Commands to run before lunch
+common_prelunch() {
+  . build/envsetup.sh
+}
+
 # Commands to run before build
 common_prebuild() {
   set +e
-
-  . build/envsetup.sh
 
   # Set up tree for device
   lunch ${LUNCH}

@@ -161,6 +161,12 @@ if declare -f ${ROM}_translatedevice >/dev/null; then
   LUNCH=$(${ROM}_translatedevice ${LUNCH})
 fi
 
+if declare -f ${ROM}_prelunch >/dev/null; then
+  ${ROM}_prelunch
+else
+  common_prelunch
+fi
+
 if declare -f ${ROM}_prebuild >/dev/null; then
   ${ROM}_prebuild
 else
