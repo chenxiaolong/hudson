@@ -15,4 +15,6 @@ else
   git checkout master
 fi
 
+git pull
+
 exec ./build.sh
