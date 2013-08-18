@@ -89,20 +89,26 @@ for change in sys.argv[1:]:
     print("%s is not a directory!" % projectpath)
     sys.exit(1)
 
-  junk = number[len(number) - 2:]
-  patch_count = 0
+  f = urllib.request.urlopen("%s/changes/%s/revisions/current/review" % \
+                             (gerrit_url, number))
+  d = f.read().decode()
+  d = '\n'.join(d.split('\n')[1:])
+  data = json.loads(d)
 
-  # This is incredibly ugly, but the REST API for getting revision/patchset
-  # information is broken on the CyanogenMod server
-  while 0 != os.system('cd %s ; git fetch %s/%s refs/changes/%s/%s/%s' % \
-        (projectpath, gerrit_url, project, junk, number, patch_count + 1)):
-    patch_count = patch_count + 1
+  current_revision = data['current_revision']
+  patchset = 0
+  ref = ""
 
-  while 0 == os.system('cd %s ; git fetch %s/%s refs/changes/%s/%s/%s' % \
-        (projectpath, gerrit_url, project, junk, number, patch_count + 1)):
-    patch_count = patch_count + 1
+  for i in data['revisions']:
+    if i == current_revision:
+      ref = data['revisions'][i]['fetch']['http']['ref']
+      patchset = data['revisions'][i]['_number']
+      break
 
-  os.system('cd %s ; git fetch %s/%s refs/changes/%s/%s/%s' % \
-            (projectpath, gerrit_url, project, junk, number, patch_count))
+  print("Patch set: %i" % patchset)
+  print("Ref: %s" % ref)
+
+  os.system('cd %s ; git fetch %s/%s %s' % \
+            (projectpath, gerrit_url, project, ref))
 
   os.system('cd %s ; git merge --no-edit FETCH_HEAD' % projectpath)
