@@ -66,6 +66,11 @@ common_prebuild() {
     exit 2
   fi
 
+  # Cherrypick changes from gerrit
+  if [[ ! -z "${GERRIT_CHANGES}" ]]; then
+    python3 ${WORKSPACE}/hudson/gerrit_changes.py ${GERRIT_CHANGES}
+  fi
+
   # Archive the manifests
   repo manifest -o "${WORKSPACE}/archive/manifest.xml" -r
 

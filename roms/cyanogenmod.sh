@@ -47,6 +47,8 @@ cyanogenmod_postsync() {
 }
 
 cyanogenmod_prebuild() {
+  export GERRIT_URL="http://review.cyanogenmod.org"
+
   common_prebuild
 
   # Remove old zips
