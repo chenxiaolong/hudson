@@ -80,6 +80,10 @@ cyanogenmod_prebuild() {
     popd
   fi
 
+  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
+    'http://review.cyanogenmod.org/#/c/48359/' \
+    'http://review.cyanogenmod.org/#/c/48352/'
+
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
   fi
