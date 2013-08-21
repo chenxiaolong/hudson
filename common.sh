@@ -62,7 +62,20 @@ common_prebuild() {
   set +e
 
   # Set up tree for device
-  lunch ${LUNCH}
+  COUNTER=0
+  while [ "${COUNTER}" -lt 3 ]; do
+    lunch ${LUNCH}
+    if [ "${?}" -eq 0 ]; then
+      break
+    fi
+    echo "*** LUNCH FAILED. RETRYING ... ***"
+    let COUNTER++
+  done
+
+  if [ "${COUNTER}" -eq 3 ]; then
+    echo "*** LUNCH FAILED AFTER 3 TRIES ***"
+    exit 1
+  fi
 
   # Generate changelog
   if ! python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH_OLD}; then
