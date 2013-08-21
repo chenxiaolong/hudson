@@ -78,6 +78,10 @@ cyanogenmod_prebuild() {
     # http://review.cyanogenmod.org/#/c/47908/
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch
     popd
+
+    pushd packages/apps/Settings/
+    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Enable-move-to-SD.patch
+    popd
   fi
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
