@@ -80,6 +80,8 @@ cyanogenmod_prebuild() {
     popd
 
     pushd packages/apps/Settings/
+    reset_git_state github/${REPO_BRANCH}
+
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Enable-move-to-SD.patch
     popd
   fi
