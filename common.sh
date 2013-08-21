@@ -72,6 +72,11 @@ common_prebuild() {
     let COUNTER++
   done
 
+  if [ "${COUNTER}" -eq 3 ]; then
+    echo "*** LUNCH FAILED AFTER 3 TRIES ***"
+    exit 1
+  fi
+
   # Generate changelog
   if ! python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH_OLD}; then
     exit 2
