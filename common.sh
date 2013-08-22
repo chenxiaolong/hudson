@@ -74,7 +74,7 @@ common_prebuild() {
   done
 
   if [ "${COUNTER}" -eq 3 ]; then
-    echo "*** LUNCH FAILED AFTER 3 TRIES ***"
+    echo "*** LUNCH FAILED AFTER 10 TRIES ***"
     exit 1
   fi
 
