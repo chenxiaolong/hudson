@@ -80,15 +80,15 @@ cyanogenmod_prebuild() {
     popd
   fi
 
-  for i in packages/apps/Settings \
-           packages/apps/Focal; do
+  RESET_DIRS=('packages/apps/Settings/')
+
+  for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
   done
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     'http://review.cyanogenmod.org/#/c/48359/' \
-    'http://review.cyanogenmod.org/#/c/48352/' \
-    'http://review.cyanogenmod.org/#/c/48770/'
+    'http://review.cyanogenmod.org/#/c/48352/'
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
