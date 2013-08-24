@@ -63,17 +63,18 @@ common_prebuild() {
 
   # Set up tree for device
   COUNTER=0
-  while [ "${COUNTER}" -lt 3 ]; do
+  while [ "${COUNTER}" -lt 10 ]; do
     lunch ${LUNCH}
     if [ "${?}" -eq 0 ]; then
       break
     fi
-    echo "*** LUNCH FAILED. RETRYING ... ***"
+    echo "*** LUNCH FAILED. RETRYING AFTER 10 SECONDS ... ***"
+    sleep 10
     let COUNTER++
   done
 
   if [ "${COUNTER}" -eq 3 ]; then
-    echo "*** LUNCH FAILED AFTER 3 TRIES ***"
+    echo "*** LUNCH FAILED AFTER 10 TRIES ***"
     exit 1
   fi
 

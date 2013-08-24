@@ -92,10 +92,11 @@ fi
 
 # Set up environment
 if declare -f ${ROM}_envsetup >/dev/null; then
-  ${ROM}_envsetup
+  time ${ROM}_envsetup
 else
-  common_envsetup
+  time common_envsetup
 fi
+echo "^^^ TIME SPENT IN envsetup ^^^"
 
 # Create build directory
 BUILD_DIR=${ROM}_${REPO_BRANCH}
@@ -112,23 +113,26 @@ trap "cleanup" SIGINT SIGTERM SIGKILL EXIT
 
 # Stuff to do before initializing repos
 if declare -f ${ROM}_preinit >/dev/null; then
-  ${ROM}_preinit
+  time ${ROM}_preinit
 else
-  common_preinit
+  time common_preinit
 fi
+echo "^^^ TIME SPENT IN preinit ^^^"
 
 # Initialize repos
 if declare -f ${ROM}_repoinit >/dev/null; then
-  ${ROM}_repoinit
+  time ${ROM}_repoinit
 else
-  common_repoinit
+  time common_repoinit
 fi
+echo "^^^ TIME SPENT IN repoinit ^^^"
 
 if declare -f ${ROM}_presync >/dev/null; then
-  ${ROM}_presync
+  time ${ROM}_presync
 else
-  common_presync
+  time common_presync
 fi
+echo "^^^ TIME SPENT IN presync ^^^"
 
 printline '='
 echo "Core nanifest:"
@@ -145,16 +149,18 @@ for i in .repo/local_manifests/*.xml; do
 done
 
 if [ "x${SYNC}" = "xtrue" ]; then
-  repo sync -d -c >/dev/null
+  time repo sync -d -c >/dev/null
+  echo "^^^ TIME SPENT ON repo sync ^^^"
 else
   echo '### repo sync disabled for this build! ###'
 fi
 
 if declare -f ${ROM}_postsync >/dev/null; then
-  ${ROM}_postsync
+  time ${ROM}_postsync
 else
-  common_postsync
+  time common_postsync
 fi
+echo "^^^ TIME SPENT IN postsync ^^^"
 
 if declare -f ${ROM}_translatedevice >/dev/null; then
   export LUNCH_OLD=${LUNCH}
@@ -162,25 +168,29 @@ if declare -f ${ROM}_translatedevice >/dev/null; then
 fi
 
 if declare -f ${ROM}_prelunch >/dev/null; then
-  ${ROM}_prelunch
+  time ${ROM}_prelunch
 else
-  common_prelunch
+  time common_prelunch
 fi
+echo "^^^ TIME SPENT IN prelunch ^^^"
 
 if declare -f ${ROM}_prebuild >/dev/null; then
-  ${ROM}_prebuild
+  time ${ROM}_prebuild
 else
-  common_prebuild
+  time common_prebuild
 fi
+echo "^^^ TIME SPENT IN prebuild ^^^"
 
 if declare -f ${ROM}_build >/dev/null; then
-  ${ROM}_build
+  time ${ROM}_build
 else
-  common_build
+  time common_build
 fi
+echo "^^^ TIME SPENT IN build ^^^"
 
 if declare -f ${ROM}_postbuild >/dev/null; then
-  ${ROM}_postbuild
+  time ${ROM}_postbuild
 else
-  common_postbuild
+  time common_postbuild
 fi
+echo "^^^ TIME SPENT IN postbuild ^^^"

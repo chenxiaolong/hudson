@@ -56,21 +56,21 @@ cyanogenmod_prebuild() {
 
   if grep -q jflte <<< ${LUNCH}; then
     pushd frameworks/base/
-    #reset_git_state github/${REPO_BRANCH}
+    reset_git_state github/${REPO_BRANCH}
 
     # http://review.cyanogenmod.org/#/c/46770/
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Add-Irda-System-Service.patch
     popd
 
     pushd hardware/libhardware/
-    #reset_git_state github/${REPO_BRANCH}
+    reset_git_state github/${REPO_BRANCH}
 
     # http://review.cyanogenmod.org/#/c/46771/
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Added-IrDA-HAL-Library.patch
     popd
 
     pushd device/samsung/jf-common/
-    #reset_git_state github/${REPO_BRANCH}
+    reset_git_state github/${REPO_BRANCH}
 
     # http://review.cyanogenmod.org/#/c/46769/
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
@@ -85,6 +85,12 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Enable-move-to-SD.patch
     popd
   fi
+
+  RESET_DIRS=('packages/apps/Settings/')
+
+  for i in ${RESET_DIRS[@]}; do
+    pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
+  done
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     'http://review.cyanogenmod.org/#/c/48359/' \
