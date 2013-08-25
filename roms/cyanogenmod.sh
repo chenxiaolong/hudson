@@ -55,12 +55,7 @@ cyanogenmod_prebuild() {
   rm -f "${OUT}"/cm-*.zip*
 
   if grep -q jflte <<< ${LUNCH}; then
-    pushd device/samsung/jf-common/
-    reset_git_state github/${REPO_BRANCH}
-
-    # http://review.cyanogenmod.org/#/c/47908/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch
-    popd
+    echo -n
   fi
 
   RESET_DIRS=('packages/apps/Settings/')
