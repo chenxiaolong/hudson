@@ -58,7 +58,8 @@ cyanogenmod_prebuild() {
     echo -n
   fi
 
-  RESET_DIRS=('packages/apps/Settings/')
+  RESET_DIRS=('packages/apps/Settings/'
+              'frameworks/base/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
