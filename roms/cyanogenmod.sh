@@ -58,9 +58,6 @@ cyanogenmod_prebuild() {
     pushd device/samsung/jf-common/
     reset_git_state github/${REPO_BRANCH}
 
-    # http://review.cyanogenmod.org/#/c/46769/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
-
     # http://review.cyanogenmod.org/#/c/47908/
     apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch
     popd
