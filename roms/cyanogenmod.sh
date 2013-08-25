@@ -55,13 +55,6 @@ cyanogenmod_prebuild() {
   rm -f "${OUT}"/cm-*.zip*
 
   if grep -q jflte <<< ${LUNCH}; then
-    pushd frameworks/base/
-    reset_git_state github/${REPO_BRANCH}
-
-    # http://review.cyanogenmod.org/#/c/46770/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Add-Irda-System-Service.patch
-    popd
-
     pushd hardware/libhardware/
     reset_git_state github/${REPO_BRANCH}
 
