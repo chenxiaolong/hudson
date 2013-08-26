@@ -55,30 +55,6 @@ cyanogenmod_prebuild() {
   rm -f "${OUT}"/cm-*.zip*
 
   if grep -q jflte <<< ${LUNCH}; then
-    pushd frameworks/base/
-    reset_git_state github/${REPO_BRANCH}
-
-    # http://review.cyanogenmod.org/#/c/46770/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Add-Irda-System-Service.patch
-    popd
-
-    pushd hardware/libhardware/
-    reset_git_state github/${REPO_BRANCH}
-
-    # http://review.cyanogenmod.org/#/c/46771/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Added-IrDA-HAL-Library.patch
-    popd
-
-    pushd device/samsung/jf-common/
-    reset_git_state github/${REPO_BRANCH}
-
-    # http://review.cyanogenmod.org/#/c/46769/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Irda-Enable-Irda-service-via-overlay-and-HAL.patch
-
-    # http://review.cyanogenmod.org/#/c/47908/
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Expose-Irda-feature.patch
-    popd
-
     pushd packages/apps/Settings/
     reset_git_state github/${REPO_BRANCH}
 
@@ -86,7 +62,7 @@ cyanogenmod_prebuild() {
     popd
   fi
 
-  RESET_DIRS=('packages/apps/Settings/')
+  RESET_DIRS=('frameworks/base/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
