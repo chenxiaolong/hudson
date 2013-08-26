@@ -64,7 +64,7 @@ cyanogenmod_prebuild() {
   done
 
   #if grep -q jflte <<< ${LUNCH}; then
-    MOVEAPPTOSD=${WORKSPACE}/hudsom/roms/${REPO_BRANCH}/move-app-to-sd
+    MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
 
     pushd system/vold/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
