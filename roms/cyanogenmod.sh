@@ -54,19 +54,34 @@ cyanogenmod_prebuild() {
   # Remove old zips
   rm -f "${OUT}"/cm-*.zip*
 
-  if grep -q jflte <<< ${LUNCH}; then
-    pushd packages/apps/Settings/
-    reset_git_state github/${REPO_BRANCH}
-
-    apply_patch_file_git ${WORKSPACE}/hudson/roms/${REPO_BRANCH}/0001-Enable-move-to-SD.patch
-    popd
-  fi
-
-  RESET_DIRS=('frameworks/base/')
+  RESET_DIRS=('system/vold/'
+              'device/samsung/jf-common/'
+              'packages/apps/Settings/'
+              'frameworks/base/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
   done
+
+  #if grep -q jflte <<< ${LUNCH}; then
+    MOVEAPPTOSD=${WORKSPACE}/hudsom/roms/${REPO_BRANCH}/move-app-to-sd
+
+    pushd system/vold/
+    apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
+    popd
+
+    pushd device/samsung/jf-common/
+    apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
+    popd
+
+    pushd packages/apps/Settings/
+    apply_patch_file_git ${MOVEAPPTOSD}/0001-Enable-moving-applications-to-the-external-SD-card.patch
+    popd
+
+    pushd frameworks/base/
+    apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-changes-for-moving-applications-to-externa.patch
+    popd
+  #fi
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     'http://review.cyanogenmod.org/#/c/48359/' \

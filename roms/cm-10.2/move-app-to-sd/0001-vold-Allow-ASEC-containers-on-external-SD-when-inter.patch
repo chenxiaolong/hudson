@@ -1,0 +1,63 @@
+From 6a3b4caa3d094b9c9137f15e4f8e79f98595c1e2 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 25 Aug 2013 22:28:41 -0400
+Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
+ emulated
+
+* This modifies Volume::mountVol() and Volume::unmountVol to call
+  createBindMounts() to set up .android_secure/ regardless if the
+  volume is primary or not. On devices where emulated internal
+  storage is used, the emulated storage is primary. Without this
+  patch, /data/secure/asec/ and the tmpfs over .android_secure/
+  won't be mounted.
+
+Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
+---
+ Volume.cpp        | 8 ++++----
+ VolumeManager.cpp | 4 ----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/Volume.cpp b/Volume.cpp
+index 7aa2d40..eb8c0e2 100644
+--- a/Volume.cpp
++++ b/Volume.cpp
+@@ -592,8 +592,8 @@ int Volume::mountVol() {
+ 
+         protectFromAutorunStupidity();
+ 
+-        // only create android_secure on primary storage
+-        if (primaryStorage && createBindMounts()) {
++        // create android_secure
++        if (createBindMounts()) {
+             SLOGE("Failed to create bindmounts (%s)", strerror(errno));
+             umount("/mnt/secure/staging");
+             setState(Volume::State_Idle);
+@@ -844,8 +844,8 @@ int Volume::unmountVol(bool force, bool revert) {
+     setState(Volume::State_Unmounting);
+     usleep(1000 * 1000); // Give the framework some time to react
+ 
+-    /* Undo createBindMounts(), which is only called for primary storage */
+-    if (isPrimaryStorage()) {
++    /* Undo createBindMounts() */
++    if (true) {
+         /*
+          * Remove the bindmount we were using to keep a reference to
+          * the previously obscured directory.
+diff --git a/VolumeManager.cpp b/VolumeManager.cpp
+index 8a74872..3cc3943 100644
+--- a/VolumeManager.cpp
++++ b/VolumeManager.cpp
+@@ -1600,10 +1600,6 @@ bool VolumeManager::isMountpointMounted(const char *mp)
+ }
+ 
+ int VolumeManager::cleanupAsec(Volume *v, bool force) {
+-    /* Only EXTERNAL_STORAGE needs ASEC cleanup. */
+-    if (!v->isPrimaryStorage())
+-        return 0;
+-
+     int rc = unmountAllAsecsInDir(Volume::SEC_ASECDIR_EXT);
+ 
+     AsecIdCollection toUnmount;
+-- 
+1.8.4
+

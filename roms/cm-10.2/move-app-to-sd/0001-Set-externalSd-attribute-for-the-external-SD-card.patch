@@ -1,0 +1,27 @@
+From 5f44f95a33149e933c0edefb9b1bb0e3bea1cc17 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 25 Aug 2013 22:33:03 -0400
+Subject: [PATCH] Set 'externalSd' attribute for the external SD card
+
+Change-Id: I1cb34d7b4016bd64a44591c2f48fd5816b8329f7
+---
+ overlay/frameworks/base/core/res/res/xml/storage_list.xml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/overlay/frameworks/base/core/res/res/xml/storage_list.xml b/overlay/frameworks/base/core/res/res/xml/storage_list.xml
+index 9011353..06e8a1d 100644
+--- a/overlay/frameworks/base/core/res/res/xml/storage_list.xml
++++ b/overlay/frameworks/base/core/res/res/xml/storage_list.xml
+@@ -43,7 +43,8 @@
+              android:storageDescription="@string/storage_sd_card"
+              android:primary="false"
+              android:removable="true"
+-             android:allowMassStorage="true" />
++             android:allowMassStorage="true"
++             android:externalSd="true" />
+ 
+     <storage android:mountPoint="/storage/usbdisk0"
+              android:storageDescription="@string/storage_usb"
+-- 
+1.8.4
+
