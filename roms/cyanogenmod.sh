@@ -57,7 +57,9 @@ cyanogenmod_prebuild() {
   RESET_DIRS=('system/vold/'
               'device/samsung/jf-common/'
               'packages/apps/Settings/'
-              'frameworks/base/')
+              'frameworks/base/'
+              'frameworks/opt/hardware/'
+              'hardware/samsung/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
@@ -65,6 +67,7 @@ cyanogenmod_prebuild() {
 
   #if grep -q jflte <<< ${LUNCH}; then
     MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
+    HIGHTOUCHSENSITIVITY=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/high-touch-sensitivity
 
     pushd system/vold/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
@@ -76,10 +79,20 @@ cyanogenmod_prebuild() {
 
     pushd packages/apps/Settings/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Enable-moving-applications-to-the-external-SD-card.patch
+    apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Add-preferences-for-high-touch-sensitivity.patch
+    apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Auto-copied-translations-for-high-touch-sensitivity.patch
     popd
 
     pushd frameworks/base/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-changes-for-moving-applications-to-externa.patch
+    popd
+
+    pushd frameworks/opt/hardware/
+    apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Hardware-Add-high-touch-sensitivity-support.patch
+    popd
+
+    pushd hardware/samsung/
+    apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Samsung-add-support-for-high-touch-sensitivity.patch
     popd
   #fi
 
