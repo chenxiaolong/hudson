@@ -60,7 +60,16 @@ for change in sys.argv[1:]:
 
   print("Cherrypicking %s ..." % change)
 
-  f = urllib.request.urlopen("%s/query?q=change:%s" % (gerrit_url, change))
+  # Sometimes 504's a bit
+  counter = 0
+  while counter < 5:
+    try:
+      f = urllib.request.urlopen("%s/query?q=change:%s" % (gerrit_url, change))
+      break
+    except:
+      counter += 1
+    
+  
   d = f.read().decode()
 
   print("Received from gerrit:")
