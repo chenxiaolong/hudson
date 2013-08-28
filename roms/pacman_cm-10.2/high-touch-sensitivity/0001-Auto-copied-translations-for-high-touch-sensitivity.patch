@@ -1,0 +1,162 @@
+From b16de1f4821c0ca7fee1730c8510a7d5d2ac238d Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Mon, 26 Aug 2013 22:58:43 -0400
+Subject: [PATCH] Auto-copied translations for high touch sensitivity
+
+Change-Id: Ia70c9ec4e638b3547bb07d8e051b4656612f5dfe
+---
+ res/values-bg/strings.xml    | 3 +++
+ res/values-ca/strings.xml    | 3 +++
+ res/values-de/cm_strings.xml | 3 +++
+ res/values-hi/strings.xml    | 3 +++
+ res/values-hr/strings.xml    | 3 +++
+ res/values-hu/cm_strings.xml | 3 +++
+ res/values-nl/cm_strings.xml | 3 +++
+ res/values-ru/cm_strings.xml | 3 +++
+ res/values-th/strings.xml    | 3 +++
+ res/values/cm_strings.xml    | 3 +++
+ 10 files changed, 30 insertions(+)
+
+diff --git a/res/values-bg/strings.xml b/res/values-bg/strings.xml
+index b542a7a..9662617 100644
+--- a/res/values-bg/strings.xml
++++ b/res/values-bg/strings.xml
+@@ -16,6 +16,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">Висока чувствит. на допир</string>
++    <string name="auto_adjust_touch_summary">Увеличете чувствителността на екрана, така че да можете да го докосвате дори когато носите ръкавици</string>
+     <string name="yes" msgid="4676390750360727396">" Да"</string>
+     <string name="no" msgid="6731231425810196216">"Не"</string>
+     <string name="create" msgid="3578857613172647409">"Създаване"</string>
+diff --git a/res/values-ca/strings.xml b/res/values-ca/strings.xml
+index 859bfc3..fae0c56 100644
+--- a/res/values-ca/strings.xml
++++ b/res/values-ca/strings.xml
+@@ -16,6 +16,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">Sensibilitat tocar alta</string>
++    <string name="auto_adjust_touch_summary">Augmentar la sensibilitat de la pantalla perquè la pugui tocar mentre duu guants</string>
+     <string name="yes" msgid="4676390750360727396">"Sí"</string>
+     <string name="no" msgid="6731231425810196216">"No"</string>
+     <string name="create" msgid="3578857613172647409">"Crea"</string>
+diff --git a/res/values-de/cm_strings.xml b/res/values-de/cm_strings.xml
+index 037ad3e..437e4a5 100644
+--- a/res/values-de/cm_strings.xml
++++ b/res/values-de/cm_strings.xml
+@@ -15,6 +15,9 @@
+      limitations under the License.
+ -->
+ <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">Hohe Berührungsempfindl.</string>
++    <string name="auto_adjust_touch_summary">Vergrößern Sie die Bildschirm-Empfindlichkeit, sodass eine Bedienung mit Handschuhen möglich ist.</string>
+     <string name="ok">OK</string>
+     <string name="bluetooth_mas_request">Nachrichtenanfrage</string>
+     <string name="bluetooth_mas_acceptance_dialog_text">%1$s möchte auf Ihre Nachrichten zugreifen. Möchten Sie %2$s den Zugriff erlauben?</string>
+diff --git a/res/values-hi/strings.xml b/res/values-hi/strings.xml
+index 2ba9e96..9373b26 100644
+--- a/res/values-hi/strings.xml
++++ b/res/values-hi/strings.xml
+@@ -16,6 +16,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">उच्च टच संवेदनशीलता</string>
++    <string name="auto_adjust_touch_summary">स्क्रीन की संवेदशीलता बढ़ाएँ ताकि दस्ताने पहनने पर भी आप इसे टच कर सकें</string>
+     <string name="yes" msgid="4676390750360727396">"हां"</string>
+     <string name="no" msgid="6731231425810196216">"नहीं"</string>
+     <string name="create" msgid="3578857613172647409">"बनाएं"</string>
+diff --git a/res/values-hr/strings.xml b/res/values-hr/strings.xml
+index 4c22386..c9697e1 100644
+--- a/res/values-hr/strings.xml
++++ b/res/values-hr/strings.xml
+@@ -16,6 +16,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">Visoka osjetlj. dodira</string>
++    <string name="auto_adjust_touch_summary">Povećajte osjetljivost zaslona da biste mogli dodirivati u rukavicama</string>
+     <string name="yes" msgid="4676390750360727396">"Da"</string>
+     <string name="no" msgid="6731231425810196216">"Ne"</string>
+     <string name="create" msgid="3578857613172647409">"Izradi"</string>
+diff --git a/res/values-hu/cm_strings.xml b/res/values-hu/cm_strings.xml
+index 28f4bd5..71e24b6 100644
+--- a/res/values-hu/cm_strings.xml
++++ b/res/values-hu/cm_strings.xml
+@@ -14,6 +14,9 @@
+      limitations under the License.
+ -->
+ <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">Nagy érintési érzékenység</string>
++    <string name="auto_adjust_touch_summary">A képernyő érzékenységének növelése, hogy kesztyűben is használhassa</string>
+     <string name="bluetooth_mas_request">Üzenethozzáférés</string>
+     <string name="bluetooth_mas_acceptance_dialog_text">"A(z) %1$s szeretne hozzáférni az üzeneteihez. Megadja a hozzáférést a(z) %2$s eszköznek?"</string>
+     <string name="bluetooth_mas_remember_choice">Ne jelenjen meg többé</string>
+diff --git a/res/values-nl/cm_strings.xml b/res/values-nl/cm_strings.xml
+index 352789b..c554ebc 100644
+--- a/res/values-nl/cm_strings.xml
++++ b/res/values-nl/cm_strings.xml
+@@ -14,6 +14,9 @@
+      limitations under the License.
+  -->
+ <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">Hoge tikgevoeligheid</string>
++    <string name="auto_adjust_touch_summary">Verhoog de gevoeligheid van het scherm zodat u dit kunt aanraken terwijl u handschoenen draagt</string>
+     <string name="font_size_preview_text">Pa\'s wijze lynx bezag vroom het fikse aquaduct.</string>
+     <string name="default_date_format"><xliff:g id="default_date_format">dd/MM/yyyy</xliff:g></string>
+     <string name="intent_sender_data_label"><xliff:g id="data">Gegevens:</xliff:g></string>
+diff --git a/res/values-ru/cm_strings.xml b/res/values-ru/cm_strings.xml
+index 12b13ee..d2acd8f 100644
+--- a/res/values-ru/cm_strings.xml
++++ b/res/values-ru/cm_strings.xml
+@@ -14,6 +14,9 @@
+      limitations under the License.
+ -->
+ <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">Высокая чувствит. касаний</string>
++    <string name="auto_adjust_touch_summary">Повышение чувствительности касаний экрана для работы в перчатках</string>
+ 
+     <!-- Quiet hours -->
+     <string name="quiet_hours_title">Тихие часы</string>
+diff --git a/res/values-th/strings.xml b/res/values-th/strings.xml
+index 84e4098..23412ea 100644
+--- a/res/values-th/strings.xml
++++ b/res/values-th/strings.xml
+@@ -16,6 +16,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">ความไวการสัมผัสสูง</string>
++    <string name="auto_adjust_touch_summary">เพิ่มความไวของหน้าจอ เพื่อให้คุณสามารถสัมผัส ขณะใส่ถุงมือได้</string>
+     <string name="yes" msgid="4676390750360727396">"ใช่"</string>
+     <string name="no" msgid="6731231425810196216">"ไม่"</string>
+     <string name="create" msgid="3578857613172647409">"สร้าง"</string>
+diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
+index 2ef5d90..5505d7d 100644
+--- a/res/values/cm_strings.xml
++++ b/res/values/cm_strings.xml
+@@ -14,6 +14,9 @@
+      limitations under the License.
+ -->
+ <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Glove mode / high touch sensitivity -->
++    <string name="auto_adjust_touch_title">High touch sensitivity</string>
++    <string name="auto_adjust_touch_summary">"Increase the screen's sensitivity so you can touch it while wearing gloves"</string>
+     <!-- Activity label of BluetoothMasPermissionActivity, also used as Strings in the permission dialog [CHAR LIMIT=none] -->
+     <string name="bluetooth_mas_request">"Message Access request"</string>
+     <!-- Bluetooth MAS permission Alert Activity text [CHAR LIMIT=none] -->
+-- 
+1.8.4
+
