@@ -9,7 +9,7 @@ for i in distros/*.sh; do
   source ${i}
 done
 
-for i in roms/*.sh; do
+for i in roms/rom_*.sh; do
   source ${i}
 done
 
