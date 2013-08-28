@@ -94,6 +94,10 @@ cyanogenmod_prebuild() {
     pushd hardware/samsung/
     apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Samsung-add-support-for-high-touch-sensitivity.patch
     popd
+
+    pushd vendor/samsung/
+    git pull https://github.com/chenxiaolong/proprietary_vendor_samsung.git google-ed-mh1
+    popd
   #fi
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
