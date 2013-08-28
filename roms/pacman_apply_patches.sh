@@ -1,8 +1,6 @@
 #!/bin/bash
 
-curdir=$(cd $(dirname ${0}) && pwd)
-
-basedir=${curdir}/pacman_cm-10.2
+baseurl=https://raw.github.com/chenxiaolong/hudson/master/roms/pacman_cm-10.2/
 
 reset=true
 if [ ! -z "${1}" -a "${1}" == "--noreset" ]; then
@@ -13,7 +11,7 @@ apply_patch_in() {
   pushd ${1} >/dev/null
   shift
   for i in ${*}; do
-    git am ${basedir}/${i}
+    wget -q -O - ${baseurl}/${i} | git am
   done
   popd >/dev/null
 }
