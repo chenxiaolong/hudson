@@ -1,4 +1,4 @@
-From a3503081a039120abf5d796b4bc47d19478e2c44 Mon Sep 17 00:00:00 2001
+From 78037651e830e02941810d8b8ce647c5e0a0c440 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sat, 31 Aug 2013 21:11:46 -0400
 Subject: [PATCH] Busybox: Include in boot image
@@ -9,7 +9,7 @@ Change-Id: I64037a56002d915c92a65a22614afce816aa2538
  1 file changed, 16 insertions(+), 1 deletion(-)
 
 diff --git a/Android.mk b/Android.mk
-index 4b6ae8f..e1fa18a 100644
+index 4b6ae8f..49333bb 100644
 --- a/Android.mk
 +++ b/Android.mk
 @@ -196,10 +196,25 @@ LOCAL_LDFLAGS += -Wl,--no-fatal-warnings
@@ -26,7 +26,7 @@ index 4b6ae8f..e1fa18a 100644
  include $(BUILD_EXECUTABLE)
 +
 +# Include in boot.img
-+BUSYBOX_BOOT := $(TARGET_ROOT_OUT_SBIN)/busybox
++BUSYBOX_BOOT := $(TARGET_ROOT_OUT_SBIN)/busybox-static
 +$(BUSYBOX_BOOT): BUSYBOX_BINARY := $(LOCAL_MODULE_STEM)
 +$(BUSYBOX_BOOT): $(LOCAL_INSTALLED_MODULE) $(LOCAL_PATH)/Android.mk
 +	@mkdir -p $(dir $@)
