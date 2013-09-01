@@ -68,6 +68,7 @@ cyanogenmod_prebuild() {
   #if grep -q jflte <<< ${LUNCH}; then
     MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
     HIGHTOUCHSENSITIVITY=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/high-touch-sensitivity
+    DUALBOOT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/dual-boot
 
     pushd system/vold/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
@@ -93,6 +94,10 @@ cyanogenmod_prebuild() {
 
     pushd hardware/samsung/
     apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Samsung-add-support-for-high-touch-sensitivity.patch
+    popd
+
+    pushd external/busybox/
+    apply_patch_file_git ${DUALBOOT}/0001-Busybox-Include-in-boot-image.patch
     popd
   #fi
 
