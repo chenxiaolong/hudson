@@ -61,7 +61,8 @@ cyanogenmod_prebuild() {
               'frameworks/opt/hardware/'
               'hardware/samsung/'
               'external/busybox/'
-              'vendor/cm/')
+              'vendor/cm/'
+              'system/core/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
@@ -104,6 +105,10 @@ cyanogenmod_prebuild() {
 
     pushd vendor/cm/
     apply_patch_file_git ${DUALBOOT}/0001-Add-helper-script-for-dual-boot-detection-in-updater.patch
+    popd
+
+    pushd system/core/
+    apply_patch_file_git ${DUALBOOT}/0001-init.rc-Dual-boot-preparation.patch
     popd
   #fi
 
