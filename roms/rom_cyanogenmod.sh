@@ -59,7 +59,9 @@ cyanogenmod_prebuild() {
               'packages/apps/Settings/'
               'frameworks/base/'
               'frameworks/opt/hardware/'
-              'hardware/samsung/')
+              'hardware/samsung/'
+              'external/busybox/'
+              'vendor/cm/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
@@ -98,6 +100,10 @@ cyanogenmod_prebuild() {
 
     pushd external/busybox/
     apply_patch_file_git ${DUALBOOT}/0001-Busybox-Include-in-boot-image.patch
+    popd
+
+    pushd vendor/cm/
+    apply_patch_file_git ${DUALBOOT}/0001-Add-helper-script-for-dual-boot-detection-in-updater.patch
     popd
   #fi
 

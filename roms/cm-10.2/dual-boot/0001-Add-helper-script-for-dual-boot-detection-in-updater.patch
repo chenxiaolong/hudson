@@ -1,0 +1,80 @@
+From a69fda19e1a5d0e3fd3a8815bdea0524f9ea268e Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 1 Sep 2013 21:15:47 -0400
+Subject: [PATCH] Add helper script for dual boot detection in updater-script
+
+Change-Id: I206445464b6b5b48f7cbf274899eaae18d87e024
+---
+ config/common.mk                |  1 +
+ prebuilt/common/bin/dualboot.sh | 47 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 48 insertions(+)
+ create mode 100644 prebuilt/common/bin/dualboot.sh
+
+diff --git a/config/common.mk b/config/common.mk
+index 96f0ceb..a8e9907 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -85,6 +85,7 @@ PRODUCT_COPY_FILES += \
+ 
+ # Backup Tool
+ PRODUCT_COPY_FILES += \
++    vendor/cm/prebuilt/common/bin/dualboot.sh:system/bin/dualboot.sh \
+     vendor/cm/prebuilt/common/bin/backuptool.sh:system/bin/backuptool.sh \
+     vendor/cm/prebuilt/common/bin/backuptool.functions:system/bin/backuptool.functions \
+     vendor/cm/prebuilt/common/bin/50-cm.sh:system/addon.d/50-cm.sh \
+diff --git a/prebuilt/common/bin/dualboot.sh b/prebuilt/common/bin/dualboot.sh
+new file mode 100644
+index 0000000..0dde098
+--- /dev/null
++++ b/prebuilt/common/bin/dualboot.sh
+@@ -0,0 +1,47 @@
++#!/sbin/sh
++
++## MUST CHANGE TO YOUR ROM NAME ##
++ROMNAME=noobdev-cm
++
++PROP=/tmp/dualboot.prop
++
++write_prop() {
++  if [ -f /system/.dualboot ]; then
++    echo 'ro.dualboot=1' > $PROP
++  else
++    echo 'ro.dualboot=0' > $PROP
++  fi
++}
++
++set_secondary() {
++  echo $ROMNAME > /system/.secondary
++}
++
++mount_system() {
++  mkdir -p /raw-system /system
++  chmod 0755 /raw-system
++  chown 0:0 /raw-system
++  mount -t $1 $2 /raw-system
++  mkdir -p /raw-system/dual
++  mount -o bind /raw-system/dual /system
++}
++
++unmount_system() {
++  umount /system
++  umount /raw-system
++}
++
++case "$1" in
++  is-dualboot)
++    write_prop
++    ;;
++  set-secondary)
++    set_secondary
++    ;;
++  mount-system)
++    mount_system $2 $3
++    ;;
++  unmount-system)
++    unmount_system
++    ;;
++esac
+-- 
+1.8.4
+
