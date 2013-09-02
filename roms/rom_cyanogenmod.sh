@@ -79,6 +79,7 @@ cyanogenmod_prebuild() {
 
     pushd device/samsung/jf-common/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
+    apply_patch_file_git ${DUALBOOT}/0001-jf-Add-dual-booting-support.patch
     popd
 
     pushd packages/apps/Settings/
