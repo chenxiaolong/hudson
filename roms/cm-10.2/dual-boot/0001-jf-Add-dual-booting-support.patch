@@ -1,4 +1,4 @@
-From a284f3aaa114afcf031b341f4a1e8c703f6b14b9 Mon Sep 17 00:00:00 2001
+From 67aa838409b413af3cf461e2d3232e53bb96771a Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 1 Sep 2013 21:22:52 -0400
 Subject: [PATCH] jf: Add dual booting support
@@ -8,10 +8,10 @@ Change-Id: Icd71b846322b6920a4f6a5ac11ea21a9a4b36896
  jf-common.mk                          |  1 +
  rootdir/Android.mk                    |  9 ++++++++-
  rootdir/etc/fstab.qcom                |  6 +++---
- rootdir/etc/init.dualboot.mounting.sh | 27 +++++++++++++++++++++++++++
+ rootdir/etc/init.dualboot.mounting.sh | 28 ++++++++++++++++++++++++++++
  rootdir/etc/init.qcom.rc              |  6 +++---
  rootdir/etc/init.target.rc            |  7 ++++---
- 6 files changed, 46 insertions(+), 10 deletions(-)
+ 6 files changed, 47 insertions(+), 10 deletions(-)
  create mode 100644 rootdir/etc/init.dualboot.mounting.sh
 
 diff --git a/jf-common.mk b/jf-common.mk
@@ -68,36 +68,37 @@ index 95bc2b8..3d52aea 100644
  /devices/platform/msm_hsusb_host/usb				/storage/usbdisk0		auto	default		voldmanaged=sda:auto
 diff --git a/rootdir/etc/init.dualboot.mounting.sh b/rootdir/etc/init.dualboot.mounting.sh
 new file mode 100644
-index 0000000..fcf980a
+index 0000000..d6174cf
 --- /dev/null
 +++ b/rootdir/etc/init.dualboot.mounting.sh
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,28 @@
 +#!/sbin/busybox-static sh
 +
 +## MUST CHANGE TO YOUR ROM NAME ##
 +ROMNAME=noobdev-cm
 +
++# Standard Linux commands are not available until /system is mounted, so we'll
++# just use busybox for everything
++
 +SECONDARY=$(/sbin/busybox-static cat /raw-system/dual/.secondary || \
 +            /sbin/busybox-static echo NONE)
 +
 +if [ -f /raw-system/.dualboot ] && [ "$SECONDARY" = "$ROMNAME" ]; then
-+  mkdir -p /raw-system/dual /raw-cache/dual /raw-data/dual
++  /sbin/busybox-static mkdir -p /raw-system/dual /raw-cache/dual /raw-data/dual
 +
-+  # Mount command is not available until /system is mounted
 +  /sbin/busybox-static mount -o bind /raw-system/dual /system
-+  mount -o bind /raw-data/dual /data
-+  mount -o bind /raw-cache/dual /cache
++  /sbin/busybox-static mount -o bind /raw-data/dual /data
++  /sbin/busybox-static mount -o bind /raw-cache/dual /cache
 +
 +  # Eventually, maybe share /data/app
-+  #mkdir -p /raw-data/app
-+  #chmod 0771 /data/app
-+  #chmod system:system /data/app
-+  #mount -o bind /raw-data/app /data/app
++  #/sbin/busybox-static mkdir -p /raw-data/app
++  #/sbin/busybox-static chmod 0771 /data/app
++  #/sbin/busybox-static chmod system:system /data/app
++  #/sbin/busybox-static mount -o bind /raw-data/app /data/app
 +else
-+  # Mount command is not available until /system is mounted
 +  /sbin/busybox-static mount -o bind /raw-system /system
-+  mount -o bind /raw-data /data
-+  mount -o bind /raw-cache /cache
++  /sbin/busybox-static mount -o bind /raw-data /data
++  /sbin/busybox-static mount -o bind /raw-cache /cache
 +fi
 diff --git a/rootdir/etc/init.qcom.rc b/rootdir/etc/init.qcom.rc
 index be3e0dd..4e8036d 100644
