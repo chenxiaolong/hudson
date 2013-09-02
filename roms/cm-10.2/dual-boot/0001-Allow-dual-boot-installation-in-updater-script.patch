@@ -1,0 +1,161 @@
+From f299425b912b3df52ff0e4bf0fb174550652260a Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 1 Sep 2013 23:11:10 -0400
+Subject: [PATCH] Allow dual boot installation in updater-script
+
+Change-Id: Ia50999c2d1ec7e5174ff110a7fd768dd66695338
+---
+ tools/releasetools/common.py             |  1 +
+ tools/releasetools/edify_generator.py    | 60 ++++++++++++++++++++++++++++++++
+ tools/releasetools/ota_from_target_files | 16 ++++++---
+ 3 files changed, 73 insertions(+), 4 deletions(-)
+
+diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
+index 59ef03f..fcf66fb 100644
+--- a/tools/releasetools/common.py
++++ b/tools/releasetools/common.py
+@@ -234,6 +234,7 @@ def LoadRecoveryFSTab(zip, fstab_version):
+       p = Partition()
+       p.device = pieces[0]
+       p.mount_point = pieces[1]
++      p.mount_point = re.sub('raw-', '', p.mount_point)
+       p.fs_type = pieces[2]
+       p.device2 = None
+       p.length = 0
+diff --git a/tools/releasetools/edify_generator.py b/tools/releasetools/edify_generator.py
+index c8de69a..195d4db 100644
+--- a/tools/releasetools/edify_generator.py
++++ b/tools/releasetools/edify_generator.py
+@@ -143,6 +143,35 @@ class EdifyGenerator(object):
+     available on /cache."""
+     self.script.append("assert(apply_patch_space(%d));" % (amount,))
+ 
++  def WriteDualBootProp(self):
++    """Write prop file to detect if dual boot will be used"""
++    self.script.append('package_extract_file("system/bin/dualboot.sh", "/tmp/dualboot.sh");')
++    self.script.append('set_perm(0, 0, 0777, "/tmp/dualboot.sh");')
++    self.script.append('run_program("/tmp/dualboot.sh", "is-dualboot");')
++
++  def WriteDualBootInfo(self):
++    """Write ro.build.version.incremental to file"""
++    self.script.append('ifelse(file_getprop("/tmp/dualboot.prop", ro.dualboot) == "0", (');
++    self.script.append('ui_print("");')
++    self.script.append("), (");
++    self.script.append('run_program("/tmp/dualboot.sh", "set-secondary");')
++    self.script.append("));")
++
++  def PrintDualBoot(self):
++    """Print dual booting status"""
++    self.script.append('ifelse(file_getprop("/tmp/dualboot.prop", ro.dualboot) == "0", (')
++    self.script.append('ui_print("Dual boot installation is disabled");')
++    self.script.append("), (")
++    self.script.append('ui_print("Dual boot installation is enabled");')
++    self.script.append("));")
++
++  def BackupSecondaryKernel(self):
++    self.script.append('ifelse(file_getprop("/tmp/dualboot.prop", ro.dualboot) == "0", (')
++    self.script.append('ui_print("");')
++    self.script.append("), (")
++    self.script.append('package_extract_file("boot.img", "/system/dual-kernels/secondary.img");')
++    self.script.append("));")
++
+   def Mount(self, mount_point):
+     """Mount the partition with the given mount_point."""
+     fstab = self.info.get("fstab", None)
+@@ -153,12 +182,32 @@ class EdifyGenerator(object):
+                           p.device, p.mount_point))
+       self.mounts.add(p.mount_point)
+ 
++  def MountSystemDualBoot(self):
++    """Mount the /system partition for dual booting"""
++    fstab = self.info.get("fstab", None)
++    if fstab:
++      p = fstab['/system']
++      self.script.append('ifelse(file_getprop("/tmp/dualboot.prop", ro.dualboot) == "0", (')
++      self.Mount("/system")
++      self.script.append("), (")
++      self.script.append('run_program("/tmp/dualboot.sh", "mount-system", "%s", "%s");' %
++                         (p.fs_type, p.device))
++      self.script.append("));")
++
+   def Unmount(self, mount_point):
+     """Unmount the partiiton with the given mount_point."""
+     if mount_point in self.mounts:
+       self.mounts.remove(mount_point)
+       self.script.append('unmount("%s");' % (mount_point,))
+ 
++  def UnmountSystemDualBoot(self):
++    """Unmount /system"""
++    self.script.append('ifelse(file_getprop("/tmp/dualboot.prop", ro.dualboot) == "0", (')
++    self.Unmount("/system")
++    self.script.append("), (")
++    self.script.append('run_program("/tmp/dualboot.sh", "unmount-system");')
++    self.script.append("));")
++
+   def UnpackPackageDir(self, src, dst):
+     """Unpack a given directory from the OTA package into the given
+     destination directory."""
+@@ -187,6 +236,17 @@ class EdifyGenerator(object):
+                          (p.fs_type, common.PARTITION_TYPES[p.fs_type],
+                           p.device, p.length, p.mount_point))
+ 
++  def FormatPartitionSystemDualBoot(self):
++    """Format /system if not dual booting"""
++    self.script.append('ifelse(file_getprop("/tmp/dualboot.prop", ro.dualboot) == "0", (')
++    self.FormatPartition("/system")
++    self.script.append("), (")
++    self.script.append('ui_print("Formatting /system/dual for dual boot");')
++    self.Mount("/system")
++    self.script.append('delete_recursive("/system/dual");')
++    self.Unmount("/system")
++    self.script.append("));")
++
+   def DeleteFiles(self, file_list):
+     """Delete all files in file_list."""
+     if not file_list: return
+diff --git a/tools/releasetools/ota_from_target_files b/tools/releasetools/ota_from_target_files
+index afab41c..95fa392 100755
+--- a/tools/releasetools/ota_from_target_files
++++ b/tools/releasetools/ota_from_target_files
+@@ -405,10 +405,16 @@ def WriteFullOTAPackage(input_zip, output_zip):
+   device_specific.FullOTA_Assertions()
+   device_specific.FullOTA_InstallBegin()
+ 
++  script.Mount("/system")
++  script.WriteDualBootProp()
++  script.BackupSecondaryKernel()
++  script.Unmount("/system")
++  script.PrintDualBoot()
++
+   if OPTIONS.backuptool:
+-    script.Mount("/system")
++    script.MountSystemDualBoot()
+     script.RunBackup("backup")
+-    script.Unmount("/system")
++    script.UnmountSystemDualBoot()
+ 
+   script.ShowProgress(0.5, 0)
+ 
+@@ -418,8 +424,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
+   if "selinux_fc" in OPTIONS.info_dict:
+     WritePolicyConfig(OPTIONS.info_dict["selinux_fc"], output_zip)
+ 
+-  script.FormatPartition("/system")
+-  script.Mount("/system")
++  script.FormatPartitionSystemDualBoot()
++  script.MountSystemDualBoot()
+   #script.UnpackPackageDir("recovery", "/system")
+   script.UnpackPackageDir("system", "/system")
+ 
+@@ -452,6 +458,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
+   if OPTIONS.extra_script is not None:
+     script.AppendExtra(OPTIONS.extra_script)
+ 
++  script.WriteDualBootInfo()
++  script.UnmountSystemDualBoot()
+   script.UnmountAll()
+   script.AddToZip(input_zip, output_zip)
+   WriteMetadata(metadata, output_zip)
+-- 
+1.8.4
+
