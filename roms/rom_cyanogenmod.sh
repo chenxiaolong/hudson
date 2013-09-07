@@ -42,8 +42,6 @@ cyanogenmod_repoinit() {
 
 cyanogenmod_postsync() {
   common_postsync
-
-  vendor/cm/get-prebuilts
 }
 
 cyanogenmod_prebuild() {
@@ -126,6 +124,8 @@ cyanogenmod_prebuild() {
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
   fi
+
+  vendor/cm/get-prebuilts
 }
 
 cyanogenmod_postbuild() {
