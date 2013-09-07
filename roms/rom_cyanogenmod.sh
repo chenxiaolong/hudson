@@ -116,6 +116,11 @@ cyanogenmod_prebuild() {
     popd
   #fi
 
+  # Revert 972a202ce8bf1a3b133f04ee68c71adec23b4b6a
+  pushd hardware/libhardware/
+  git revert --no-edit 972a202ce8bf1a3b133f04ee68c71adec23b4b6a || true
+  popd
+
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     'http://review.cyanogenmod.org/#/c/48359/' \
     'http://review.cyanogenmod.org/#/c/48352/' || \
