@@ -1,4 +1,4 @@
-From 802c4eb16a20861f7972905fe188d32d4a0f042f Mon Sep 17 00:00:00 2001
+From 6df1836a96fac58c3f89630ee6616442af780c11 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 22:28:41 -0400
 Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
@@ -14,8 +14,9 @@ Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
 Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
 ---
  Volume.cpp        | 14 ++++++++++----
+ Volume.h          |  1 +
  VolumeManager.cpp |  4 ++--
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/Volume.cpp b/Volume.cpp
 index a7ac7f0..532bb55 100644
@@ -63,6 +64,18 @@ index a7ac7f0..532bb55 100644
          /*
           * Remove the bindmount we were using to keep a reference to
           * the previously obscured directory.
+diff --git a/Volume.h b/Volume.h
+index d1f053f..311fae2 100644
+--- a/Volume.h
++++ b/Volume.h
+@@ -78,6 +78,7 @@ public:
+     const char *getMountpoint() { return mMountpoint; }
+     int getState() { return mState; }
+     bool isPrimaryStorage();
++    bool isExternalSd();
+ 
+     int getLunNumber() { return mLunNumber; }
+     void setLunNumber(int lunNumber);
 diff --git a/VolumeManager.cpp b/VolumeManager.cpp
 index 8a74872..5bd2cb5 100644
 --- a/VolumeManager.cpp
