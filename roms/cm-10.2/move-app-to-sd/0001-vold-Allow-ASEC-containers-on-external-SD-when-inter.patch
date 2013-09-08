@@ -1,4 +1,4 @@
-From 7f89056d044cc69c2487342e7e4a82f47df26c1e Mon Sep 17 00:00:00 2001
+From 802c4eb16a20861f7972905fe188d32d4a0f042f Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 22:28:41 -0400
 Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
@@ -13,12 +13,12 @@ Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
 
 Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
 ---
- Volume.cpp        | 13 +++++++++----
+ Volume.cpp        | 14 ++++++++++----
  VolumeManager.cpp |  4 ++--
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/Volume.cpp b/Volume.cpp
-index a7ac7f0..ca1cee9 100644
+index a7ac7f0..532bb55 100644
 --- a/Volume.cpp
 +++ b/Volume.cpp
 @@ -239,6 +239,11 @@ bool Volume::isPrimaryStorage() {
@@ -33,25 +33,33 @@ index a7ac7f0..ca1cee9 100644
  void Volume::setLunNumber(int lunNumber) {
      mLunNumber = lunNumber;
  }
-@@ -597,8 +602,8 @@ int Volume::mountVol() {
+@@ -396,6 +401,7 @@ int Volume::mountVol() {
+     int n, i, rc = 0;
+     char errmsg[255];
+     bool primaryStorage = isPrimaryStorage();
++    bool externalSd = isExternalSd();
+     char decrypt_state[PROPERTY_VALUE_MAX];
+     char crypto_state[PROPERTY_VALUE_MAX];
+     char encrypt_progress[PROPERTY_VALUE_MAX];
+@@ -597,8 +603,8 @@ int Volume::mountVol() {
  
          protectFromAutorunStupidity();
  
 -        // only create android_secure on primary storage
 -        if (primaryStorage && createBindMounts()) {
-+        // create android_secure
-+        if (createBindMounts()) {
++        // only create android_secure on external SD
++        if (externalSd && createBindMounts()) {
              SLOGE("Failed to create bindmounts (%s)", strerror(errno));
              umount("/mnt/secure/staging");
              setState(Volume::State_Idle);
-@@ -849,8 +854,8 @@ int Volume::unmountVol(bool force, bool revert) {
+@@ -849,8 +855,8 @@ int Volume::unmountVol(bool force, bool revert) {
      setState(Volume::State_Unmounting);
      usleep(1000 * 1000); // Give the framework some time to react
  
 -    /* Undo createBindMounts(), which is only called for primary storage */
 -    if (isPrimaryStorage()) {
 +    /* Undo createBindMounts() */
-+    if (true) {
++    if (isExternalSd()) {
          /*
           * Remove the bindmount we were using to keep a reference to
           * the previously obscured directory.
