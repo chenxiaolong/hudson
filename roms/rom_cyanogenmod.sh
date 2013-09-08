@@ -89,6 +89,7 @@ cyanogenmod_prebuild() {
 
     pushd frameworks/base/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-changes-for-moving-applications-to-externa.patch
+    apply_patch_file_git ${MOVEAPPTOSD}/0001-Disable-moving-apps-to-SD-if-a-no-sd-apps-file-exist.patch
     popd
 
     pushd frameworks/opt/hardware/

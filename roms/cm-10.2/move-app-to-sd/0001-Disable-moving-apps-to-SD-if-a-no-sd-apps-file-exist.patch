@@ -1,0 +1,30 @@
+From b3be97ff1755edcc3a75dc8c979cc2ebf49038b4 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 8 Sep 2013 03:16:08 -0400
+Subject: [PATCH] Disable moving apps to SD if a no-sd-apps file exists
+
+Change-Id: I24b9abee7f3004ef0606e425131225937aafed2a
+---
+ core/java/android/os/Environment.java | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/core/java/android/os/Environment.java b/core/java/android/os/Environment.java
+index a572215..b4f20aa 100644
+--- a/core/java/android/os/Environment.java
++++ b/core/java/android/os/Environment.java
+@@ -240,6 +240,12 @@ public class Environment {
+             String state = getExternalSdState();
+             Log.v(TAG, "isExternalSdAvailableAndMounted: SD card state: " + state);
+             if (state.equals(MEDIA_MOUNTED)) {
++                // Hack to allow disabling of moving apps to SD
++                String disable_path = getExternalSdDirectory() + "/no-sd-apps";
++                final File temp = new File(disable_path);
++                if (temp.exists()) {
++                    return false;
++                }
+                 return true;
+             }
+         } else {
+-- 
+1.8.4
+
