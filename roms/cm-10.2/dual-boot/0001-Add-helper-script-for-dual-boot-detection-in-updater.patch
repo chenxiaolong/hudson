@@ -1,4 +1,4 @@
-From a69fda19e1a5d0e3fd3a8815bdea0524f9ea268e Mon Sep 17 00:00:00 2001
+From cf2b40bc84945e3f20185145acbc503e74fb33df Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 1 Sep 2013 21:15:47 -0400
 Subject: [PATCH] Add helper script for dual boot detection in updater-script
@@ -6,15 +6,15 @@ Subject: [PATCH] Add helper script for dual boot detection in updater-script
 Change-Id: I206445464b6b5b48f7cbf274899eaae18d87e024
 ---
  config/common.mk                |  1 +
- prebuilt/common/bin/dualboot.sh | 47 +++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+ prebuilt/common/bin/dualboot.sh | 54 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
  create mode 100644 prebuilt/common/bin/dualboot.sh
 
 diff --git a/config/common.mk b/config/common.mk
-index 96f0ceb..a8e9907 100644
+index 996a963..ea9a873 100644
 --- a/config/common.mk
 +++ b/config/common.mk
-@@ -85,6 +85,7 @@ PRODUCT_COPY_FILES += \
+@@ -84,6 +84,7 @@ PRODUCT_COPY_FILES += \
  
  # Backup Tool
  PRODUCT_COPY_FILES += \
@@ -24,10 +24,10 @@ index 96f0ceb..a8e9907 100644
      vendor/cm/prebuilt/common/bin/50-cm.sh:system/addon.d/50-cm.sh \
 diff --git a/prebuilt/common/bin/dualboot.sh b/prebuilt/common/bin/dualboot.sh
 new file mode 100644
-index 0000000..0dde098
+index 0000000..4fddd40
 --- /dev/null
 +++ b/prebuilt/common/bin/dualboot.sh
-@@ -0,0 +1,47 @@
+@@ -0,0 +1,54 @@
 +#!/sbin/sh
 +
 +## MUST CHANGE TO YOUR ROM NAME ##
@@ -45,6 +45,10 @@ index 0000000..0dde098
 +
 +set_secondary() {
 +  echo $ROMNAME > /system/.secondary
++}
++
++set_secondary_kernel() {
++  dd if=/dev/block/platform/msm_sdcc.1/by-name/boot of=/raw-system/dual-kernels/secondary.img
 +}
 +
 +mount_system() {
@@ -67,6 +71,9 @@ index 0000000..0dde098
 +    ;;
 +  set-secondary)
 +    set_secondary
++    ;;
++  set-secondary-kernel)
++    set_secondary_kernel
 +    ;;
 +  mount-system)
 +    mount_system $2 $3
