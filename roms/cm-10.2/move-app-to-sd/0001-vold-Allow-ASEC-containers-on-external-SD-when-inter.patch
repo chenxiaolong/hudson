@@ -1,4 +1,4 @@
-From 6a3b4caa3d094b9c9137f15e4f8e79f98595c1e2 Mon Sep 17 00:00:00 2001
+From 7f89056d044cc69c2487342e7e4a82f47df26c1e Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 22:28:41 -0400
 Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
@@ -13,15 +13,27 @@ Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
 
 Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
 ---
- Volume.cpp        | 8 ++++----
- VolumeManager.cpp | 4 ----
- 2 files changed, 4 insertions(+), 8 deletions(-)
+ Volume.cpp        | 13 +++++++++----
+ VolumeManager.cpp |  4 ++--
+ 2 files changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/Volume.cpp b/Volume.cpp
-index 7aa2d40..eb8c0e2 100644
+index a7ac7f0..ca1cee9 100644
 --- a/Volume.cpp
 +++ b/Volume.cpp
-@@ -592,8 +592,8 @@ int Volume::mountVol() {
+@@ -239,6 +239,11 @@ bool Volume::isPrimaryStorage() {
+     return !strcmp(getMountpoint(), externalStorage);
+ }
+ 
++bool Volume::isExternalSd() {
++    const char* externalSd = getenv("EXTERNAL_SD") ? : "/mnt/extSdCard";
++    return !strcmp(getMountpoint(), externalSd);
++}
++
+ void Volume::setLunNumber(int lunNumber) {
+     mLunNumber = lunNumber;
+ }
+@@ -597,8 +602,8 @@ int Volume::mountVol() {
  
          protectFromAutorunStupidity();
  
@@ -32,7 +44,7 @@ index 7aa2d40..eb8c0e2 100644
              SLOGE("Failed to create bindmounts (%s)", strerror(errno));
              umount("/mnt/secure/staging");
              setState(Volume::State_Idle);
-@@ -844,8 +844,8 @@ int Volume::unmountVol(bool force, bool revert) {
+@@ -849,8 +854,8 @@ int Volume::unmountVol(bool force, bool revert) {
      setState(Volume::State_Unmounting);
      usleep(1000 * 1000); // Give the framework some time to react
  
@@ -44,20 +56,20 @@ index 7aa2d40..eb8c0e2 100644
           * Remove the bindmount we were using to keep a reference to
           * the previously obscured directory.
 diff --git a/VolumeManager.cpp b/VolumeManager.cpp
-index 8a74872..3cc3943 100644
+index 8a74872..5bd2cb5 100644
 --- a/VolumeManager.cpp
 +++ b/VolumeManager.cpp
-@@ -1600,10 +1600,6 @@ bool VolumeManager::isMountpointMounted(const char *mp)
+@@ -1600,8 +1600,8 @@ bool VolumeManager::isMountpointMounted(const char *mp)
  }
  
  int VolumeManager::cleanupAsec(Volume *v, bool force) {
 -    /* Only EXTERNAL_STORAGE needs ASEC cleanup. */
 -    if (!v->isPrimaryStorage())
--        return 0;
--
-     int rc = unmountAllAsecsInDir(Volume::SEC_ASECDIR_EXT);
++    /* Only EXTERNAL_SD needs ASEC cleanup. */
++    if (!v->isExternalSd())
+         return 0;
  
-     AsecIdCollection toUnmount;
+     int rc = unmountAllAsecsInDir(Volume::SEC_ASECDIR_EXT);
 -- 
 1.8.4
 
