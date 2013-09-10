@@ -61,7 +61,8 @@ cyanogenmod_prebuild() {
               'external/busybox/'
               'vendor/cm/'
               'system/core/'
-              'build/')
+              'build/'
+              'frameworks/native/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
@@ -114,6 +115,10 @@ cyanogenmod_prebuild() {
 
     pushd build/
     apply_patch_file_git ${DUALBOOT}/0001-Allow-dual-boot-installation-in-updater-script.patch
+    popd
+
+    pushd frameworks/native/
+    apply_patch_file_git ${MOVEAPPTOSD}/0001-Calculate-application-sizes-correctly.patch
     popd
   #fi
 
