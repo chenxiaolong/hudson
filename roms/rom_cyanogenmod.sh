@@ -62,7 +62,8 @@ cyanogenmod_prebuild() {
               'vendor/cm/'
               'system/core/'
               'build/'
-              'frameworks/native/')
+              'frameworks/native/'
+              'packages/providers/ContactsProvider/')
 
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
@@ -72,6 +73,7 @@ cyanogenmod_prebuild() {
     MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
     HIGHTOUCHSENSITIVITY=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/high-touch-sensitivity
     DUALBOOT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/dual-boot
+    FACEBOOKSYNC=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/facebook-sync
 
     pushd system/vold/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
@@ -119,6 +121,10 @@ cyanogenmod_prebuild() {
 
     pushd frameworks/native/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Calculate-application-sizes-correctly.patch
+    popd
+
+    pushd packages/providers/ContactsProvider/
+    apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
     popd
   #fi
 
