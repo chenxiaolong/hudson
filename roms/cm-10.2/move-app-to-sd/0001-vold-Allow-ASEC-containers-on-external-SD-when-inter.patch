@@ -27,7 +27,7 @@ index a7ac7f0..532bb55 100644
  }
  
 +bool Volume::isExternalSd() {
-+    const char* externalSd = getenv("EXTERNAL_SD") ? : "/mnt/extSdCard";
++    const char* externalSd = getenv("EXTERNAL_SD") ? : "/storage/sdcard1";
 +    return !strcmp(getMountpoint(), externalSd);
 +}
 +
