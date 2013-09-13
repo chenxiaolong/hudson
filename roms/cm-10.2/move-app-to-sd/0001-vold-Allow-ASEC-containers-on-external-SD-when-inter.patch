@@ -1,4 +1,4 @@
-From 6df1836a96fac58c3f89630ee6616442af780c11 Mon Sep 17 00:00:00 2001
+From c9f57f7d1c34d664d382a80cbe8ed1ab8b904316 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 22:28:41 -0400
 Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
@@ -19,7 +19,7 @@ Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
  3 files changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/Volume.cpp b/Volume.cpp
-index a7ac7f0..532bb55 100644
+index a7ac7f0..d3e627c 100644
 --- a/Volume.cpp
 +++ b/Volume.cpp
 @@ -239,6 +239,11 @@ bool Volume::isPrimaryStorage() {

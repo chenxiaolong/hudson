@@ -1,4 +1,4 @@
-From 825a2b32debb5dffeaaa6a7714c197bca790b1e6 Mon Sep 17 00:00:00 2001
+From b18602981d55b8d1ad55af36e030a67925d76883 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 23:29:43 -0400
 Subject: [PATCH] Enable moving applications to the external SD card
@@ -10,7 +10,8 @@ Change-Id: Ia683eda30338dfad0d7e78087d42d7e512fa83e4
 ---
  .../android/settings/applications/InstalledAppDetails.java |  6 +++---
  .../android/settings/applications/ManageApplications.java  | 14 +++++++-------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ .../android/settings/deviceinfo/StorageMeasurement.java    |  2 +-
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/src/com/android/settings/applications/InstalledAppDetails.java b/src/com/android/settings/applications/InstalledAppDetails.java
 index 07d8ad3..9a36693 100644
@@ -101,6 +102,19 @@ index 4862a81..2eadd60 100644
              tab = new TabInfo(this, mApplicationsState,
                      getActivity().getString(R.string.filter_apps_onsdcard),
                      LIST_TYPE_SDCARD, this, savedInstanceState);
+diff --git a/src/com/android/settings/deviceinfo/StorageMeasurement.java b/src/com/android/settings/deviceinfo/StorageMeasurement.java
+index 57fce05..dea9c83 100644
+--- a/src/com/android/settings/deviceinfo/StorageMeasurement.java
++++ b/src/com/android/settings/deviceinfo/StorageMeasurement.java
+@@ -250,7 +250,7 @@ public class StorageMeasurement {
+                 long codeSize = stats.codeSize;
+                 long dataSize = stats.dataSize;
+                 long cacheSize = stats.cacheSize;
+-                if (Environment.isExternalStorageEmulated()) {
++                if (!Environment.isExternalSdAvailableAndMounted()) {
+                     // Include emulated storage when measuring internal. OBB is
+                     // shared on emulated storage, so treat as code.
+                     codeSize += stats.externalCodeSize + stats.externalObbSize;
 -- 
 1.8.4
 
