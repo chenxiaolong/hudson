@@ -1,15 +1,32 @@
-From 6b672b38ef7d4bf58d8075994987e5efb480785b Mon Sep 17 00:00:00 2001
+From 2bc18d2970b210b2f536a570feb5168dff104fac Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Thu, 12 Sep 2013 23:22:25 -0400
 Subject: [PATCH] Add app moving setting to development options
 
+Thanks to:
+  maikinho10 - German translations
+
 Change-Id: I5fdbc6c46a6ba7f348c0310eb83e96a2784256df
 ---
+ res/values-de/cm_strings.xml                      |  2 ++
  res/values/cm_strings.xml                         |  4 ++++
  res/xml/development_prefs.xml                     |  6 ++++++
  src/com/android/settings/DevelopmentSettings.java | 20 ++++++++++++++++++++
- 3 files changed, 30 insertions(+)
+ 4 files changed, 32 insertions(+)
 
+diff --git a/res/values-de/cm_strings.xml b/res/values-de/cm_strings.xml
+index 98e4627..52c7b22 100644
+--- a/res/values-de/cm_strings.xml
++++ b/res/values-de/cm_strings.xml
+@@ -331,6 +331,8 @@
+     <string name="cm_sound_mode_vibrate">Vibration</string>
+     <string name="cm_sound_mode_sound">Ton</string>
+     <string name="cm_sound_mode_soundVibrate">Ton + Vibration</string>
++    <string name="app_moving">Apps verschieben</string>
++    <string name="app_moving_summary">Aktivieren Sie das Verschieben von Anwendungen auf externe Speichermedien (Neustart nach Änderung der Einstellung)</string>
+     <string name="kill_app_longpress_back">App beenden</string>
+     <string name="kill_app_longpress_back_summary">Gedrückt halten der Zurück-Taste beendet die Anwendung im Vordergrund</string>
+     <string name="changelog_title">Changelog anzeigen</string>
 diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
 index 3370929..511c519 100644
 --- a/res/values/cm_strings.xml
