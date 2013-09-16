@@ -9,6 +9,10 @@ Subject: [PATCH] Framework changes for moving applications to external SD
 * Allow moving applications to the SD card regardless if the internal
   is emulated or not
 
+Thanks to Pierre-Hugues Husson for identifying an issue causing the
+SD card state to be incorrect (ie. SD card appearing unmounted when a
+USB drive is unplugged)
+
 Change-Id: I5561c2cf3f558b729c89663852173a532994a47a
 ---
  core/java/android/os/Environment.java              | 58 ++++++++++++++++++++++

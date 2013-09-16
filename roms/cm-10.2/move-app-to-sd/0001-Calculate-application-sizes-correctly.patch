@@ -3,6 +3,9 @@ From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Mon, 9 Sep 2013 17:43:48 -0400
 Subject: [PATCH] Calculate application sizes correctly
 
+Thanks to Pierre-Hugues Husson for looking at my code and finding out
+that the application sizes were not being calculated properly!
+
 Change-Id: I68af6a9e5d1b2b7e60c0409b55d8ee578e567a69
 ---
  cmds/installd/commands.c | 6 +++++-

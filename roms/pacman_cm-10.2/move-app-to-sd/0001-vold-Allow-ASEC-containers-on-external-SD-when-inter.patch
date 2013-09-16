@@ -11,6 +11,10 @@ Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
   patch, /data/secure/asec/ and the tmpfs over .android_secure/
   won't be mounted.
 
+Thanks to Pierre-Hugues Husson for the idea in this patch! The initial
+implementation called createBindMounts() on all mount points regardless
+of whether or not it was the SD card.
+
 Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
 ---
  Volume.cpp        | 14 ++++++++++----

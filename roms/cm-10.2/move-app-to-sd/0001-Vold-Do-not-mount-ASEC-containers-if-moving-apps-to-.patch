@@ -4,6 +4,10 @@ Date: Thu, 12 Sep 2013 23:53:59 -0400
 Subject: [PATCH] Vold: Do not mount ASEC containers if moving apps to SD is
  disabled
 
+Thanks to Pierre-Hugues Husson for the idea in this patch! The initial
+implementation called createBindMounts() on all mount points regardless
+of whether or not it was the SD card.
+
 Change-Id: I85029272e8cc33d2b0044b5e4d05e20ba55db12d
 ---
  Volume.cpp | 11 ++++++++++-
