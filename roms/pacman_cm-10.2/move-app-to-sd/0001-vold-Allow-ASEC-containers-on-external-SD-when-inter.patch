@@ -1,4 +1,4 @@
-From 6a3b4caa3d094b9c9137f15e4f8e79f98595c1e2 Mon Sep 17 00:00:00 2001
+From c9f57f7d1c34d664d382a80cbe8ed1ab8b904316 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 22:28:41 -0400
 Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
@@ -13,51 +13,84 @@ Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
 
 Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
 ---
- Volume.cpp        | 8 ++++----
- VolumeManager.cpp | 4 ----
- 2 files changed, 4 insertions(+), 8 deletions(-)
+ Volume.cpp        | 14 ++++++++++----
+ Volume.h          |  1 +
+ VolumeManager.cpp |  4 ++--
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/Volume.cpp b/Volume.cpp
-index 7aa2d40..eb8c0e2 100644
+index a7ac7f0..d3e627c 100644
 --- a/Volume.cpp
 +++ b/Volume.cpp
-@@ -592,8 +592,8 @@ int Volume::mountVol() {
+@@ -239,6 +239,11 @@ bool Volume::isPrimaryStorage() {
+     return !strcmp(getMountpoint(), externalStorage);
+ }
+ 
++bool Volume::isExternalSd() {
++    const char* externalSd = getenv("EXTERNAL_SD") ? : "/storage/sdcard1";
++    return !strcmp(getMountpoint(), externalSd);
++}
++
+ void Volume::setLunNumber(int lunNumber) {
+     mLunNumber = lunNumber;
+ }
+@@ -396,6 +401,7 @@ int Volume::mountVol() {
+     int n, i, rc = 0;
+     char errmsg[255];
+     bool primaryStorage = isPrimaryStorage();
++    bool externalSd = isExternalSd();
+     char decrypt_state[PROPERTY_VALUE_MAX];
+     char crypto_state[PROPERTY_VALUE_MAX];
+     char encrypt_progress[PROPERTY_VALUE_MAX];
+@@ -597,8 +603,8 @@ int Volume::mountVol() {
  
          protectFromAutorunStupidity();
  
 -        // only create android_secure on primary storage
 -        if (primaryStorage && createBindMounts()) {
-+        // create android_secure
-+        if (createBindMounts()) {
++        // only create android_secure on external SD
++        if (externalSd && createBindMounts()) {
              SLOGE("Failed to create bindmounts (%s)", strerror(errno));
              umount("/mnt/secure/staging");
              setState(Volume::State_Idle);
-@@ -844,8 +844,8 @@ int Volume::unmountVol(bool force, bool revert) {
+@@ -849,8 +855,8 @@ int Volume::unmountVol(bool force, bool revert) {
      setState(Volume::State_Unmounting);
      usleep(1000 * 1000); // Give the framework some time to react
  
 -    /* Undo createBindMounts(), which is only called for primary storage */
 -    if (isPrimaryStorage()) {
 +    /* Undo createBindMounts() */
-+    if (true) {
++    if (isExternalSd()) {
          /*
           * Remove the bindmount we were using to keep a reference to
           * the previously obscured directory.
+diff --git a/Volume.h b/Volume.h
+index d1f053f..311fae2 100644
+--- a/Volume.h
++++ b/Volume.h
+@@ -78,6 +78,7 @@ public:
+     const char *getMountpoint() { return mMountpoint; }
+     int getState() { return mState; }
+     bool isPrimaryStorage();
++    bool isExternalSd();
+ 
+     int getLunNumber() { return mLunNumber; }
+     void setLunNumber(int lunNumber);
 diff --git a/VolumeManager.cpp b/VolumeManager.cpp
-index 8a74872..3cc3943 100644
+index 8a74872..5bd2cb5 100644
 --- a/VolumeManager.cpp
 +++ b/VolumeManager.cpp
-@@ -1600,10 +1600,6 @@ bool VolumeManager::isMountpointMounted(const char *mp)
+@@ -1600,8 +1600,8 @@ bool VolumeManager::isMountpointMounted(const char *mp)
  }
  
  int VolumeManager::cleanupAsec(Volume *v, bool force) {
 -    /* Only EXTERNAL_STORAGE needs ASEC cleanup. */
 -    if (!v->isPrimaryStorage())
--        return 0;
--
-     int rc = unmountAllAsecsInDir(Volume::SEC_ASECDIR_EXT);
++    /* Only EXTERNAL_SD needs ASEC cleanup. */
++    if (!v->isExternalSd())
+         return 0;
  
-     AsecIdCollection toUnmount;
+     int rc = unmountAllAsecsInDir(Volume::SEC_ASECDIR_EXT);
 -- 
 1.8.4
 

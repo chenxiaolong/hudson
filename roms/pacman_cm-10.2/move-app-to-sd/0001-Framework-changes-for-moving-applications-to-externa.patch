@@ -1,4 +1,4 @@
-From 5f1d8cca6d6c8a59359bc5fb9e51afdfbcb41d04 Mon Sep 17 00:00:00 2001
+From ecdfb928537b71685094c1b7106f276e7089293c Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 23:35:16 -0400
 Subject: [PATCH] Framework changes for moving applications to external SD
@@ -15,8 +15,8 @@ Change-Id: I5561c2cf3f558b729c89663852173a532994a47a
  core/java/android/os/storage/StorageVolume.java    | 31 +++++++++++-
  core/res/res/values/attrs.xml                      |  2 +
  .../defcontainer/DefaultContainerService.java      | 18 +++----
- services/java/com/android/server/MountService.java | 17 ++++---
- 5 files changed, 108 insertions(+), 18 deletions(-)
+ services/java/com/android/server/MountService.java | 26 +++++++---
+ 5 files changed, 119 insertions(+), 16 deletions(-)
 
 diff --git a/core/java/android/os/Environment.java b/core/java/android/os/Environment.java
 index 61eef1f..a572215 100644
@@ -259,7 +259,7 @@ index 09a25d0..a220ffe 100644
              availSdMb = sdStats.getAvailableBlocks() / blocksToMb;
          } else {
 diff --git a/services/java/com/android/server/MountService.java b/services/java/com/android/server/MountService.java
-index f88cb47..e58b6e2 100644
+index f88cb47..f5e7db5 100644
 --- a/services/java/com/android/server/MountService.java
 +++ b/services/java/com/android/server/MountService.java
 @@ -678,7 +678,7 @@ class MountService extends IMountService.Stub
@@ -271,18 +271,16 @@ index f88cb47..e58b6e2 100644
              if (Environment.MEDIA_UNMOUNTED.equals(state)) {
                  mPms.updateExternalMediaStatus(false, false);
  
-@@ -1033,9 +1033,7 @@ class MountService extends IMountService.Stub
+@@ -1033,7 +1033,7 @@ class MountService extends IMountService.Stub
          Runtime.getRuntime().gc();
  
          // Redundant probably. But no harm in updating state again.
 -        if (isPrimaryStorage(path)) {
--            mPms.updateExternalMediaStatus(false, false);
--        }
-+        mPms.updateExternalMediaStatus(false, false);
++        if (isExternalSd(path)) {
+             mPms.updateExternalMediaStatus(false, false);
+         }
          try {
-             final Command cmd = new Command("volume", "unmount", path);
-             if (removeEncryption) {
-@@ -1215,18 +1213,21 @@ class MountService extends IMountService.Stub
+@@ -1215,18 +1215,21 @@ class MountService extends IMountService.Stub
                      // resource parser does not support longs, so XML value is in megabytes
                      long maxFileSize = a.getInt(
                              com.android.internal.R.styleable.Storage_maxFileSize, 0) * 1024L * 1024L;
@@ -307,7 +305,7 @@ index f88cb47..e58b6e2 100644
  
                          final UserManagerService userManager = UserManagerService.getInstance();
                          for (UserInfo user : userManager.getUsers(false)) {
-@@ -1239,7 +1240,7 @@ class MountService extends IMountService.Stub
+@@ -1239,7 +1242,7 @@ class MountService extends IMountService.Stub
                          } else {
                              final StorageVolume volume = new StorageVolume(new File(path),
                                      descriptionId, primary, removable, emulated, mtpReserve,
@@ -316,6 +314,24 @@ index f88cb47..e58b6e2 100644
                              addVolumeLocked(volume);
                          }
                      }
+@@ -1486,6 +1489,17 @@ class MountService extends IMountService.Stub
+         }
+     }
+ 
++    private boolean isExternalSd(String path) {
++        synchronized (mVolumesLock) {
++            for (StorageVolume volume : mVolumes) {
++                if (volume.isExternalSd() && volume.getPath().equals(path)) {
++                    return true;
++                }
++            }
++            return false;
++        }
++    }
++
+     private boolean isPrimaryStorage(String path) {
+         synchronized (mVolumesLock) {
+             for (StorageVolume volume : mVolumes) {
 -- 
 1.8.4
 
