@@ -174,6 +174,12 @@ else
 fi
 echo "^^^ TIME SPENT IN prelunch ^^^"
 
+# Hackish, but necessary because lunch is appending things to the beginning of
+# $PATH. envsetup should be idempotent anyway.
+if declare -f ${DISTRO}_envsetup >/dev/null; then
+  ${DISTRO}_envsetup
+fi
+
 if declare -f ${ROM}_prebuild >/dev/null; then
   time ${ROM}_prebuild
 else
