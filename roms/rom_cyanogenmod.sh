@@ -133,10 +133,10 @@ cyanogenmod_prebuild() {
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     'http://review.cyanogenmod.org/#/c/51530/' \
-    'http://review.cyanogenmod.org/#/c/51229/' \
-    'http://review.cyanogenmod.org/#/c/51228/' \
-    'http://review.cyanogenmod.org/#/c/48359/' \
-    'http://review.cyanogenmod.org/#/c/48352/' || \
+    `# 'http://review.cyanogenmod.org/#/c/51229/'` \
+    `# 'http://review.cyanogenmod.org/#/c/51228/'` \
+    `# 'http://review.cyanogenmod.org/#/c/48359/'` \
+    `# 'http://review.cyanogenmod.org/#/c/48352/'` || \
     echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
