@@ -139,6 +139,10 @@ cyanogenmod_prebuild() {
     `# 'http://review.cyanogenmod.org/#/c/48352/'` || \
     echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
 
+  GERRIT_URL="http://review.cyanogenmod.org" \
+  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
+    'https://gerrit.omnirom.org/#/c/53/'
+
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
   fi
