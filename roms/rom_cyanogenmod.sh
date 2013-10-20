@@ -45,8 +45,6 @@ cyanogenmod_postsync() {
 }
 
 cyanogenmod_prebuild() {
-  export GERRIT_URL="http://review.cyanogenmod.org"
-
   common_prebuild
 
   # Remove old zips
@@ -138,23 +136,32 @@ cyanogenmod_prebuild() {
     popd
   #fi
 
+  GERRIT_URL="http://review.cyanogenmod.org" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     `# http://forum.xda-developers.com/showpost.php?p=46631818&postcount=2186` \
-    'http://review.cyanogenmod.org/#/c/52009/' \
+    `# Fixes splash screen hang` \
     'http://review.cyanogenmod.org/#/c/52006/' \
-    'http://review.cyanogenmod.org/#/c/52005/' \
-    'http://review.cyanogenmod.org/#/c/52004/' \
-    'http://review.cyanogenmod.org/#/c/52003/' \
-    'http://review.cyanogenmod.org/#/c/52002/' \
-    'http://review.cyanogenmod.org/#/c/52001/' \
+    'http://review.cyanogenmod.org/#/c/52026/' \
+    `# MMC stuff` \
+    `# 'http://review.cyanogenmod.org/#/c/52005/' # May cause random reboots` \
+    `# 'http://review.cyanogenmod.org/#/c/52004/' # May cause random reboots` \
+    `# 'http://review.cyanogenmod.org/#/c/52003/' # May cause random reboots` \
+    `# 'http://review.cyanogenmod.org/#/c/52002/' # May cause random reboots` \
+    `# 'http://review.cyanogenmod.org/#/c/52001/' # May cause random reboots` \
     `# Native screen sharing API` \
     'http://review.cyanogenmod.org/#/c/50449/' \
     `# Swipe to show statusbar` \
     'http://review.cyanogenmod.org/#/c/51229/' \
     `# 'http://review.cyanogenmod.org/#/c/51228/' # Patch fixed manually` \
     `# 'http://review.cyanogenmod.org/#/c/48359/' # Patch fixed manually` \
-    'http://review.cyanogenmod.org/#/c/48352/' || \
-    echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
+    'http://review.cyanogenmod.org/#/c/48352/' \
+    || echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
+
+  GERRIT_URL="http://review.cyanogenmod.org" \
+  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
+    `# Lock screen battery ring` \
+    'https://gerrit.omnirom.org/#/c/1062/' \
+    || echo '*** FAILED TO APPLY PATCHES: OMNIROM GERRIT SERVER IS PROBABLY DOWN ***'
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
