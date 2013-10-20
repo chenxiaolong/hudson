@@ -101,6 +101,7 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-Check-of-moving-apps-to-SD-is-disabled.patch
     apply_patch_file_git ${OMNI}/53/PS19_0001-WIP-Multi-window.patch
     apply_patch_file_git ${OMNI}/1041/PS3_0001-1-2-Setting-for-translucent-statusbar-on-lockscreen.patch
+    apply_patch_file_git ${OMNI}/1062/PS12_0001-1-2-Add-battery-level-around-unlock-ring.patch
     popd
 
     pushd frameworks/opt/hardware/
@@ -158,11 +159,11 @@ cyanogenmod_prebuild() {
     'http://review.cyanogenmod.org/#/c/48352/' \
     || echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
 
-  GERRIT_URL="https://gerrit.omnirom.org" \
-  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    `# Lock screen battery ring` \
-    'https://gerrit.omnirom.org/#/c/1062/' \
-    || echo '*** FAILED TO APPLY PATCHES: OMNIROM GERRIT SERVER IS PROBABLY DOWN ***'
+  #GERRIT_URL="https://gerrit.omnirom.org" \
+  #python3 ${WORKSPACE}/hudson/gerrit_changes.py \
+  #  `# Lock screen battery ring` \
+  #  'https://gerrit.omnirom.org/#/c/1062/' \
+  #  || echo '*** FAILED TO APPLY PATCHES: OMNIROM GERRIT SERVER IS PROBABLY DOWN ***'
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
