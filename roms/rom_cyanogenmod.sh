@@ -34,17 +34,7 @@ cyanogenmod_presync() {
   ## TEMPORARY: Some kernels are building _into_ the source tree and messing
   ## up posterior syncs due to changes
   rm -rf kernel/*
-}
 
-cyanogenmod_repoinit() {
-  repo init -u https://github.com/CyanogenMod/android.git -b ${REPO_BRANCH}
-}
-
-cyanogenmod_postsync() {
-  common_postsync
-}
-
-cyanogenmod_prebuild() {
   RESET_DIRS=('system/vold/'
               'device/samsung/jf-common/'
               'packages/apps/Settings/'
@@ -59,9 +49,23 @@ cyanogenmod_prebuild() {
               'packages/providers/ContactsProvider/')
 
   for i in ${RESET_DIRS[@]}; do
-    pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
+    if [ -d "${i}" ]; then
+      pushd ${i}
+      reset_git_state github/${REPO_BRANCH}
+      popd
+    fi
   done
+}
 
+cyanogenmod_repoinit() {
+  repo init -u https://github.com/CyanogenMod/android.git -b ${REPO_BRANCH}
+}
+
+cyanogenmod_postsync() {
+  common_postsync
+}
+
+cyanogenmod_prebuild() {
   common_prebuild
 
   # Remove old zips
