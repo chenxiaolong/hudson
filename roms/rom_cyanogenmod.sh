@@ -45,11 +45,6 @@ cyanogenmod_postsync() {
 }
 
 cyanogenmod_prebuild() {
-  common_prebuild
-
-  # Remove old zips
-  rm -f "${OUT}"/cm-*.zip*
-
   RESET_DIRS=('system/vold/'
               'device/samsung/jf-common/'
               'packages/apps/Settings/'
@@ -66,6 +61,11 @@ cyanogenmod_prebuild() {
   for i in ${RESET_DIRS[@]}; do
     pushd ${i} && reset_git_state github/${REPO_BRANCH} && popd
   done
+
+  common_prebuild
+
+  # Remove old zips
+  rm -f "${OUT}"/cm-*.zip*
 
   #if grep -q jflte <<< ${LUNCH}; then
     MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
