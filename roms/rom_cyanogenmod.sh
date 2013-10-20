@@ -150,7 +150,7 @@ cyanogenmod_prebuild() {
     `# 'http://review.cyanogenmod.org/#/c/52002/' # May cause random reboots` \
     `# 'http://review.cyanogenmod.org/#/c/52001/' # May cause random reboots` \
     `# Native screen sharing API` \
-    'http://review.cyanogenmod.org/#/c/50449/' \
+    `# 'http://review.cyanogenmod.org/#/c/50449/' # Does not apply correctly` \
     `# Swipe to show statusbar` \
     'http://review.cyanogenmod.org/#/c/51229/' \
     `# 'http://review.cyanogenmod.org/#/c/51228/' # Patch fixed manually` \
