@@ -74,6 +74,7 @@ cyanogenmod_prebuild() {
     HIGHTOUCHSENSITIVITY=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/high-touch-sensitivity
     DUALBOOT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/dual-boot
     FACEBOOKSYNC=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/facebook-sync
+    GERRIT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/gerrit
 
     pushd system/vold/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
@@ -90,6 +91,7 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Add-preferences-for-high-touch-sensitivity.patch
     apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Auto-copied-translations-for-high-touch-sensitivity.patch
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Add-app-moving-setting-to-development-options.patch
+    apply_patch_file_git ${GERRIT}/48359/0001-Add-configuraion-for-showing-statusbar-on-top-of-ful.patch
     popd
 
     pushd frameworks/base/
@@ -132,11 +134,21 @@ cyanogenmod_prebuild() {
   #fi
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    'http://review.cyanogenmod.org/#/c/51530/' \
-    `# 'http://review.cyanogenmod.org/#/c/51229/'` \
-    `# 'http://review.cyanogenmod.org/#/c/51228/'` \
-    `# 'http://review.cyanogenmod.org/#/c/48359/'` \
-    `# 'http://review.cyanogenmod.org/#/c/48352/'` || \
+    `# http://forum.xda-developers.com/showpost.php?p=46631818&postcount=2186`
+    'http://review.cyanogenmod.org/#/c/52009/' \
+    'http://review.cyanogenmod.org/#/c/52006/' \
+    'http://review.cyanogenmod.org/#/c/52005/' \
+    'http://review.cyanogenmod.org/#/c/52004/' \
+    'http://review.cyanogenmod.org/#/c/52003/' \
+    'http://review.cyanogenmod.org/#/c/52002/' \
+    'http://review.cyanogenmod.org/#/c/52001/' \
+    `# Native video recording` \
+    'http://review.cyanogenmod.org/#/c/50449/' \
+    `# Swipe to show statusbar` \
+    'http://review.cyanogenmod.org/#/c/51229/' \
+    'http://review.cyanogenmod.org/#/c/51228/' \
+    `# 'http://review.cyanogenmod.org/#/c/48359/' # Patch fixed manually` \
+    'http://review.cyanogenmod.org/#/c/48352/' || \
     echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
