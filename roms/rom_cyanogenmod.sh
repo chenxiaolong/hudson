@@ -93,6 +93,7 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${GERRIT}/48359/0001-Add-configuraion-for-showing-statusbar-on-top-of-ful.patch
     apply_patch_file_git ${GERRIT}/51228/0001-Add-configuration-for-autounhiding-statusbar-on-new-.patch
     apply_patch_file_git ${OMNI}/1042/PS2_0001-2-2-Setting-for-translucent-statusbar-on-lockscreen.patch
+    apply_patch_file_git ${OMNI}/1122/PS2_0001-2-2-Settings-Add-lockscreen-ring-battery-setting.patch
     popd
 
     pushd frameworks/base/
