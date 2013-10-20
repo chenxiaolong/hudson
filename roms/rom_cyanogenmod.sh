@@ -75,6 +75,7 @@ cyanogenmod_prebuild() {
     DUALBOOT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/dual-boot
     FACEBOOKSYNC=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/facebook-sync
     GERRIT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/gerrit
+    OMNI=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/omni
 
     pushd system/vold/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
@@ -98,6 +99,7 @@ cyanogenmod_prebuild() {
     pushd frameworks/base/
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-changes-for-moving-applications-to-externa.patch
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-Check-of-moving-apps-to-SD-is-disabled.patch
+    apply_patch_file_git ${OMNI}/53/PS19_0001-WIP-Multi-window.patch
     popd
 
     pushd frameworks/opt/hardware/
