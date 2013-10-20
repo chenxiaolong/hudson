@@ -1,0 +1,232 @@
+From f0589c1b7f332300280df0291f27c9f2df0a0460 Mon Sep 17 00:00:00 2001
+From: xplodwild <xplod@ouverta.fr>
+Date: Wed, 11 Sep 2013 16:20:44 +0100
+Subject: [PATCH] SystemUI: Translucent status bar on lockscreen
+
+Change-Id: I27e6790a7b06e2a5c1f3f12b43dde824cb616af2
+
+Conflicts:
+	core/java/android/view/IWindowManager.aidl
+	core/java/android/view/WindowManagerPolicy.java
+	packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+	policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+	services/java/com/android/server/wm/WindowManagerService.java
+---
+ core/java/android/view/IWindowManager.aidl              |  6 ++++++
+ core/java/android/view/WindowManagerPolicy.java         |  6 ++++++
+ packages/SystemUI/res/values/colors.xml                 |  4 ++--
+ .../systemui/statusbar/phone/NavigationBarView.java     |  3 +++
+ .../systemui/statusbar/phone/PhoneStatusBar.java        | 10 +++++++++-
+ .../internal/policy/impl/PhoneWindowManager.java        |  8 ++++++--
+ .../policy/impl/keyguard/KeyguardViewMediator.java      | 17 +++++++++++++++++
+ .../com/android/server/wm/WindowManagerService.java     | 10 ++++++++++
+ 8 files changed, 59 insertions(+), 5 deletions(-)
+
+diff --git a/core/java/android/view/IWindowManager.aidl b/core/java/android/view/IWindowManager.aidl
+index 3161ba3..b4d359a 100644
+--- a/core/java/android/view/IWindowManager.aidl
++++ b/core/java/android/view/IWindowManager.aidl
+@@ -235,6 +235,12 @@ interface IWindowManager
+     boolean hasMenuKeyEnabled();
+ 
+     /**
++     * Device bars are translucent
++     */
++    boolean isBarTranslucent();
++    void setBarTranslucentAllowed(boolean allowed);
++
++    /**
+      * Lock the device immediately with the specified options (can be null).
+      */
+     void lockNow(in Bundle options);
+diff --git a/core/java/android/view/WindowManagerPolicy.java b/core/java/android/view/WindowManagerPolicy.java
+index d238d2e..5cc036b 100644
+--- a/core/java/android/view/WindowManagerPolicy.java
++++ b/core/java/android/view/WindowManagerPolicy.java
+@@ -1130,6 +1130,12 @@ public interface WindowManagerPolicy {
+     public boolean hasMenuKeyEnabled();
+ 
+     /**
++     * Specifies whether the on-screen navigation bar and the status bar are translucent
++     */
++    public boolean isBarTranslucent();
++    public void setBarTranslucentAllowed(boolean allowed);
++
++    /**
+      * Lock the device now.
+      */
+     public void lockNow(Bundle options);
+diff --git a/packages/SystemUI/res/values/colors.xml b/packages/SystemUI/res/values/colors.xml
+index 8a7a1b4..923a509 100644
+--- a/packages/SystemUI/res/values/colors.xml
++++ b/packages/SystemUI/res/values/colors.xml
+@@ -19,7 +19,7 @@
+ <resources>
+     <drawable name="notification_number_text_color">#ff000000</drawable>
+     <drawable name="ticker_background_color">#ff1d1d1d</drawable>
+-    <drawable name="status_bar_background">#ff000000</drawable>
++    <drawable name="status_bar_background">#FF000000</drawable>
+     <color name="notification_panel_solid_background">#ff000000</color>
+     <drawable name="status_bar_recents_app_thumbnail_background">#88000000</drawable>
+     <color name="status_bar_recents_app_label_color">#ffffffff</color>
+@@ -31,7 +31,7 @@
+     <drawable name="notification_header_bg">#FF000000</drawable>
+ 
+     <!-- ==================== system bar only ==================== -->
+-    <drawable name="system_bar_background">#ff000000</drawable>
++    <drawable name="system_bar_background">#88000000</drawable>
+     <!-- the darkening filter applied to notifications -->
+     <drawable name="notification_icon_area_smoke">#aa000000</drawable>
+     <color name="notification_panel_scrim_color">#B0000000</color>
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java
+index c08128e..bc174b8 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/NavigationBarView.java
+@@ -31,6 +31,7 @@ import android.graphics.Rect;
+ import android.graphics.drawable.Drawable;
+ import android.os.Handler;
+ import android.os.Message;
++import android.os.RemoteException;
+ import android.os.ServiceManager;
+ import android.os.UserHandle;
+ import android.util.AttributeSet;
+@@ -41,7 +42,9 @@ import android.view.MotionEvent;
+ import android.view.View;
+ import android.view.Surface;
+ import android.view.ViewGroup;
++import android.view.IWindowManager;
+ import android.view.WindowManager;
++import android.view.WindowManagerGlobal;
+ import android.widget.ImageView;
+ import android.widget.LinearLayout;
+ 
+diff --git a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+index 2be8648..932676b 100644
+--- a/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
++++ b/packages/SystemUI/src/com/android/systemui/statusbar/phone/PhoneStatusBar.java
+@@ -974,6 +974,12 @@ public class PhoneStatusBar extends BaseStatusBar {
+     }
+ 
+     private WindowManager.LayoutParams getNavigationBarLayoutParams() {
++        boolean translucent = true;
++        try {
++            translucent = mWindowManagerService.isBarTranslucent();
++        } catch (RemoteException ex) {
++            // Do nothing
++        }
+         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+                 LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
+                 WindowManager.LayoutParams.TYPE_NAVIGATION_BAR,
+@@ -983,12 +989,14 @@ public class PhoneStatusBar extends BaseStatusBar {
+                     | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                     | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+                     | WindowManager.LayoutParams.FLAG_SPLIT_TOUCH,
+-                PixelFormat.OPAQUE);
++                translucent ? PixelFormat.TRANSLUCENT : PixelFormat.OPAQUE);
+         // this will allow the navbar to run in an overlay on devices that support this
+         if (ActivityManager.isHighEndGfx()) {
+             lp.flags |= WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
+         }
+ 
++        mNavigationBarView.setHidden(translucent);
++
+         lp.setTitle("NavigationBar");
+         lp.windowAnimations = 0;
+         return lp;
+diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+index 937266e..21aee92 100644
+--- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
++++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+@@ -272,6 +272,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+     boolean mNavigationBarOnBottom = true; // is the navigation bar on the bottom *right now*?
+     int[] mNavigationBarHeightForRotation = new int[4];
+     int[] mNavigationBarWidthForRotation = new int[4];
++    boolean mBarsAreTranslucent = true;
+ 
+     WindowState mKeyguard = null;
+     KeyguardViewMediator mKeyguardMediator;
+@@ -3403,8 +3404,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         systemRect.top = mSystemTop;
+         systemRect.right = mSystemRight;
+         systemRect.bottom = mSystemBottom;
+-        if (mStatusBar != null) return mStatusBar.getSurfaceLayer();
+-        if (mNavigationBar != null) return mNavigationBar.getSurfaceLayer();
++        if (!mBarsAreTranslucent) {
++            if (mStatusBar != null) return mStatusBar.getSurfaceLayer();
++            if (mNavigationBar != null) return mNavigationBar.getSurfaceLayer();
++        }
+         return 0;
+     }
+ 
+@@ -5979,3 +5982,4 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         mBarsAreTranslucent = allowed;
+     }
+ }
++
+diff --git a/policy/src/com/android/internal/policy/impl/keyguard/KeyguardViewMediator.java b/policy/src/com/android/internal/policy/impl/keyguard/KeyguardViewMediator.java
+index 94dd96a..5e3d860 100644
+--- a/policy/src/com/android/internal/policy/impl/keyguard/KeyguardViewMediator.java
++++ b/policy/src/com/android/internal/policy/impl/keyguard/KeyguardViewMediator.java
+@@ -48,7 +48,9 @@ import android.telephony.TelephonyManager;
+ import android.util.EventLog;
+ import android.util.Log;
+ import android.view.KeyEvent;
++import android.view.IWindowManager;
+ import android.view.WindowManager;
++import android.view.WindowManagerGlobal;
+ import android.view.WindowManagerPolicy;
+ 
+ import com.android.internal.telephony.IccCardConstants;
+@@ -1352,6 +1354,7 @@ public class KeyguardViewMediator {
+ 
+             // Disable aspects of the system/status/navigation bars that must not be re-enabled by
+             // windows that appear on top, ever
++            final IWindowManager wm = WindowManagerGlobal.getInstance().getWindowManagerService();
+             int flags = StatusBarManager.DISABLE_NONE;
+             if (mShowing) {
+                 // Permanently disable components not available when keyguard is enabled
+@@ -1369,6 +1372,20 @@ public class KeyguardViewMediator {
+                 if (!isAssistantAvailable()) {
+                     flags |= StatusBarManager.DISABLE_SEARCH;
+                 }
++
++                try {
++                    // Notify that the status bar can be translucent
++                    wm.setBarTranslucentAllowed(true);
++                } catch (RemoteException e) {
++                    // Do nothing
++                }
++            } else {
++                try {
++                    // Notify that the status bar can be translucent
++                    wm.setBarTranslucentAllowed(false);
++                } catch (RemoteException e) {
++                    // Do nothing
++                }
+             }
+ 
+             if (DEBUG) {
+diff --git a/services/java/com/android/server/wm/WindowManagerService.java b/services/java/com/android/server/wm/WindowManagerService.java
+index 5b15ec6..af9d27d 100644
+--- a/services/java/com/android/server/wm/WindowManagerService.java
++++ b/services/java/com/android/server/wm/WindowManagerService.java
+@@ -9968,6 +9968,16 @@ public class WindowManagerService extends IWindowManager.Stub
+     }
+ 
+     @Override
++    public boolean isBarTranslucent() {
++        return mPolicy.isBarTranslucent();
++    }
++
++    @Override
++    public void setBarTranslucentAllowed(boolean allowed) {
++        mPolicy.setBarTranslucentAllowed(allowed);
++    }
++
++    @Override
+     public void lockNow(Bundle options) {
+         mPolicy.lockNow(options);
+     }
+-- 
+1.8.4
+

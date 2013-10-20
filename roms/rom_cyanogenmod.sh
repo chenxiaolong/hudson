@@ -108,6 +108,7 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${OMNI}/1062/PS12_0001-1-2-Add-battery-level-around-unlock-ring.patch
     apply_patch_file_git ${GERRIT}/48352/PS20_0001-Allow-showing-statusbar-on-top-of-fullscreen-window.patch
     apply_patch_file_git ${GERRIT}/51229/PS1_0001-Allow-auto-unhiding-statusbar-when-new-notification-.patch
+    apply_patch_file_git ${GERRIT}/59/PS1_0001-SystemUI-Translucent-status-bar-on-lockscreen.patch
     popd
 
     pushd frameworks/opt/hardware/
