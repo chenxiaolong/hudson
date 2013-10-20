@@ -134,7 +134,7 @@ cyanogenmod_prebuild() {
   #fi
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    `# http://forum.xda-developers.com/showpost.php?p=46631818&postcount=2186`
+    `# http://forum.xda-developers.com/showpost.php?p=46631818&postcount=2186` \
     'http://review.cyanogenmod.org/#/c/52009/' \
     'http://review.cyanogenmod.org/#/c/52006/' \
     'http://review.cyanogenmod.org/#/c/52005/' \
@@ -142,7 +142,7 @@ cyanogenmod_prebuild() {
     'http://review.cyanogenmod.org/#/c/52003/' \
     'http://review.cyanogenmod.org/#/c/52002/' \
     'http://review.cyanogenmod.org/#/c/52001/' \
-    `# Native video recording` \
+    `# Native screen sharing API` \
     'http://review.cyanogenmod.org/#/c/50449/' \
     `# Swipe to show statusbar` \
     'http://review.cyanogenmod.org/#/c/51229/' \
