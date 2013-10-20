@@ -102,6 +102,8 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${OMNI}/53/PS19_0001-WIP-Multi-window.patch
     apply_patch_file_git ${OMNI}/1041/PS3_0001-1-2-Setting-for-translucent-statusbar-on-lockscreen.patch
     apply_patch_file_git ${OMNI}/1062/PS12_0001-1-2-Add-battery-level-around-unlock-ring.patch
+    apply_patch_file_git ${GERRIT}/48352/PS20_0001-Allow-showing-statusbar-on-top-of-fullscreen-window.patch
+    apply_patch_file_git ${GERRIT}/51229/PS1_0001-Allow-auto-unhiding-statusbar-when-new-notification-.patch
     popd
 
     pushd frameworks/opt/hardware/
@@ -151,12 +153,12 @@ cyanogenmod_prebuild() {
     `# 'http://review.cyanogenmod.org/#/c/52002/' # May cause random reboots` \
     `# 'http://review.cyanogenmod.org/#/c/52001/' # May cause random reboots` \
     `# Native screen sharing API` \
-    `# 'http://review.cyanogenmod.org/#/c/50449/' # Does not apply correctly` \
+    'http://review.cyanogenmod.org/#/c/50449/' \
     `# Swipe to show statusbar` \
-    'http://review.cyanogenmod.org/#/c/51229/' \
+    `# 'http://review.cyanogenmod.org/#/c/51229/' # Patch fixed manually` \
     `# 'http://review.cyanogenmod.org/#/c/51228/' # Patch fixed manually` \
     `# 'http://review.cyanogenmod.org/#/c/48359/' # Patch fixed manually` \
-    'http://review.cyanogenmod.org/#/c/48352/' \
+    `# 'http://review.cyanogenmod.org/#/c/48352/' # Patch fixed manually` \
     || echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
 
   #GERRIT_URL="https://gerrit.omnirom.org" \

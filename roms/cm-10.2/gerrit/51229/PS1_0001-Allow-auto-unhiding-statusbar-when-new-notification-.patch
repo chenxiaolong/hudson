@@ -1,0 +1,163 @@
+From e785ff20ac43fc1c1bdfa633cb694876b5b41cf4 Mon Sep 17 00:00:00 2001
+From: Kyrylo Mikos <kiril.mik.os@gmail.com>
+Date: Tue, 1 Oct 2013 18:57:16 +0300
+Subject: [PATCH] Allow auto unhiding statusbar when new notification is
+ coming.
+
+Change-Id: I071f7ecb539d4e62c8d87393c32c6cfb75a841c1
+
+Conflicts:
+	core/java/android/view/IWindowManager.aidl
+---
+ core/java/android/provider/Settings.java           |  6 ++++++
+ core/java/android/view/IWindowManager.aidl         |  2 ++
+ core/java/android/view/WindowManagerPolicy.java    |  2 ++
+ .../internal/policy/impl/PhoneWindowManager.java   | 11 +++++++++++
+ .../android/server/StatusBarManagerService.java    | 23 ++++++++++++++++++++++
+ .../android/server/wm/WindowManagerService.java    |  5 +++++
+ 6 files changed, 49 insertions(+)
+
+diff --git a/core/java/android/provider/Settings.java b/core/java/android/provider/Settings.java
+index 25120f4..4673832 100644
+--- a/core/java/android/provider/Settings.java
++++ b/core/java/android/provider/Settings.java
+@@ -2894,6 +2894,12 @@ public final class Settings {
+         public static final String STATUS_BAR_ON_TOP_OF_FULLSCREEN = "status_bar_on_top_of_fullscreen";
+ 
+         /**
++         * Show statusbar on top of fullscreen window (with status bar or without status bar)
++         * @hide
++         */
++        public static final String STATUS_BAR_UNHIDE_ON_NOTIFICATION = "status_bar_unhide_on_notification";
++
++        /**
+          * Whether to use a separate delay for "slide to unlock" and security
+          * lock
+          * @hide
+diff --git a/core/java/android/view/IWindowManager.aidl b/core/java/android/view/IWindowManager.aidl
+index 6bfd14a..3161ba3 100644
+--- a/core/java/android/view/IWindowManager.aidl
++++ b/core/java/android/view/IWindowManager.aidl
+@@ -296,6 +296,8 @@ interface IWindowManager
+      */
+     void updateDisplayMetrics();
+ 
++    void toggleStatusBar();
++
+     /** SPLIT VIEW **/
+     boolean isTaskSplitView(int taskId);
+     void setTaskSplitView(int taskId, boolean split);
+diff --git a/core/java/android/view/WindowManagerPolicy.java b/core/java/android/view/WindowManagerPolicy.java
+index 6991e82..d238d2e 100644
+--- a/core/java/android/view/WindowManagerPolicy.java
++++ b/core/java/android/view/WindowManagerPolicy.java
+@@ -1202,4 +1202,6 @@ public interface WindowManagerPolicy {
+      * Animating windows has finished
+      */
+     public void windowAnimationFinished();
++
++    public void toggleStatusBar();
+ }
+diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+index ffdd7f9..937266e 100644
+--- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
++++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
+@@ -4116,6 +4116,17 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         }
+     }
+ 
++    @Override
++    public void toggleStatusBar() {
++        if (!mStatusBar.isVisibleLw()) {
++            setStatusBarShownTemporarily(true);
++            mWindowManagerFuncs.reevaluateStatusBarVisibility();
++
++            mHandler.removeMessages(MSG_HIDE_STATUS_BAR);
++            mHandler.sendEmptyMessageDelayed(MSG_HIDE_STATUS_BAR, STATUS_BAR_HIDE_DELAY);
++        }
++    }
++
+     public boolean allowAppAnimationsLw() {
+         if (mKeyguard != null && mKeyguard.isVisibleLw() && !mKeyguard.isAnimatingLw()) {
+             // If keyguard is currently visible, no reason to animate
+diff --git a/services/java/com/android/server/StatusBarManagerService.java b/services/java/com/android/server/StatusBarManagerService.java
+index c21d8c6..7473fac 100644
+--- a/services/java/com/android/server/StatusBarManagerService.java
++++ b/services/java/com/android/server/StatusBarManagerService.java
+@@ -17,6 +17,8 @@
+ package com.android.server;
+ 
+ import android.app.StatusBarManager;
++import android.database.ContentObserver;
++import android.provider.Settings;
+ import android.service.notification.StatusBarNotification;
+ import android.content.BroadcastReceiver;
+ import android.content.Context;
+@@ -76,6 +78,7 @@ public class StatusBarManagerService extends IStatusBarService.Stub
+     int mImeBackDisposition;
+     IBinder mImeToken = null;
+     int mCurrentUserId;
++    boolean mUnhideStatusBarOnNotification = false;
+ 
+     private class DisableRecord implements IBinder.DeathRecipient {
+         int userId;
+@@ -100,6 +103,17 @@ public class StatusBarManagerService extends IStatusBarService.Stub
+                 int uid, int initialPid, String message);
+     }
+ 
++    private ContentObserver mSettingsObserver = new ContentObserver(mHandler) {
++        @Override
++        public void onChange(boolean selfChange) {
++            updateSettings();
++        }
++    };
++
++    public void updateSettings() {
++        mUnhideStatusBarOnNotification = Settings.System.getInt(mContext.getContentResolver(), Settings.System.STATUS_BAR_UNHIDE_ON_NOTIFICATION, 0) == 1;
++    }
++
+     /**
+      * Construct the service, add the status bar view to the window manager
+      */
+@@ -110,6 +124,9 @@ public class StatusBarManagerService extends IStatusBarService.Stub
+ 
+         final Resources res = context.getResources();
+         mIcons.defineSlots(res.getStringArray(com.android.internal.R.array.config_statusBarIcons));
++
++        mContext.getContentResolver().registerContentObserver(Settings.System.getUriFor(Settings.System.STATUS_BAR_UNHIDE_ON_NOTIFICATION), false, mSettingsObserver);
++        updateSettings();
+     }
+ 
+     public void setNotificationCallbacks(NotificationCallbacks listener) {
+@@ -494,6 +511,12 @@ public class StatusBarManagerService extends IStatusBarService.Stub
+                     mBar.addNotification(key, notification);
+                 } catch (RemoteException ex) {
+                 }
++                if (mUnhideStatusBarOnNotification) {
++                    try {
++                        mWindowManager.toggleStatusBar();
++                    } catch (RemoteException e) {
++                    }
++                }
+             }
+             return key;
+         }
+diff --git a/services/java/com/android/server/wm/WindowManagerService.java b/services/java/com/android/server/wm/WindowManagerService.java
+index b69e5e4..5b15ec6 100644
+--- a/services/java/com/android/server/wm/WindowManagerService.java
++++ b/services/java/com/android/server/wm/WindowManagerService.java
+@@ -10021,6 +10021,11 @@ public class WindowManagerService extends IWindowManager.Stub
+         Binder.restoreCallingIdentity(origId);
+     }
+ 
++    @Override
++    public void toggleStatusBar() throws RemoteException {
++        mPolicy.toggleStatusBar();
++    }
++
+     void dumpPolicyLocked(PrintWriter pw, String[] args, boolean dumpAll) {
+         pw.println("WINDOW MANAGER POLICY STATE (dumpsys window policy)");
+         mPolicy.dump("    ", pw, args);
+-- 
+1.8.4
+
