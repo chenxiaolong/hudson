@@ -147,13 +147,6 @@ cyanogenmod_prebuild() {
 
   GERRIT_URL="http://review.cyanogenmod.org" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    `# http://forum.xda-developers.com/showpost.php?p=46631818&postcount=2186` \
-    `# MMC stuff` \
-    `# 'http://review.cyanogenmod.org/#/c/52005/' # May cause random reboots` \
-    `# 'http://review.cyanogenmod.org/#/c/52004/' # May cause random reboots` \
-    `# 'http://review.cyanogenmod.org/#/c/52003/' # May cause random reboots` \
-    `# 'http://review.cyanogenmod.org/#/c/52002/' # May cause random reboots` \
-    `# 'http://review.cyanogenmod.org/#/c/52001/' # May cause random reboots` \
     `# Native screen sharing API` \
     'http://review.cyanogenmod.org/#/c/50449/' \
     `# Swipe to show statusbar` \
