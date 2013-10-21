@@ -94,8 +94,8 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Add-preferences-for-high-touch-sensitivity.patch
     apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Auto-copied-translations-for-high-touch-sensitivity.patch
     apply_patch_file_git ${MOVEAPPTOSD}/0001-Add-app-moving-setting-to-development-options.patch
-    apply_patch_file_git ${GERRIT}/48359/0001-Add-configuraion-for-showing-statusbar-on-top-of-ful.patch
-    apply_patch_file_git ${GERRIT}/51228/0001-Add-configuration-for-autounhiding-statusbar-on-new-.patch
+    #apply_patch_file_git ${GERRIT}/48359/0001-Add-configuraion-for-showing-statusbar-on-top-of-ful.patch
+    #apply_patch_file_git ${GERRIT}/51228/0001-Add-configuration-for-autounhiding-statusbar-on-new-.patch
     apply_patch_file_git ${OMNI}/1042/PS2_0001-2-2-Setting-for-translucent-statusbar-on-lockscreen.patch
     apply_patch_file_git ${OMNI}/1122/PS2_0001-2-2-Settings-Add-lockscreen-ring-battery-setting.patch
     popd
@@ -106,8 +106,8 @@ cyanogenmod_prebuild() {
     apply_patch_file_git ${OMNI}/53/PS19_0001-WIP-Multi-window.patch
     apply_patch_file_git ${OMNI}/1041/PS3_0001-1-2-Setting-for-translucent-statusbar-on-lockscreen.patch
     apply_patch_file_git ${OMNI}/1062/PS12_0001-1-2-Add-battery-level-around-unlock-ring.patch
-    apply_patch_file_git ${GERRIT}/48352/PS20_0001-Allow-showing-statusbar-on-top-of-fullscreen-window.patch
-    apply_patch_file_git ${GERRIT}/51229/PS1_0001-Allow-auto-unhiding-statusbar-when-new-notification-.patch
+    #apply_patch_file_git ${GERRIT}/48352/PS20_0001-Allow-showing-statusbar-on-top-of-fullscreen-window.patch
+    #apply_patch_file_git ${GERRIT}/51229/PS1_0001-Allow-auto-unhiding-statusbar-when-new-notification-.patch
     apply_patch_file_git ${OMNI}/59/PS1_0001-SystemUI-Translucent-status-bar-on-lockscreen.patch
     popd
 
