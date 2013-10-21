@@ -1,4 +1,4 @@
-From 06c327e8d34ab503526a208f0ba2cc30b5317c08 Mon Sep 17 00:00:00 2001
+From e4280bba5d9f9f62fdb446b01d4d0d4f0d576faf Mon Sep 17 00:00:00 2001
 From: xplodwild <xplod@ouverta.fr>
 Date: Mon, 23 Sep 2013 22:45:20 +0200
 Subject: [PATCH] [2/2] Setting for translucent statusbar on lockscreen
@@ -47,7 +47,7 @@ index ae65d2b..c5902a8 100644
  
  </PreferenceScreen>
 diff --git a/src/com/android/settings/cyanogenmod/StatusBar.java b/src/com/android/settings/cyanogenmod/StatusBar.java
-index 6bdad40..59f8457 100644
+index 6bdad40..545b3e8 100644
 --- a/src/com/android/settings/cyanogenmod/StatusBar.java
 +++ b/src/com/android/settings/cyanogenmod/StatusBar.java
 @@ -40,10 +40,12 @@ public class StatusBar extends SettingsPreferenceFragment implements OnPreferenc
@@ -80,7 +80,7 @@ index 6bdad40..59f8457 100644
              mStatusBarCmSignal.setSummary(mStatusBarCmSignal.getEntries()[index]);
              return true;
 +        } else if (preference == mStatusBarTransparentOnKeyguard) {
-+            boolean value = (Boolean) objValue;
++            boolean value = (Boolean) newValue;
 +            Settings.System.putInt(resolver, Settings.System.STATUS_BAR_TRANSPARENT_ON_KEYGUARD, value ? 1 : 0);
 +            return true;
          }
