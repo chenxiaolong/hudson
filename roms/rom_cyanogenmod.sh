@@ -149,7 +149,6 @@ cyanogenmod_prebuild() {
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     `# http://forum.xda-developers.com/showpost.php?p=46631818&postcount=2186` \
     `# Fixes splash screen hang` \
-    'http://review.cyanogenmod.org/#/c/52006/' \
     'http://review.cyanogenmod.org/#/c/52026/' \
     `# MMC stuff` \
     `# 'http://review.cyanogenmod.org/#/c/52005/' # May cause random reboots` \
