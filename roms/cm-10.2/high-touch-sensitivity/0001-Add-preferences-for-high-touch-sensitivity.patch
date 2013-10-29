@@ -1,4 +1,4 @@
-From 24826f3b4e5e932344bb660144ecf2bb41ca273a Mon Sep 17 00:00:00 2001
+From 0cd5b604cd9c2b1684ff8ec5702e6ea0782bf440 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Mon, 26 Aug 2013 22:26:34 -0400
 Subject: [PATCH] Add preferences for high touch sensitivity
@@ -10,7 +10,7 @@ Change-Id: I07d7f316d6d6e2679dbb12224ebfe0f3ac815150
  2 files changed, 36 insertions(+)
 
 diff --git a/res/xml/display_settings.xml b/res/xml/display_settings.xml
-index a7bffc9..34b3920 100644
+index 8166b60..92ad227 100644
 --- a/res/xml/display_settings.xml
 +++ b/res/xml/display_settings.xml
 @@ -69,6 +69,12 @@
@@ -27,7 +27,7 @@ index a7bffc9..34b3920 100644
              android:title="@string/wake_when_plugged_or_unplugged_title"
              android:summary="@string/wake_when_plugged_or_unplugged_summary"
 diff --git a/src/com/android/settings/DisplaySettings.java b/src/com/android/settings/DisplaySettings.java
-index bb445cb..ae8c716 100644
+index fdad173..7c13cc1 100644
 --- a/src/com/android/settings/DisplaySettings.java
 +++ b/src/com/android/settings/DisplaySettings.java
 @@ -51,6 +51,7 @@ import com.android.settings.cyanogenmod.DisplayRotation;
@@ -44,9 +44,9 @@ index bb445cb..ae8c716 100644
      private static final String KEY_ADAPTIVE_BACKLIGHT = "adaptive_backlight";
 +    private static final String KEY_AUTO_ADJUST_TOUCH = "auto_adjust_touch";
      private static final String KEY_WAKE_WHEN_PLUGGED_OR_UNPLUGGED = "wake_when_plugged_or_unplugged";
+     private static final String KEY_ADVANCED_DISPLAY_SETTINGS = "advanced_display_settings";
  
-     private static final String CATEGORY_LIGHTS = "lights_prefs";
-@@ -97,6 +99,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
+@@ -98,6 +100,7 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
      private Preference mWifiDisplayPreference;
  
      private CheckBoxPreference mAdaptiveBacklight;
@@ -54,7 +54,7 @@ index bb445cb..ae8c716 100644
  
      private PreferenceScreen mNotificationPulse;
      private PreferenceScreen mBatteryPulse;
-@@ -171,6 +174,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
+@@ -172,6 +175,12 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
              mAdaptiveBacklight = null;
          }
  
@@ -67,7 +67,7 @@ index bb445cb..ae8c716 100644
          if (!res.getBoolean(com.android.internal.R.bool.config_screenOffAnimation)) {
              getPreferenceScreen().removePreference(
                      findPreference(Settings.System.SCREEN_OFF_ANIMATION));
-@@ -466,6 +475,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
+@@ -467,6 +476,8 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
              return true;
          } else if (preference == mAdaptiveBacklight) {
              return AdaptiveBacklight.setEnabled(mAdaptiveBacklight.isChecked());
@@ -76,7 +76,7 @@ index bb445cb..ae8c716 100644
          }
  
          return super.onPreferenceTreeClick(preferenceScreen, preference);
-@@ -528,6 +539,16 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
+@@ -529,6 +540,16 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
                  Log.d(TAG, "Adaptive backlight settings restored.");
              }
          }
@@ -93,7 +93,7 @@ index bb445cb..ae8c716 100644
      }
  
      private static boolean isAdaptiveBacklightSupported() {
-@@ -538,4 +559,13 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
+@@ -539,4 +560,13 @@ public class DisplaySettings extends SettingsPreferenceFragment implements
              return false;
          }
      }
