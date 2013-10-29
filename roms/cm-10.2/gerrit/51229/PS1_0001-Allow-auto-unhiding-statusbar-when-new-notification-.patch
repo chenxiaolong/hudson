@@ -1,4 +1,4 @@
-From e785ff20ac43fc1c1bdfa633cb694876b5b41cf4 Mon Sep 17 00:00:00 2001
+From 7e9bf0f06a8b37851814e921d14c3195b1d4d6c5 Mon Sep 17 00:00:00 2001
 From: Kyrylo Mikos <kiril.mik.os@gmail.com>
 Date: Tue, 1 Oct 2013 18:57:16 +0300
 Subject: [PATCH] Allow auto unhiding statusbar when new notification is
@@ -18,11 +18,11 @@ Conflicts:
  6 files changed, 49 insertions(+)
 
 diff --git a/core/java/android/provider/Settings.java b/core/java/android/provider/Settings.java
-index 25120f4..4673832 100644
+index 54aba5d..1009b44 100644
 --- a/core/java/android/provider/Settings.java
 +++ b/core/java/android/provider/Settings.java
-@@ -2894,6 +2894,12 @@ public final class Settings {
-         public static final String STATUS_BAR_ON_TOP_OF_FULLSCREEN = "status_bar_on_top_of_fullscreen";
+@@ -2884,6 +2884,12 @@ public final class Settings {
+         public static final String EXPANDED_DESKTOP_STYLE = "expanded_desktop_style";
  
          /**
 +         * Show statusbar on top of fullscreen window (with status bar or without status bar)
@@ -35,10 +35,10 @@ index 25120f4..4673832 100644
           * lock
           * @hide
 diff --git a/core/java/android/view/IWindowManager.aidl b/core/java/android/view/IWindowManager.aidl
-index 6bfd14a..3161ba3 100644
+index 99338cb..b4d359a 100644
 --- a/core/java/android/view/IWindowManager.aidl
 +++ b/core/java/android/view/IWindowManager.aidl
-@@ -296,6 +296,8 @@ interface IWindowManager
+@@ -302,6 +302,8 @@ interface IWindowManager
       */
      void updateDisplayMetrics();
  
@@ -48,10 +48,10 @@ index 6bfd14a..3161ba3 100644
      boolean isTaskSplitView(int taskId);
      void setTaskSplitView(int taskId, boolean split);
 diff --git a/core/java/android/view/WindowManagerPolicy.java b/core/java/android/view/WindowManagerPolicy.java
-index 6991e82..d238d2e 100644
+index 686a379..5cc036b 100644
 --- a/core/java/android/view/WindowManagerPolicy.java
 +++ b/core/java/android/view/WindowManagerPolicy.java
-@@ -1202,4 +1202,6 @@ public interface WindowManagerPolicy {
+@@ -1208,4 +1208,6 @@ public interface WindowManagerPolicy {
       * Animating windows has finished
       */
      public void windowAnimationFinished();
@@ -59,11 +59,11 @@ index 6991e82..d238d2e 100644
 +    public void toggleStatusBar();
  }
 diff --git a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
-index ffdd7f9..937266e 100644
+index 07a203b..4aede8b 100644
 --- a/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
 +++ b/policy/src/com/android/internal/policy/impl/PhoneWindowManager.java
-@@ -4116,6 +4116,17 @@ public class PhoneWindowManager implements WindowManagerPolicy {
-         }
+@@ -3933,6 +3933,17 @@ public class PhoneWindowManager implements WindowManagerPolicy {
+         return changes;
      }
  
 +    @Override
@@ -143,10 +143,10 @@ index c21d8c6..7473fac 100644
              return key;
          }
 diff --git a/services/java/com/android/server/wm/WindowManagerService.java b/services/java/com/android/server/wm/WindowManagerService.java
-index b69e5e4..5b15ec6 100644
+index e2b3726..af9d27d 100644
 --- a/services/java/com/android/server/wm/WindowManagerService.java
 +++ b/services/java/com/android/server/wm/WindowManagerService.java
-@@ -10021,6 +10021,11 @@ public class WindowManagerService extends IWindowManager.Stub
+@@ -10031,6 +10031,11 @@ public class WindowManagerService extends IWindowManager.Stub
          Binder.restoreCallingIdentity(origId);
      }
  
