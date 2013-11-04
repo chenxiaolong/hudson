@@ -1,7 +1,7 @@
-From 8bf84f88762da6371c0009389c705eec41260e3b Mon Sep 17 00:00:00 2001
+From 03e11f0425285bcd14848de2f64fa94bb171504f Mon Sep 17 00:00:00 2001
 From: xplodwild <xplod@ouverta.fr>
 Date: Thu, 3 Oct 2013 13:08:24 +0200
-Subject: [PATCH] [2/2] Settings: Add lockscreen ring battery setting
+Subject: [PATCH] Settings: Add lockscreen ring battery setting
 
 Change-Id: Ia07ecc1feedee71b8ea217c53244fdef9ff1bc18
 
@@ -16,11 +16,11 @@ Conflicts:
  3 files changed, 21 insertions(+)
 
 diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
-index 906e83e..15113c6 100644
+index 2b68a40..9a4a6ec 100644
 --- a/res/values/cm_strings.xml
 +++ b/res/values/cm_strings.xml
-@@ -292,6 +292,7 @@
-     <string name="unlock_home_unlock_summary">Pressing the home button unlocks the device</string>
+@@ -295,6 +295,7 @@
+     <string name="unlock_camera_unlock_summary">Pressing the camera button unlocks the device</string>
      <string name="unlock_quick_unlock_control_title">Quick unlock</string>
      <string name="unlock_quick_unlock_control_summary">Unlock automatically when the correct PIN/password is entered</string>
 +    <string name="battery_around_lockscreen_ring">Battery level around lock ring</string>
@@ -44,10 +44,10 @@ index e688de5..4fd1004 100644
  
  </PreferenceScreen>
 diff --git a/src/com/android/settings/SecuritySettings.java b/src/com/android/settings/SecuritySettings.java
-index 5984f25..030e2dd 100644
+index 06829ff..85b13e5 100644
 --- a/src/com/android/settings/SecuritySettings.java
 +++ b/src/com/android/settings/SecuritySettings.java
-@@ -100,6 +100,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
+@@ -105,6 +105,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
      private static final String KEY_BLACKLIST = "blacklist";
      private static final String CATEGORY_ADDITIONAL = "additional_options";
  
@@ -57,7 +57,7 @@ index 5984f25..030e2dd 100644
      private PackageManager mPM;
      DevicePolicyManager mDPM;
  
-@@ -132,6 +135,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
+@@ -137,6 +140,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
      private ListPreference mSmsSecurityCheck;
      private PreferenceScreen mBlacklist;
  
@@ -67,7 +67,7 @@ index 5984f25..030e2dd 100644
      @Override
      public void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
-@@ -273,6 +279,12 @@ public class SecuritySettings extends SettingsPreferenceFragment
+@@ -280,6 +286,12 @@ public class SecuritySettings extends SettingsPreferenceFragment
              CheckBoxPreference vibratePref = (CheckBoxPreference)
                      findPreference(Settings.System.LOCKSCREEN_VIBRATE_ENABLED);
  
@@ -77,10 +77,10 @@ index 5984f25..030e2dd 100644
 +            mLockRingBattery.setChecked(Settings.System.getInt(resolver,
 +                    Settings.System.BATTERY_AROUND_LOCKSCREEN_RING, 0) == 1);
 +
-             // disable lock options if lock screen set to NONE
-             // or if using pattern as a primary lock screen or
-             // as a backup to biometric
-@@ -723,6 +735,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
+             final int deviceKeys = res.getInteger(
+                     com.android.internal.R.integer.config_deviceHardwareKeys);
+             final PreferenceGroup additionalPrefs =
+@@ -772,6 +784,9 @@ public class SecuritySettings extends SettingsPreferenceFragment
              lockPatternUtils.setVisibleDotsEnabled(isToggled(preference));
          } else if (KEY_POWER_INSTANTLY_LOCKS.equals(key)) {
              lockPatternUtils.setPowerButtonInstantlyLocks(isToggled(preference));
@@ -91,5 +91,5 @@ index 5984f25..030e2dd 100644
              Settings.System.putInt(getContentResolver(), Settings.System.TEXT_SHOW_PASSWORD,
                      mShowPassword.isChecked() ? 1 : 0);
 -- 
-1.8.4
+1.8.4.2
 
