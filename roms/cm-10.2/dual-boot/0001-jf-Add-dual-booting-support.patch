@@ -1,4 +1,4 @@
-From 67aa838409b413af3cf461e2d3232e53bb96771a Mon Sep 17 00:00:00 2001
+From 0aea51ad62b952995f8d74a2c1ad5cbb991aa285 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 1 Sep 2013 21:22:52 -0400
 Subject: [PATCH] jf: Add dual booting support
@@ -6,16 +6,16 @@ Subject: [PATCH] jf: Add dual booting support
 Change-Id: Icd71b846322b6920a4f6a5ac11ea21a9a4b36896
 ---
  jf-common.mk                          |  1 +
- rootdir/Android.mk                    |  9 ++++++++-
+ rootdir/Android.mk                    |  8 ++++++++
  rootdir/etc/fstab.qcom                |  6 +++---
  rootdir/etc/init.dualboot.mounting.sh | 28 ++++++++++++++++++++++++++++
  rootdir/etc/init.qcom.rc              |  6 +++---
  rootdir/etc/init.target.rc            |  7 ++++---
- 6 files changed, 47 insertions(+), 10 deletions(-)
+ 6 files changed, 47 insertions(+), 9 deletions(-)
  create mode 100644 rootdir/etc/init.dualboot.mounting.sh
 
 diff --git a/jf-common.mk b/jf-common.mk
-index 1ebbab3..571c80a 100644
+index 12146ca..3dcfea2 100644
 --- a/jf-common.mk
 +++ b/jf-common.mk
 @@ -70,6 +70,7 @@ PRODUCT_COPY_FILES += \
@@ -27,7 +27,7 @@ index 1ebbab3..571c80a 100644
      init.bt.rc \
      init.carrier.rc \
 diff --git a/rootdir/Android.mk b/rootdir/Android.mk
-index d58ed42..64d854e 100644
+index c9a000c..37cc499 100644
 --- a/rootdir/Android.mk
 +++ b/rootdir/Android.mk
 @@ -10,6 +10,14 @@ LOCAL_MODULE_PATH  := $(TARGET_ROOT_OUT)
@@ -45,11 +45,6 @@ index d58ed42..64d854e 100644
  LOCAL_MODULE       := init.carrier.rc
  LOCAL_MODULE_TAGS  := optional eng
  LOCAL_MODULE_CLASS := ETC
-@@ -62,4 +70,3 @@ LOCAL_MODULE_TAGS  := optional eng
- LOCAL_MODULE_CLASS := ETC
- LOCAL_SRC_FILES    := etc/init.qcom.modem_links.sh
- include $(BUILD_PREBUILT)
--
 diff --git a/rootdir/etc/fstab.qcom b/rootdir/etc/fstab.qcom
 index 95bc2b8..3d52aea 100644
 --- a/rootdir/etc/fstab.qcom
@@ -101,10 +96,10 @@ index 0000000..d6174cf
 +  /sbin/busybox-static mount -o bind /raw-cache /cache
 +fi
 diff --git a/rootdir/etc/init.qcom.rc b/rootdir/etc/init.qcom.rc
-index be3e0dd..4e8036d 100644
+index 32f65ab..132d92d 100644
 --- a/rootdir/etc/init.qcom.rc
 +++ b/rootdir/etc/init.qcom.rc
-@@ -189,8 +189,8 @@ on post-fs
+@@ -191,8 +191,8 @@ on post-fs
  on post-fs-data
  
      # we will remap this as /mnt/sdcard with the sdcard fuse tool
@@ -115,7 +110,7 @@ index be3e0dd..4e8036d 100644
  
      mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
  
-@@ -617,7 +617,7 @@ service profiler_daemon /system/bin/profiler_daemon
+@@ -625,7 +625,7 @@ service profiler_daemon /system/bin/profiler_daemon
      disabled
  
  # virtual sdcard daemon running as media_rw (1023)
@@ -125,7 +120,7 @@ index be3e0dd..4e8036d 100644
      oneshot
  
 diff --git a/rootdir/etc/init.target.rc b/rootdir/etc/init.target.rc
-index d9594e3..e9971bd 100644
+index 92f405d..58de937 100644
 --- a/rootdir/etc/init.target.rc
 +++ b/rootdir/etc/init.target.rc
 @@ -39,14 +39,15 @@ service ril-qmi /system/bin/sh /init.qcom.ril.sh
@@ -148,5 +143,5 @@ index d9594e3..e9971bd 100644
      #wait /dev/block/platform/msm_sdcc.1/by-name/persist
      #check_fs /dev/block/platform/msm_sdcc.1/by-name/persist ext4
 -- 
-1.8.4
+1.8.4.2
 
