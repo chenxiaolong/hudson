@@ -1,4 +1,4 @@
-From 0aea51ad62b952995f8d74a2c1ad5cbb991aa285 Mon Sep 17 00:00:00 2001
+From 087b3adfe0f18cae63d8576731a862a6fa1fd343 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 1 Sep 2013 21:22:52 -0400
 Subject: [PATCH] jf: Add dual booting support
@@ -10,8 +10,8 @@ Change-Id: Icd71b846322b6920a4f6a5ac11ea21a9a4b36896
  rootdir/etc/fstab.qcom                |  6 +++---
  rootdir/etc/init.dualboot.mounting.sh | 28 ++++++++++++++++++++++++++++
  rootdir/etc/init.qcom.rc              |  6 +++---
- rootdir/etc/init.target.rc            |  7 ++++---
- 6 files changed, 47 insertions(+), 9 deletions(-)
+ rootdir/etc/init.target.rc            |  1 +
+ 6 files changed, 44 insertions(+), 6 deletions(-)
  create mode 100644 rootdir/etc/init.dualboot.mounting.sh
 
 diff --git a/jf-common.mk b/jf-common.mk
@@ -46,19 +46,24 @@ index c9a000c..37cc499 100644
  LOCAL_MODULE_TAGS  := optional eng
  LOCAL_MODULE_CLASS := ETC
 diff --git a/rootdir/etc/fstab.qcom b/rootdir/etc/fstab.qcom
-index 95bc2b8..3d52aea 100644
+index 85b2f3f..561928a 100644
 --- a/rootdir/etc/fstab.qcom
 +++ b/rootdir/etc/fstab.qcom
-@@ -8,8 +8,8 @@
+@@ -8,13 +8,13 @@
  #<src>                                                <mnt_point>  <type>  <mnt_flags and options>                     <fs_mgr_flags>
  /dev/block/platform/msm_sdcc.1/by-name/boot           /boot        emmc    defaults   defaults
  /dev/block/platform/msm_sdcc.1/by-name/recovery       /recovery    emmc    defaults   defaults
--/dev/block/platform/msm_sdcc.1/by-name/cache /cache ext4 nosuid,nodev,barrier=1 wait,check
--/dev/block/platform/msm_sdcc.1/by-name/system         /system      ext4    ro,errors=panic                                wait
+-/dev/block/platform/msm_sdcc.1/by-name/system         /system      ext4    ro,barrier=1,errors=panic                                wait
+-/dev/block/platform/msm_sdcc.1/by-name/cache          /cache       ext4    nosuid,nodev,noatime                         wait,check
++/dev/block/platform/msm_sdcc.1/by-name/system         /raw-system      ext4    ro,barrier=1,errors=panic                                wait
++/dev/block/platform/msm_sdcc.1/by-name/cache          /raw-cache       ext4    nosuid,nodev,noatime                         wait,check
+ #/dev/block/platform/msm_sdcc.1/by-name/persist        /persist     ext4    nosuid,nodev                                wait,check
+ /dev/block/platform/msm_sdcc.1/by-name/apnhlos        /firmware    vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:radio_efs_file:s0  wait
+ /dev/block/platform/msm_sdcc.1/by-name/mdm            /firmware-mdm  vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:radio_efs_file:s0  wait
+ /dev/block/platform/msm_sdcc.1/by-name/efs            /efs          ext4    nosuid,nodev,noatime                        wait,check
 -/dev/block/platform/msm_sdcc.1/by-name/userdata       /data        ext4    nosuid,nodev,noatime,noauto_da_alloc,journal_async_commit,errors=panic      wait,check,encryptable=footer,length=-16384
-+/dev/block/platform/msm_sdcc.1/by-name/cache /raw-cache ext4 nosuid,nodev,barrier=1 wait,check
-+/dev/block/platform/msm_sdcc.1/by-name/system         /raw-system      ext4    ro,errors=panic                                wait
 +/dev/block/platform/msm_sdcc.1/by-name/userdata       /raw-data        ext4    nosuid,nodev,noatime,noauto_da_alloc,journal_async_commit,errors=panic      wait,check,encryptable=footer,length=-16384
+ 
  /devices/platform/msm_sdcc.2/mmc_host/mmc2			/storage/sdcard1 		auto	default		voldmanaged=sdcard:auto
  /devices/platform/msm_hsusb_host/usb				/storage/usbdisk0		auto	default		voldmanaged=sda:auto
 diff --git a/rootdir/etc/init.dualboot.mounting.sh b/rootdir/etc/init.dualboot.mounting.sh
@@ -96,10 +101,10 @@ index 0000000..d6174cf
 +  /sbin/busybox-static mount -o bind /raw-cache /cache
 +fi
 diff --git a/rootdir/etc/init.qcom.rc b/rootdir/etc/init.qcom.rc
-index 32f65ab..132d92d 100644
+index ad972de..598e7b2 100644
 --- a/rootdir/etc/init.qcom.rc
 +++ b/rootdir/etc/init.qcom.rc
-@@ -191,8 +191,8 @@ on post-fs
+@@ -189,8 +189,8 @@ on post-fs
  on post-fs-data
  
      # we will remap this as /mnt/sdcard with the sdcard fuse tool
@@ -110,7 +115,7 @@ index 32f65ab..132d92d 100644
  
      mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
  
-@@ -625,7 +625,7 @@ service profiler_daemon /system/bin/profiler_daemon
+@@ -623,7 +623,7 @@ service profiler_daemon /system/bin/profiler_daemon
      disabled
  
  # virtual sdcard daemon running as media_rw (1023)
@@ -120,28 +125,17 @@ index 32f65ab..132d92d 100644
      oneshot
  
 diff --git a/rootdir/etc/init.target.rc b/rootdir/etc/init.target.rc
-index 92f405d..58de937 100644
+index 0846984..46ea9b4 100644
 --- a/rootdir/etc/init.target.rc
 +++ b/rootdir/etc/init.target.rc
-@@ -39,14 +39,15 @@ service ril-qmi /system/bin/sh /init.qcom.ril.sh
+@@ -39,6 +39,7 @@ service ril-qmi /system/bin/sh /init.qcom.ril.sh
  
  on fs
      mount_all fstab.qcom
 +    exec /sbin/busybox-static sh /init.dualboot.mounting.sh
      setprop ro.crypto.fuse_sdcard true
  
-     # Keeping following partitions outside fstab file. As user may not have
-     # these partition flashed on the device. Failure to mount any partition in fstab file
-     # results in failure to launch late-start class.
--    wait /dev/block/platform/msm_sdcc.1/by-name/cache
--    check_fs /dev/block/platform/msm_sdcc.1/by-name/cache ext4
--    mount ext4 /dev/block/platform/msm_sdcc.1/by-name/cache /cache nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
-+    #wait /dev/block/platform/msm_sdcc.1/by-name/cache
-+    #check_fs /dev/block/platform/msm_sdcc.1/by-name/cache ext4
-+    #mount ext4 /dev/block/platform/msm_sdcc.1/by-name/cache /cache nosuid nodev noatime noauto_da_alloc,discard,journal_async_commit,errors=panic
- 
-     #wait /dev/block/platform/msm_sdcc.1/by-name/persist
-     #check_fs /dev/block/platform/msm_sdcc.1/by-name/persist ext4
+     chown system radio /efs
 -- 
 1.8.4.2
 
