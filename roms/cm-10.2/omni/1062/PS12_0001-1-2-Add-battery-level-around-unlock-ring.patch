@@ -1,7 +1,7 @@
-From a5662a3c453dec716c5f30c891843b336e681c30 Mon Sep 17 00:00:00 2001
+From 10f9e8aae5e4d66f2885f0a6eb865591fc5f8e1d Mon Sep 17 00:00:00 2001
 From: xplodwild <xplod@ouverta.fr>
 Date: Thu, 26 Sep 2013 14:39:39 +0100
-Subject: [PATCH] [1/2] Add battery level around unlock ring
+Subject: [PATCH] Add battery level around unlock ring
 
 Change-Id: Ia4dbc2335657c096c34349ec67c4adfec0aeb91b
 ---
@@ -11,10 +11,10 @@ Change-Id: Ia4dbc2335657c096c34349ec67c4adfec0aeb91b
  3 files changed, 67 insertions(+)
 
 diff --git a/core/java/android/provider/Settings.java b/core/java/android/provider/Settings.java
-index d90ee67..efe47fd 100644
+index 99289da..bbb8f3f 100644
 --- a/core/java/android/provider/Settings.java
 +++ b/core/java/android/provider/Settings.java
-@@ -3299,6 +3299,12 @@ public final class Settings {
+@@ -3317,6 +3317,12 @@ public final class Settings {
          public static final String STATUS_BAR_TRANSPARENT_ON_KEYGUARD = "status_bar_transparent_on_keyguard";
  
          /**
@@ -24,9 +24,9 @@ index d90ee67..efe47fd 100644
 +        public static final String BATTERY_AROUND_LOCKSCREEN_RING = "battery_around_lockscreen_ring";
 +
 +        /**
-          * Settings to backup. This is here so that it's in the same place as the settings
-          * keys and easy to update.
-          *
+          * Performance profile
+          * @see config_perf_profile_prop in frameworks/base/core/res/res/values/config.xml
+          * @hide
 diff --git a/core/java/com/android/internal/widget/multiwaveview/GlowPadView.java b/core/java/com/android/internal/widget/multiwaveview/GlowPadView.java
 index 6cbab94..631f52f 100644
 --- a/core/java/com/android/internal/widget/multiwaveview/GlowPadView.java
@@ -169,5 +169,5 @@ index 2b9ad45..e5e78ee 100644
 +    }
  }
 -- 
-1.8.4
+1.8.4.2
 
