@@ -140,13 +140,16 @@ printline '-'
 cat .repo/manifest.xml
 printline '='
 
-for i in .repo/local_manifests/*.xml; do
-  printline '='
-  echo "${i}"
-  printline '-'
-  cat "${i}"
-  printline '='
-done
+LOCAL_MANIFESTS="$(find .repo/local_manifests -name '*.xml' || true)"
+if [[ ! -z "$(LOCAL_MANIFESTS)" ]]; then
+  for i in ${LOCAL_MANIFESTS}; do
+    printline '='
+    echo "${i}"
+    printline '-'
+    cat "${i}"
+    printline '='
+  done
+fi
 
 if [ "x${SYNC}" = "xtrue" ]; then
   time repo sync -d -c >/dev/null
