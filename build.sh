@@ -141,7 +141,7 @@ cat .repo/manifest.xml
 printline '='
 
 LOCAL_MANIFESTS="$(find .repo/local_manifests -name '*.xml' || true)"
-if [[ ! -z "$(LOCAL_MANIFESTS)" ]]; then
+if [[ ! -z "${LOCAL_MANIFESTS}" ]]; then
   for i in ${LOCAL_MANIFESTS}; do
     printline '='
     echo "${i}"
