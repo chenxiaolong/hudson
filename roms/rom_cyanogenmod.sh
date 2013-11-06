@@ -71,6 +71,7 @@ cyanogenmod_prebuild() {
   # Remove old zips
   rm -f "${OUT}"/cm-*.zip*
 
+  if grep -q 10.2 <<< ${REPO_BRANCH}; then
   #if grep -q jflte <<< ${LUNCH}; then
     MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
     HIGHTOUCHSENSITIVITY=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/high-touch-sensitivity
@@ -144,25 +145,25 @@ cyanogenmod_prebuild() {
     pushd packages/providers/ContactsProvider/
     apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
     popd
-  #fi
 
-  GERRIT_URL="http://review.cyanogenmod.org" \
-  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    `# Native screen sharing API` \
-    'http://review.cyanogenmod.org/#/c/50449/' \
-    `# Swipe to show statusbar` \
-    `# 'http://review.cyanogenmod.org/#/c/51084/' # Patch fixed manually` \
-    `# 'http://review.cyanogenmod.org/#/c/51229/' # Patch fixed manually` \
-    `# 'http://review.cyanogenmod.org/#/c/51228/' # Patch fixed manually` \
-    `# 'http://review.cyanogenmod.org/#/c/48359/' # Patch fixed manually` \
-    `# 'http://review.cyanogenmod.org/#/c/48352/' # Patch fixed manually` \
-    || echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
+    GERRIT_URL="http://review.cyanogenmod.org" \
+    python3 ${WORKSPACE}/hudson/gerrit_changes.py \
+      `# Native screen sharing API` \
+      'http://review.cyanogenmod.org/#/c/50449/' \
+      `# Swipe to show statusbar` \
+      `# 'http://review.cyanogenmod.org/#/c/51084/' # Patch fixed manually` \
+      `# 'http://review.cyanogenmod.org/#/c/51229/' # Patch fixed manually` \
+      `# 'http://review.cyanogenmod.org/#/c/51228/' # Patch fixed manually` \
+      `# 'http://review.cyanogenmod.org/#/c/48359/' # Patch fixed manually` \
+      `# 'http://review.cyanogenmod.org/#/c/48352/' # Patch fixed manually` \
+      || echo '*** FAILED TO APPLY PATCHES: CYANOGENMOD GERRIT SERVER IS PROBABLY DOWN ***'
 
-  #GERRIT_URL="https://gerrit.omnirom.org" \
-  #python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-  #  `# Lock screen battery ring` \
-  #  'https://gerrit.omnirom.org/#/c/1062/' \
-  #  || echo '*** FAILED TO APPLY PATCHES: OMNIROM GERRIT SERVER IS PROBABLY DOWN ***'
+    #GERRIT_URL="https://gerrit.omnirom.org" \
+    #python3 ${WORKSPACE}/hudson/gerrit_changes.py \
+    #  `# Lock screen battery ring` \
+    #  'https://gerrit.omnirom.org/#/c/1062/' \
+    #  || echo '*** FAILED TO APPLY PATCHES: OMNIROM GERRIT SERVER IS PROBABLY DOWN ***'
+  fi
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
