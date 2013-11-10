@@ -1,3 +1,26 @@
+reset_dirs_cm-10.2() {
+  RESET_DIRS=('system/vold/'
+              'device/samsung/jf-common/'
+              'packages/apps/Settings/'
+              'frameworks/base/'
+              'frameworks/opt/hardware/'
+              'hardware/samsung/'
+              'external/busybox/'
+              'vendor/cm/'
+              'system/core/'
+              'build/'
+              'frameworks/native/'
+              'packages/providers/ContactsProvider/')
+
+  for i in ${RESET_DIRS[@]}; do
+    if [ -d "${i}" ]; then
+      pushd ${i}
+      reset_git_state github/${REPO_BRANCH}
+      popd
+    fi
+  done
+}
+
 apply_patches_cm-10.2() {
   MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
   HIGHTOUCHSENSITIVITY=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/high-touch-sensitivity

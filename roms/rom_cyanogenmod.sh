@@ -26,6 +26,8 @@ cyanogenmod_envsetup() {
 #    export CM_EXPERIMENTAL=true
 #    unset CM_NIGHTLY CM_RELEASE
 #  fi
+
+  source ${WORKSPACE}/hudson/roms/${REPO_BRANCH}.sh
 }
 
 cyanogenmod_presync() {
@@ -35,26 +37,7 @@ cyanogenmod_presync() {
   ## up posterior syncs due to changes
   rm -rf kernel/*
 
-  RESET_DIRS=('system/vold/'
-              'device/samsung/jf-common/'
-              'packages/apps/Settings/'
-              'frameworks/base/'
-              'frameworks/opt/hardware/'
-              'hardware/samsung/'
-              'external/busybox/'
-              'vendor/cm/'
-              'system/core/'
-              'build/'
-              'frameworks/native/'
-              'packages/providers/ContactsProvider/')
-
-  for i in ${RESET_DIRS[@]}; do
-    if [ -d "${i}" ]; then
-      pushd ${i}
-      reset_git_state github/${REPO_BRANCH}
-      popd
-    fi
-  done
+  reset_dirs_${REPO_BRANCH}
 }
 
 cyanogenmod_repoinit() {
@@ -71,7 +54,6 @@ cyanogenmod_prebuild() {
   # Remove old zips
   rm -f "${OUT}"/cm-*.zip*
 
-  source ${WORKSPACE}/hudson/roms/${REPO_BRANCH}.sh
   apply_patches_${REPO_BRANCH}
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
