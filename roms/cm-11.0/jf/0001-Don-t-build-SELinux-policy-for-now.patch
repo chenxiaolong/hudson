@@ -1,0 +1,85 @@
+From 7afcffa197a7c8fc030c33047779c3d9f2c737e5 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 10 Nov 2013 16:44:36 -0500
+Subject: [PATCH] Don't build SELinux policy for now
+
+Change-Id: I773816e6758ea55de9360d0d2654b90c6f4fcd01
+---
+ BoardConfigCommon.mk | 64 ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 32 insertions(+), 32 deletions(-)
+
+diff --git a/BoardConfigCommon.mk b/BoardConfigCommon.mk
+index 9d3b2c8..5bdee02 100644
+--- a/BoardConfigCommon.mk
++++ b/BoardConfigCommon.mk
+@@ -88,35 +88,35 @@ BOARD_USES_SEPERATED_HEADSET_MIC := true
+ BOARD_USES_QC_TIME_SERVICES := true
+ 
+ # SELinux
+-BOARD_SEPOLICY_DIRS += \
+-        device/samsung/jf-common/sepolicy
+-
+-BOARD_SEPOLICY_UNION += \
+-	file_contexts \
+-	property_contexts \
+-	te_macros \
+-	bluetooth_loader.te \
+-	bridge.te \
+-	camera.te \
+-	conn_init.te \
+-	device.te \
+-	dhcp.te \
+-	domain.te \
+-	drmserver.te \
+-	file.te \
+-	init.te \
+-	kickstart.te \
+-	mediaserver.te \
+-	mpdecision.te \
+-	netmgrd.te \
+-	property.te \
+-	qmux.te \
+-	rild.te \
+-	rmt.te \
+-	sensors.te \
+-	surfaceflinger.te \
+-	system.te \
+-	tee.te \
+-	thermald.te \
+-	ueventd.te \
+-	wpa_supplicant.te
++#BOARD_SEPOLICY_DIRS += \
++#        device/samsung/jf-common/sepolicy
++
++#BOARD_SEPOLICY_UNION += \
++#	file_contexts \
++#	property_contexts \
++#	te_macros \
++#	bluetooth_loader.te \
++#	bridge.te \
++#	camera.te \
++#	conn_init.te \
++#	device.te \
++#	dhcp.te \
++#	domain.te \
++#	drmserver.te \
++#	file.te \
++#	init.te \
++#	kickstart.te \
++#	mediaserver.te \
++#	mpdecision.te \
++#	netmgrd.te \
++#	property.te \
++#	qmux.te \
++#	rild.te \
++#	rmt.te \
++#	sensors.te \
++#	surfaceflinger.te \
++#	system.te \
++#	tee.te \
++#	thermald.te \
++#	ueventd.te \
++#	wpa_supplicant.te
+-- 
+1.8.4.2
+

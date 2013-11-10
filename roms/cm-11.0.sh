@@ -27,6 +27,7 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
   apply_patch_file_git ${JF}/0001-Remove-IRDA-for-now.patch
   apply_patch_file_git ${JF}/0001-Do-not-mount-apnhlos-or-mdm-under-a-SELinux-context.patch
+  apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
   popd
 
   pushd device/samsung/msm8960-common
