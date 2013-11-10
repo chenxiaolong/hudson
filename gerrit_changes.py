@@ -162,3 +162,5 @@ for change in sys.argv[1:]:
     print(error)
     print("--- END ---")
     sys.exit(1)
+
+print("=" * 80)
