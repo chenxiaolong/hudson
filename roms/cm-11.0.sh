@@ -28,7 +28,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Remove-IRDA-for-now.patch
   apply_patch_file_git ${JF}/0001-Comment-out-non-existent-overlays.patch
   apply_patch_file_git ${JF}/0001-Do-not-mount-apnhlos-or-mdm-under-a-SELinux-context.patch
-  apply_patch_file_git ${JF}/0001-Enable-translucent-lockscreen-decor.patch
   popd
 
   pushd device/samsung/msm8960-common
@@ -78,6 +77,7 @@ apply_patches_cm-11.0() {
     `# 'http://review.cyanogenmod.org/#/c/53266/'` \
     'http://review.cyanogenmod.org/#/c/53264/' \
     'http://review.cyanogenmod.org/#/c/53372/' `- Fix mounting of external sd` \
+    'http://review.cyanogenmod.org/#/c/53373/' `- jf-common: translucent lockscreen decor` \
     `# hardware/libhardware` \
     'http://review.cyanogenmod.org/#/c/53072/' \
     'http://review.cyanogenmod.org/#/c/53328/' \
