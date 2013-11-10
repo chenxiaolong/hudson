@@ -1,0 +1,28 @@
+From 15f4454240a6d10148781c482586892961525af2 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 10 Nov 2013 14:58:59 -0500
+Subject: [PATCH] Do not mount apnhlos or mdm under a SELinux context
+
+Change-Id: I058f321421f0cd86e388e89bb9694dfd7d6110f9
+---
+ rootdir/etc/fstab.qcom | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/rootdir/etc/fstab.qcom b/rootdir/etc/fstab.qcom
+index 85b2f3f..fed1c96 100644
+--- a/rootdir/etc/fstab.qcom
++++ b/rootdir/etc/fstab.qcom
+@@ -11,8 +11,8 @@
+ /dev/block/platform/msm_sdcc.1/by-name/system         /system      ext4    ro,barrier=1,errors=panic                                wait
+ /dev/block/platform/msm_sdcc.1/by-name/cache          /cache       ext4    nosuid,nodev,noatime                         wait,check
+ #/dev/block/platform/msm_sdcc.1/by-name/persist        /persist     ext4    nosuid,nodev                                wait,check
+-/dev/block/platform/msm_sdcc.1/by-name/apnhlos        /firmware    vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:radio_efs_file:s0  wait
+-/dev/block/platform/msm_sdcc.1/by-name/mdm            /firmware-mdm  vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337,context=u:object_r:radio_efs_file:s0  wait
++/dev/block/platform/msm_sdcc.1/by-name/apnhlos        /firmware    vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337  wait
++/dev/block/platform/msm_sdcc.1/by-name/mdm            /firmware-mdm  vfat    ro,shortname=lower,uid=1000,gid=1000,dmask=227,fmask=337  wait
+ /dev/block/platform/msm_sdcc.1/by-name/efs            /efs          ext4    nosuid,nodev,noatime                        wait,check
+ /dev/block/platform/msm_sdcc.1/by-name/userdata       /data        ext4    nosuid,nodev,noatime,noauto_da_alloc,journal_async_commit,errors=panic      wait,check,encryptable=footer,length=-16384
+ 
+-- 
+1.8.4.2
+
