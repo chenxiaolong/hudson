@@ -179,7 +179,16 @@ reset_git_state() {
   pushd ${1}
   git am --abort || true
   if ! [ -z "${2}" ]; then
-    git reset --hard "${2}"
+    if grep -q '/' <<< ${2}; then
+      if [ -f .git/refs/remotes/${2} ]; then
+        git reset --hard "${2}"
+      else
+        echo "ERROR: Could not find ref for ${2}"
+        git reset --hard
+      fi
+    else
+      git reset --hard
+    fi
   else
     git reset --hard
   fi
