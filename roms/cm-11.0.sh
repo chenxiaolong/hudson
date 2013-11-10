@@ -26,7 +26,6 @@ apply_patches_cm-11.0() {
   pushd device/samsung/jf-common
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
   apply_patch_file_git ${JF}/0001-Remove-IRDA-for-now.patch
-  apply_patch_file_git ${JF}/0001-Comment-out-non-existent-overlays.patch
   apply_patch_file_git ${JF}/0001-Do-not-mount-apnhlos-or-mdm-under-a-SELinux-context.patch
   popd
 
@@ -78,6 +77,7 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53264/' \
     'http://review.cyanogenmod.org/#/c/53372/' `- Fix mounting of external sd` \
     'http://review.cyanogenmod.org/#/c/53373/' `- jf-common: translucent lockscreen decor` \
+    'http://review.cyanogenmod.org/#/c/53371/' `- disable non-existing overlays for now to fix compile` \
     `# hardware/libhardware` \
     'http://review.cyanogenmod.org/#/c/53072/' \
     'http://review.cyanogenmod.org/#/c/53328/' \
