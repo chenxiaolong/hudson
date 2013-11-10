@@ -1,0 +1,47 @@
+From 236d8518189c4b39a37fdbbf68d48b70205a78d7 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 10 Nov 2013 14:56:25 -0500
+Subject: [PATCH] Comment out non-existent overlays
+
+Change-Id: Id7e21956a63e0f1e17a257e621b4bde6d318f85a
+---
+ overlay/frameworks/base/core/res/res/values/config.xml | 4 ++--
+ overlay/frameworks/base/core/res/res/values/dimens.xml | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/overlay/frameworks/base/core/res/res/values/config.xml b/overlay/frameworks/base/core/res/res/values/config.xml
+index 1f33b7c..138dd0e 100644
+--- a/overlay/frameworks/base/core/res/res/values/config.xml
++++ b/overlay/frameworks/base/core/res/res/values/config.xml
+@@ -225,7 +225,7 @@
+     <bool name="config_batterySdCardAccessibility">true</bool>
+ 
+     <!-- Disable the home key unlock setting -->
+-    <bool name="config_disableHomeUnlockSetting">false</bool>
++    <!-- <bool name="config_disableHomeUnlockSetting">false</bool> -->
+ 
+     <!-- Hardware 'face' keys present on the device, stored as a bit field.
+          This integer should equal the sum of the corresponding value for each
+@@ -246,7 +246,7 @@
+ 
+     <!-- True if the Irda service should be started at system start. This currently only
+          supports Samsung Galaxy S4. -->
+-    <bool name="config_enableIrdaManagerService">true</bool>
++    <!-- <bool name="config_enableIrdaManagerService">true</bool> -->
+ 
+     <!-- Device supports LED flashlight -->
+     <bool name="config_enableTorch">true</bool>
+diff --git a/overlay/frameworks/base/core/res/res/values/dimens.xml b/overlay/frameworks/base/core/res/res/values/dimens.xml
+index ab503e4..4f542ff 100644
+--- a/overlay/frameworks/base/core/res/res/values/dimens.xml
++++ b/overlay/frameworks/base/core/res/res/values/dimens.xml
+@@ -19,5 +19,5 @@
+ -->
+ <resources>
+     <!-- Pie service: Thickness of the active trigger fields around the screen border -->
+-    <dimen name="pie_trigger_thickness">10dp</dimen>
++    <!-- <dimen name="pie_trigger_thickness">10dp</dimen> -->
+ </resources>
+-- 
+1.8.4.2
+
