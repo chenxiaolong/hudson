@@ -13,7 +13,6 @@ reset_dirs_cm-11.0() {
 
   for i in ${RESET_DIRS[@]}; do
     if [ -d "${i}" ]; then
-      echo "RESETTING ${i} to github/${REPO_BRANCH}"
       reset_git_state ${i} github/${REPO_BRANCH}
     fi
   done
