@@ -14,9 +14,7 @@ reset_dirs_cm-10.2() {
 
   for i in ${RESET_DIRS[@]}; do
     if [ -d "${i}" ]; then
-      pushd ${i}
-      reset_git_state github/${REPO_BRANCH}
-      popd
+      reset_git_state ${i} github/${REPO_BRANCH}
     fi
   done
 }

@@ -175,14 +175,16 @@ printline() {
 
 reset_git_state() {
   printline '-'
-  echo "Resetting to ${1} ..."
+  echo "Resetting ${1} to ${2} ..."
+  pushd ${1}
   git am --abort || true
-  if ! [ -z "${1}" ]; then
-    git reset --hard "${1}"
+  if ! [ -z "${2}" ]; then
+    git reset --hard "${2}"
   else
     git reset --hard
   fi
   git clean -fdx
+  popd
   printline '-'
 }
 
