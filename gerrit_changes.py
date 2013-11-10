@@ -9,6 +9,27 @@ import subprocess
 import sys
 import urllib.request
 
+def run_command(command, \
+                stdin_data = None, \
+                cwd = None, \
+                universal_newlines = True):
+  try:
+    process = subprocess.Popen(
+      command,
+      stdin = subprocess.PIPE,
+      stdout = subprocess.PIPE,
+      stderr = subprocess.PIPE,
+      cwd = cwd,
+      universal_newlines = universal_newlines
+    )
+    output, error = process.communicate(input = stdin_data)
+
+    exit_status = process.returncode
+    return (exit_status, output, error)
+  except:
+    exit_with("Failed to run command: \"%s\"" % ' '.join(command), fail = True)
+    sys.exit(1)
+
 if not "GERRIT_URL" in os.environ:
   print("GERRIT_URL not specified!")
   sys.exit(1)
@@ -58,6 +79,7 @@ for change in sys.argv[1:]:
       sys.exit(1)
     change = match.group(1)
 
+  print("=" * 80)
   print("Cherrypicking %s ..." % change)
 
   # Sometimes 504's a bit
@@ -72,10 +94,10 @@ for change in sys.argv[1:]:
   
   d = f.read().decode()
 
-  print("Received from gerrit:")
-  print("---")
-  print(d)
-  print("---")
+  #print("Received from gerrit:")
+  #print("---")
+  #print(d)
+  #print("---")
 
   d = d.split('\n')[0]
   data = json.loads(d)
@@ -117,7 +139,26 @@ for change in sys.argv[1:]:
   print("Patch set: %i" % patchset)
   print("Ref: %s" % ref)
 
-  os.system('cd %s ; git fetch %s/%s %s' % \
-            (projectpath, gerrit_url, project, ref))
+  exit_status, output, error = run_command(
+    [ 'git', 'fetch', gerrit_url + '/' + project, ref ],
+    cwd = projectpath
+  )
+  if exit_status != 0:
+    print("--- STDOUT ---")
+    print(output)
+    print("--- STDERR ---")
+    print(error)
+    print("--- END ---")
+    sys.exit(1)
 
-  os.system('cd %s ; git merge --no-edit FETCH_HEAD' % projectpath)
+  exit_status, output, error = run_command(
+    [ 'git', 'merge', '--no-edit', 'FETCH_HEAD' ],
+    cwd = projectpath
+  )
+  if exit_status != 0:
+    print("--- STDOUT ---")
+    print(output)
+    print("--- STDERR ---")
+    print(error)
+    print("--- END ---")
+    sys.exit(1)
