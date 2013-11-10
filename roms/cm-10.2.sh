@@ -22,12 +22,13 @@ reset_dirs_cm-10.2() {
 }
 
 apply_patches_cm-10.2() {
-  MOVEAPPTOSD=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/move-app-to-sd
-  HIGHTOUCHSENSITIVITY=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/high-touch-sensitivity
-  DUALBOOT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/dual-boot
-  FACEBOOKSYNC=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/facebook-sync
-  GERRIT=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/gerrit
-  OMNI=${WORKSPACE}/hudson/roms/${REPO_BRANCH}/omni
+  PATCHES=${WORKSPACE}/hudson/roms/${REPO_BRANCH}
+  MOVEAPPTOSD=${PATCHES}/move-app-to-sd
+  HIGHTOUCHSENSITIVITY=${PATCHES}/high-touch-sensitivity
+  DUALBOOT=${PATCHES}/dual-boot
+  FACEBOOKSYNC=${PATCHES}/facebook-sync
+  GERRIT=${PATCHES}/gerrit
+  OMNI=${PATCHES}/omni
 
   pushd system/vold/
   apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
