@@ -134,8 +134,6 @@ apply_patches_cm-11.0() {
     `# 'http://review.cyanogenmod.org/#/c/53165/'` `# audio_policy: Add EVRCB & EVRCWB formats`                      \
     `# frameworks/av` \
     'http://review.cyanogenmod.org/#/c/53324/' `# frameworks_av: Support pre-KitKat audio blobs`                     \
-    `# frameworks/base` \
-    'http://review.cyanogenmod.org/#/c/53360/' `# Fix the default value for long press on home.`                     \
     `# system/core` \
     'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
