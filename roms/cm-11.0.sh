@@ -13,7 +13,8 @@ reset_dirs_cm-11.0() {
               'device/samsung/qcom-common/'
               'packages/apps/Settings/'
               'frameworks/opt/hardware/'
-              'hardware/samsung/')
+              'hardware/samsung/'
+              'packages/providers/ContactsProvider/')
 
   for i in ${RESET_DIRS[@]}; do
     if [ -d "${i}" ]; then
@@ -26,6 +27,7 @@ apply_patches_cm-11.0() {
   PATCHES=${WORKSPACE}/hudson/roms/${REPO_BRANCH}
   JF=${PATCHES}/jf
   HIGHTOUCHSENSITIVITY=${PATCHES}/high-touch-sensitivity
+  FACEBOOKSYNC=${PATCHES}/facebook-sync
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
@@ -61,6 +63,10 @@ apply_patches_cm-11.0() {
 
   pushd hardware/samsung/
   apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Samsung-add-support-for-high-touch-sensitivity.patch
+  popd
+
+  pushd packages/providers/ContactsProvider/
+  apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \

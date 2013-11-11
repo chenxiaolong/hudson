@@ -1,0 +1,94 @@
+From 1c14ac84296370f5dec7362e4c0f902c0cb2616d Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Wed, 11 Sep 2013 16:43:22 -0400
+Subject: [PATCH] ContactsProvider: Hack to enable Facebook contacts sync
+
+Credits to Paul O'Brien for the idea: http://www.modaco.com/page/news/_/android/enabling-facebook-sync-in-ice-cream-sandwich-r140
+
+Change-Id: I2070ef9bdbe9ec294f4f6bd1831438c7f999d7fc
+---
+ res/values/arrays.xml                              | 25 ++++++++++++++++++++++
+ .../providers/contacts/ContactsDatabaseHelper.java | 21 +++++++++++++++++-
+ 2 files changed, 45 insertions(+), 1 deletion(-)
+ create mode 100644 res/values/arrays.xml
+
+diff --git a/res/values/arrays.xml b/res/values/arrays.xml
+new file mode 100644
+index 0000000..22e3594
+--- /dev/null
++++ b/res/values/arrays.xml
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!-- Copyright (C) 2013 The Android Open Source Project
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
++<resources xmlns:android="http://schemas.android.com/apk/res/android"
++           xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++
++    <string-array name="unrestricted_packages">
++        <!-- Whitelist Facebook app -->
++        <item>com.facebook.katana</item>
++    </string-array>
++
++</resources>
+diff --git a/src/com/android/providers/contacts/ContactsDatabaseHelper.java b/src/com/android/providers/contacts/ContactsDatabaseHelper.java
+index eac08f8..af16661 100644
+--- a/src/com/android/providers/contacts/ContactsDatabaseHelper.java
++++ b/src/com/android/providers/contacts/ContactsDatabaseHelper.java
+@@ -946,6 +946,9 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
+                 + " BEGIN "
+                 + replaceAggregatePresenceSql
+                 + " END");
++
++        // Add is_restricted column for Facebook sync to work
++        addIsRestrictedColumn(db);
+     }
+ 
+     @Override
+@@ -1034,7 +1037,9 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
+                 RawContacts.SYNC1 + " TEXT, " +
+                 RawContacts.SYNC2 + " TEXT, " +
+                 RawContacts.SYNC3 + " TEXT, " +
+-                RawContacts.SYNC4 + " TEXT " +
++                RawContacts.SYNC4 + " TEXT, " +
++                // Hack to allow Facebook contact sync to work
++                "is_restricted" + " INTEGER " +
+         ");");
+ 
+         db.execSQL("CREATE INDEX raw_contacts_contact_id_index ON " + Tables.RAW_CONTACTS + " (" +
+@@ -4019,6 +4024,20 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
+                 ContactsContract.PinnedPositions.UNPINNED + ";");
+     }
+ 
++    private void addIsRestrictedColumn(SQLiteDatabase db) {
++        Cursor c = db.rawQuery("SELECT * FROM raw_contacts LIMIT 0", null);
++
++        if (c.getColumnIndex("is_restricted") != -1) {
++            Log.v(TAG, "is_restricted column already present in database");
++            return;
++        }
++
++        // Add is_restricted column
++        Log.v(TAG, "Adding is_restricted column to database");
++        db.execSQL("ALTER TABLE raw_contacts"
++                + " ADD is_restricted INTEGER;");
++    }
++
+     public String extractHandleFromEmailAddress(String email) {
+         Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(email);
+         if (tokens.length == 0) {
+-- 
+1.8.4.2
+
