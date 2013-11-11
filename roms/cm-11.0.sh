@@ -16,7 +16,8 @@ reset_dirs_cm-11.0() {
               'hardware/samsung/'
               'packages/providers/ContactsProvider/'
               'system/vold/'
-              'frameworks/native/')
+              'frameworks/native/'
+              'vendor/samsung/')
 
   for i in ${RESET_DIRS[@]}; do
     if [ -d "${i}" ]; then
@@ -38,6 +39,8 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
   apply_patch_file_git ${JF}/0001-Disable-some-overlays-for-now.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
+  # Revert "jf: Enable QC time services"
+  git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
   popd
 
   pushd device/samsung/msm8960-common/
@@ -83,6 +86,11 @@ apply_patches_cm-11.0() {
 
   pushd frameworks/native/
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Calculate-application-sizes-correctly.patch
+  popd
+
+  pushd vendor/samsung/
+  # Revert "jf: Update blobs"
+  git revert --no-edit 25abb7ace77be2ad3c52df93dd7044d50b8fee1d
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \
