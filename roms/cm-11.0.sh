@@ -25,9 +25,9 @@ apply_patches_cm-11.0() {
 
   pushd device/samsung/jf-common
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
-  apply_patch_file_git ${JF}/0001-Remove-IRDA-for-now.patch
   apply_patch_file_git ${JF}/0001-Do-not-mount-apnhlos-or-mdm-under-a-SELinux-context.patch
   apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
+  apply_patch_file_git ${JF}/0001-Disable-some-overlays-for-now.patch
   popd
 
   pushd device/samsung/msm8960-common
@@ -36,6 +36,14 @@ apply_patches_cm-11.0() {
 
   pushd art
   apply_patch_file_git ${PATCHES}/0001-Run-generate-operator-out.py-with-Python-2.patch
+  popd
+
+  pushd frameworks/base
+  apply_patch_file_git ${JF}/0001-Irda-Add-Irda-System-Service.patch
+  popd
+
+  pushd hardware/libhardware
+  apply_patch_file_git ${JF}/0001-Irda-Added-IrDA-HAL-Library.patch
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \
@@ -78,7 +86,6 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53264/' `# jf: dont build qcom camera HAL`                                    \
     'http://review.cyanogenmod.org/#/c/53372/' `# Fix mounting of external sd`                                       \
     'http://review.cyanogenmod.org/#/c/53373/' `# jf-common: translucent lockscreen decor`                           \
-    'http://review.cyanogenmod.org/#/c/53371/' `# disable non-existing overlays for now to fix compile`              \
     `# hardware/libhardware` \
     'http://review.cyanogenmod.org/#/c/53072/' `# libhardware: Add APIs to support DirectTrack`                      \
     'http://review.cyanogenmod.org/#/c/53328/' `# libhardware: Add MSM string parameters.`                           \
