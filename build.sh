@@ -19,6 +19,15 @@ elif [ -f /etc/debian-release ]; then
   DISTRO=debian
 elif [ -f /etc/fedora-release ]; then
   DISTRO=fedora
+elif [ -f /etc/os-release ]; then
+  if grep -q Ubuntu <<< /etc/os-release; then
+    DISTRO=ubuntu
+  fi
+fi
+
+if [ -z "${DISTRO}" ]; then
+  echo "Your Linux distribution is not supported!"
+  exit 1
 fi
 
 if declare -f ${DISTRO}_checkdeps >/dev/null; then
