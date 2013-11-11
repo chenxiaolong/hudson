@@ -10,7 +10,10 @@ reset_dirs_cm-11.0() {
               'device/samsung/jf-common/'
               'device/samsung/msm8960-common/'
               'art/'
-              'device/samsung/qcom-common/')
+              'device/samsung/qcom-common/'
+              'packages/apps/Settings/'
+              'frameworks/opt/hardware/'
+              'hardware/samsung/')
 
   for i in ${RESET_DIRS[@]}; do
     if [ -d "${i}" ]; then
@@ -22,28 +25,42 @@ reset_dirs_cm-11.0() {
 apply_patches_cm-11.0() {
   PATCHES=${WORKSPACE}/hudson/roms/${REPO_BRANCH}
   JF=${PATCHES}/jf
+  HIGHTOUCHSENSITIVITY=${PATCHES}/high-touch-sensitivity
 
-  pushd device/samsung/jf-common
+  pushd device/samsung/jf-common/
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
   apply_patch_file_git ${JF}/0001-Do-not-mount-apnhlos-or-mdm-under-a-SELinux-context.patch
   apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
   apply_patch_file_git ${JF}/0001-Disable-some-overlays-for-now.patch
   popd
 
-  pushd device/samsung/msm8960-common
+  pushd device/samsung/msm8960-common/
   apply_patch_file_git ${JF}/0001-neon-vfpv4-neon.patch
   popd
 
-  pushd art
+  pushd art/
   apply_patch_file_git ${PATCHES}/0001-Run-generate-operator-out.py-with-Python-2.patch
   popd
 
-  pushd frameworks/base
+  pushd frameworks/base/
   apply_patch_file_git ${JF}/0001-Irda-Add-Irda-System-Service.patch
   popd
 
-  pushd hardware/libhardware
+  pushd hardware/libhardware/
   apply_patch_file_git ${JF}/0001-Irda-Added-IrDA-HAL-Library.patch
+  popd
+
+  pushd packages/apps/Settings/
+  apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Add-preferences-for-high-touch-sensitivity.patch
+  apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Auto-copied-translations-for-high-touch-sensitivity.patch
+  popd
+
+  pushd frameworks/opt/hardware/
+  apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Hardware-Add-high-touch-sensitivity-support.patch
+  popd
+
+  pushd hardware/samsung/
+  apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Samsung-add-support-for-high-touch-sensitivity.patch
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \
