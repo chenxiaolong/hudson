@@ -182,6 +182,9 @@ reset_git_state() {
     if grep -q '/' <<< ${2}; then
       if [ -f .git/refs/remotes/${2} ]; then
         git reset --hard "${2}"
+      elif [ -f .git/refs/remotes/${2/github/m} ]; then
+        # Hack
+        git reset --hard "${2/github/m}"
       else
         echo "ERROR: Could not find ref for ${2}"
         git reset --hard
