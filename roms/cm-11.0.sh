@@ -39,6 +39,7 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
   apply_patch_file_git ${JF}/0001-Disable-some-overlays-for-now.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
+  apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
   # Revert "jf: Enable QC time services"
   git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
   popd
