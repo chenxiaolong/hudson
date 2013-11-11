@@ -88,12 +88,8 @@ apply_patches_cm-11.0() {
   GERRIT_URL="http://review.cyanogenmod.org" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     `# hardware/qcom/media-caf` \
-    'http://review.cyanogenmod.org/#/c/53030/' `# Revert "mm-video: vidc: Add support for dynamic debug logging"`    \
-    'http://review.cyanogenmod.org/#/c/53031/' `# camera bringup changes hardware-qcom-media`                        \
-    'http://review.cyanogenmod.org/#/c/53032/' `# media: compilation fix for updated sdk version`                    \
-    'http://review.cyanogenmod.org/#/c/53033/' `# Dashplayer: enable adaptive playback based on codec format key`    \
-    'http://review.cyanogenmod.org/#/c/53034/' `# mm-video: vdec: Support adaptive playback mode`                    \
-    'http://review.cyanogenmod.org/#/c/53035/' `# mm-video: vidc: set stride in gralloc-metadata for adaptive-playback` \
+    `# 'http://review.cyanogenmod.org/#/c/53030/'` `# Revert "mm-video: vidc: Add support for dynamic debug logging"`    \
+    `# 'http://review.cyanogenmod.org/#/c/53034/'` `# mm-video: vdec: Support adaptive playback mode`                    \
     `# hardware/qcom/audio-caf` \
     `# 'http://review.cyanogenmod.org/#/c/52997/'` `# audio/msm7x30: Sync audio_policy with ALSA`                    \
     'http://review.cyanogenmod.org/#/c/53194/' `# alsa_sound: Initial changes for basic FM feature`                  \
@@ -102,22 +98,10 @@ apply_patches_cm-11.0() {
     `# 'http://review.cyanogenmod.org/#/c/53166/'` `# msm8660: increase size of buffers to fit PROP_VALUE_MAX`       \
     'http://review.cyanogenmod.org/#/c/53196/' `# alsa_sound: Enable support for LPA/Tunnel audio playback`          \
     `# hardware/qcom/display-caf` \
-    'http://review.cyanogenmod.org/#/c/53337/' `# hwc: Bump up version to 1.3`                                       \
-    'http://review.cyanogenmod.org/#/c/53338/' `# hwc: Punt layers with non integral source crop`                    \
-    'http://review.cyanogenmod.org/#/c/53339/' `# gralloc: Add allocation support for sRGB formats`                  \
-    'http://review.cyanogenmod.org/#/c/53340/' `# Replace sRGB_888 with sRGB_X_8888`                                 \
-    'http://review.cyanogenmod.org/#/c/53341/' `# get rid of HAL pixelformats 5551 and 4444`                         \
-    'http://review.cyanogenmod.org/#/c/53342/' `# gralloc: Add padding byte for YUV 420`                             \
-    'http://review.cyanogenmod.org/#/c/53343/' `# display: Add support to HAL_PIXEL_FORMAT_NV21_ZSL format`          \
-    'http://review.cyanogenmod.org/#/c/53344/' `# hwc: Add support to smooth streaming feature.`                     \
-    'http://review.cyanogenmod.org/#/c/53345/' `# hwcomposer: Clear mVirtualonExtActive on EXTERNAL_OFFLINE`         \
-    'http://review.cyanogenmod.org/#/c/53346/' `# hwc: support 8x26 variants`                                        \
-    'http://review.cyanogenmod.org/#/c/53347/' `# libhwcomposer: Optimize layer crops when possible.`                \
-    'http://review.cyanogenmod.org/#/c/53348/' `# libexternal: remove mEDIDs string`                                 \
-    'http://review.cyanogenmod.org/#/c/53349/' `# libhwcomposer: Make Rect utils generic.`                           \
-    'http://review.cyanogenmod.org/#/c/53350/' `# hwc: Fix rotator size allocation to max buffer size`               \
-    'http://review.cyanogenmod.org/#/c/53351/' `# overlay: Account for transform in size calculation`                \
-    'http://review.cyanogenmod.org/#/c/53352/' `# hwc: Do not punt secure layers for non integral crops`             \
+    `# 'http://review.cyanogenmod.org/#/c/53339/'` `# gralloc: Add allocation support for sRGB formats`                  \
+    `# 'http://review.cyanogenmod.org/#/c/53340/'` `# Replace sRGB_888 with sRGB_X_8888`                                 \
+    `# 'http://review.cyanogenmod.org/#/c/53344/'` `# hwc: Add support to smooth streaming feature.`                     \
+    `# 'http://review.cyanogenmod.org/#/c/53350/'` `# hwc: Fix rotator size allocation to max buffer size`               \
     `# device/samsung/jf-common` \
     `# 'http://review.cyanogenmod.org/#/c/53267/'` `# jf: selinux bringup`                                           \
     'http://review.cyanogenmod.org/#/c/53265/' `# jf: update wifi config`                                            \
