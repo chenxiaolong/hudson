@@ -14,7 +14,9 @@ reset_dirs_cm-11.0() {
               'packages/apps/Settings/'
               'frameworks/opt/hardware/'
               'hardware/samsung/'
-              'packages/providers/ContactsProvider/')
+              'packages/providers/ContactsProvider/'
+              'system/vold/'
+              'frameworks/native/')
 
   for i in ${RESET_DIRS[@]}; do
     if [ -d "${i}" ]; then
@@ -28,12 +30,14 @@ apply_patches_cm-11.0() {
   JF=${PATCHES}/jf
   HIGHTOUCHSENSITIVITY=${PATCHES}/high-touch-sensitivity
   FACEBOOKSYNC=${PATCHES}/facebook-sync
+  MOVEAPPTOSD=${PATCHES}/move-app-to-sd
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
   apply_patch_file_git ${JF}/0001-Do-not-mount-apnhlos-or-mdm-under-a-SELinux-context.patch
   apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
   apply_patch_file_git ${JF}/0001-Disable-some-overlays-for-now.patch
+  apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
   popd
 
   pushd device/samsung/msm8960-common/
@@ -46,6 +50,7 @@ apply_patches_cm-11.0() {
 
   pushd frameworks/base/
   apply_patch_file_git ${JF}/0001-Irda-Add-Irda-System-Service.patch
+  apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-changes-for-moving-applications-to-externa.patch
   popd
 
   pushd hardware/libhardware/
@@ -55,10 +60,13 @@ apply_patches_cm-11.0() {
   pushd packages/apps/Settings/
   apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Add-preferences-for-high-touch-sensitivity.patch
   apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Auto-copied-translations-for-high-touch-sensitivity.patch
+  apply_patch_file_git ${MOVEAPPTOSD}/0001-Enable-moving-applications-to-the-external-SD-card.patch
+  apply_patch_file_git ${MOVEAPPTOSD}/0001-Add-app-moving-setting-to-development-options.patch
   popd
 
   pushd frameworks/opt/hardware/
   apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Hardware-Add-high-touch-sensitivity-support.patch
+  apply_patch_file_git ${MOVEAPPTOSD}/0001-Add-class-for-enabling-and-disabling-moving-apps-to-.patch
   popd
 
   pushd hardware/samsung/
@@ -67,6 +75,14 @@ apply_patches_cm-11.0() {
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
+  popd
+
+  pushd system/vold/
+  apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
+  popd
+
+  pushd frameworks/native/
+  apply_patch_file_git ${MOVEAPPTOSD}/0001-Calculate-application-sizes-correctly.patch
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \

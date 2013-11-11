@@ -1,0 +1,102 @@
+From 43866a9e86b09bceae219d2d503115ac50c9def3 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 25 Aug 2013 22:28:41 -0400
+Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
+ emulated
+
+WARNING: This an initial implementation for Android 4.4 Kit Kat.
+It may or may not work properly.
+
+* This modifies Volume::mountVol() and Volume::unmountVol to call
+  mountAsecExternal() to set up .android_secure/ regardless if the
+  volume is primary or not. On devices where emulated internal
+  storage is used, the emulated storage is primary. Without this
+  patch, /data/secure/asec/ and the tmpfs over .android_secure/
+  won't be mounted.
+
+Thanks to Pierre-Hugues Husson for the idea in this patch! The initial
+implementation called createBindMounts() on all mount points regardless
+of whether or not it was the SD card.
+
+Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
+---
+ Volume.cpp | 22 +++++++++++++++++++---
+ Volume.h   |  1 +
+ 2 files changed, 20 insertions(+), 3 deletions(-)
+
+diff --git a/Volume.cpp b/Volume.cpp
+index 87cfe20..eae215b 100644
+--- a/Volume.cpp
++++ b/Volume.cpp
+@@ -202,6 +202,20 @@ int Volume::handleBlockEvent(NetlinkEvent *evt) {
+     return -1;
+ }
+ 
++bool Volume::isExternalSd() {
++    const char* externalSd = getenv("EXTERNAL_SD") ? : "/storage/sdcard1";
++    const char* disablePath = "/data/system/no-external-apps";
++
++    if (!strcmp(getMountpoint(), externalSd)) {
++        if (access(disablePath, F_OK) != -1) {
++            SLOGV("Application moving disabled; will not touch ASEC\n");
++            return false;
++        }
++        return true;
++    }
++    return false;
++}
++
+ void Volume::setState(int state) {
+     char msg[255];
+     int oldState = mState;
+@@ -341,6 +355,7 @@ int Volume::mountVol() {
+     dev_t deviceNodes[4];
+     int n, i, rc = 0;
+     char errmsg[255];
++    bool externalSd = isExternalSd();
+ 
+     int flags = getFlags();
+     bool providesAsec = (flags & VOL_PROVIDES_ASEC) != 0;
+@@ -536,7 +551,8 @@ int Volume::mountVol() {
+ 
+         protectFromAutorunStupidity();
+ 
+-        if (providesAsec && mountAsecExternal() != 0) {
++        // Create android_secure on external SD
++        if ((externalSd || providesAsec) && mountAsecExternal() != 0) {
+             SLOGE("Failed to mount secure area (%s)", strerror(errno));
+             umount(getMountpoint());
+             setState(Volume::State_Idle);
+@@ -715,7 +731,7 @@ int Volume::unmountVol(bool force, bool revert) {
+ 
+     // TODO: determine failure mode if FUSE times out
+ 
+-    if (providesAsec && doUnmount(Volume::SEC_ASECDIR_EXT, force) != 0) {
++    if ((isExternalSd() || providesAsec) && doUnmount(Volume::SEC_ASECDIR_EXT, force) != 0) {
+         SLOGE("Failed to unmount secure area on %s (%s)", getMountpoint(), strerror(errno));
+         goto out_mounted;
+     }
+@@ -760,7 +776,7 @@ int Volume::unmountVol(bool force, bool revert) {
+     return 0;
+ 
+ fail_remount_secure:
+-    if (providesAsec && mountAsecExternal() != 0) {
++    if ((isExternalSd() || providesAsec) && mountAsecExternal() != 0) {
+         SLOGE("Failed to remount secure area (%s)", strerror(errno));
+         goto out_nomedia;
+     }
+diff --git a/Volume.h b/Volume.h
+index c6d46b6..f850adf 100644
+--- a/Volume.h
++++ b/Volume.h
+@@ -74,6 +74,7 @@ public:
+     int formatVol(bool wipe);
+ 
+     const char *getLabel() { return mLabel; }
++    bool isExternalSd();
+     int getState() { return mState; }
+     int getFlags() { return mFlags; };
+ 
+-- 
+1.8.4.2
+

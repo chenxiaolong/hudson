@@ -1,0 +1,347 @@
+From 59f3dc4a75d986bf29569de45d90e7c3cc0458d0 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 25 Aug 2013 23:35:16 -0400
+Subject: [PATCH] Framework changes for moving applications to external SD
+
+* Add static functions for retrieving external SD volume information
+* Determine external SD volume using the 'externalSd' attribute in
+  storage_list.xml
+* Allow moving applications to the SD card regardless if the internal
+  is emulated or not
+* Check if moving apps to SD is disabled
+
+Thanks to Pierre-Hugues Husson for identifying an issue causing the
+SD card state to be incorrect (ie. SD card appearing unmounted when a
+USB drive is unplugged)
+
+Change-Id: I5561c2cf3f558b729c89663852173a532994a47a
+---
+ core/java/android/os/Environment.java              | 63 ++++++++++++++++++++++
+ core/java/android/os/storage/StorageVolume.java    | 31 ++++++++++-
+ core/res/res/values/attrs.xml                      |  2 +
+ .../defcontainer/DefaultContainerService.java      | 18 +++----
+ services/java/com/android/server/MountService.java | 26 ++++++---
+ 5 files changed, 124 insertions(+), 16 deletions(-)
+
+diff --git a/core/java/android/os/Environment.java b/core/java/android/os/Environment.java
+index b5413db..18bc6b4 100644
+--- a/core/java/android/os/Environment.java
++++ b/core/java/android/os/Environment.java
+@@ -273,6 +273,69 @@ public class Environment {
+         }
+     }
+ 
++    private static StorageVolume getExternalSdVolume() {
++        try {
++            IMountService mountService = IMountService.Stub.asInterface(ServiceManager
++                    .getService("mount"));
++            final StorageVolume[] volumes = mountService.getVolumeList();
++            for (StorageVolume volume : volumes) {
++                if (volume.isExternalSd()) {
++                    Log.v(TAG, "Found external SD volume: " + volume.getPath());
++                    return volume;
++                }
++            }
++        } catch (Exception e) {
++            Log.e(TAG, "couldn't talk to MountService", e);
++        }
++        return null;
++    }
++
++    public static boolean isExternalSdAvailableAndMounted() {
++        if (getExternalSdVolume() != null) {
++            Log.v(TAG, "isExternalSdAvailableAndMounted: SD card is available");
++            String state = getExternalSdState();
++            Log.v(TAG, "isExternalSdAvailableAndMounted: SD card state: " + state);
++            if (state.equals(MEDIA_MOUNTED)) {
++                final File temp = new File("/data/system/no-external-apps");
++                if (temp.exists()) {
++                    Log.v(TAG, "isExternalSdAvailableAndMounted: Application moving was explicitly disabled");
++                    return false;
++                }
++                return true;
++            }
++        } else {
++            Log.v(TAG, "isExternalSdAvailableAndMounted: SD card is NOT available");
++        }
++        return false;
++    }
++
++    /**
++     * Gets the current state of the external SD card.
++     *
++     * @see #getExternalSdDirectory()
++     */
++    public static String getExternalSdState() {
++        try {
++            IMountService mountService = IMountService.Stub.asInterface(ServiceManager
++                    .getService("mount"));
++            return mountService.getVolumeState(getExternalSdVolume().getPath());
++        } catch (RemoteException rex) {
++            Log.w(TAG, "Failed to read external SD state; assuming REMOVED: " + rex);
++            return Environment.MEDIA_REMOVED;
++        }
++    }
++
++    /**
++     * Gets the external SD card directory
++     */
++    public static File getExternalSdDirectory() {
++        StorageVolume volume = getExternalSdVolume();
++        if (volume != null) {
++          return new File(volume.getPath());
++        }
++        return null;
++    }
++
+     /**
+      * Return directory used for internal media storage, which is protected by
+      * {@link android.Manifest.permission#WRITE_MEDIA_STORAGE}.
+diff --git a/core/java/android/os/storage/StorageVolume.java b/core/java/android/os/storage/StorageVolume.java
+index 177a955..e44aa78 100644
+--- a/core/java/android/os/storage/StorageVolume.java
++++ b/core/java/android/os/storage/StorageVolume.java
+@@ -45,6 +45,7 @@ public class StorageVolume implements Parcelable {
+     private final long mMaxFileSize;
+     /** When set, indicates exclusive ownership of this volume */
+     private final UserHandle mOwner;
++    private final boolean mExternalSd;
+ 
+     // StorageVolume extra for ACTION_MEDIA_REMOVED, ACTION_MEDIA_UNMOUNTED, ACTION_MEDIA_CHECKING,
+     // ACTION_MEDIA_NOFS, ACTION_MEDIA_MOUNTED, ACTION_MEDIA_SHARED, ACTION_MEDIA_UNSHARED,
+@@ -63,6 +64,22 @@ public class StorageVolume implements Parcelable {
+         mAllowMassStorage = allowMassStorage;
+         mMaxFileSize = maxFileSize;
+         mOwner = owner;
++        mExternalSd = false;
++    }
++
++    public StorageVolume(File path, int descriptionId, boolean primary, boolean removable,
++            boolean emulated, int mtpReserveSpace, boolean allowMassStorage, long maxFileSize,
++            UserHandle owner, boolean externalSd) {
++        mPath = path;
++        mDescriptionId = descriptionId;
++        mPrimary = primary;
++        mRemovable = removable;
++        mEmulated = emulated;
++        mMtpReserveSpace = mtpReserveSpace;
++        mAllowMassStorage = allowMassStorage;
++        mMaxFileSize = maxFileSize;
++        mOwner = owner;
++        mExternalSd = externalSd;
+     }
+ 
+     private StorageVolume(Parcel in) {
+@@ -76,12 +93,13 @@ public class StorageVolume implements Parcelable {
+         mAllowMassStorage = in.readInt() != 0;
+         mMaxFileSize = in.readLong();
+         mOwner = in.readParcelable(null);
++        mExternalSd = in.readInt() != 0;
+     }
+ 
+     public static StorageVolume fromTemplate(StorageVolume template, File path, UserHandle owner) {
+         return new StorageVolume(path, template.mDescriptionId, template.mPrimary,
+                 template.mRemovable, template.mEmulated, template.mMtpReserveSpace,
+-                template.mAllowMassStorage, template.mMaxFileSize, owner);
++                template.mAllowMassStorage, template.mMaxFileSize, owner, template.mExternalSd);
+     }
+ 
+     /**
+@@ -133,6 +151,15 @@ public class StorageVolume implements Parcelable {
+     }
+ 
+     /**
++     * Returns true if the volume is the external SD card.
++     *
++     * @return is external SD
++     */
++    public boolean isExternalSd() {
++        return mExternalSd;
++    }
++
++    /**
+      * Returns the MTP storage ID for the volume.
+      * this is also used for the storage_id column in the media provider.
+      *
+@@ -216,6 +243,7 @@ public class StorageVolume implements Parcelable {
+         builder.append(" mAllowMassStorage=").append(mAllowMassStorage);
+         builder.append(" mMaxFileSize=").append(mMaxFileSize);
+         builder.append(" mOwner=").append(mOwner);
++        builder.append(" mExternalSd=").append(mExternalSd);
+         builder.append("]");
+         return builder.toString();
+     }
+@@ -249,5 +277,6 @@ public class StorageVolume implements Parcelable {
+         parcel.writeInt(mAllowMassStorage ? 1 : 0);
+         parcel.writeLong(mMaxFileSize);
+         parcel.writeParcelable(mOwner, flags);
++        parcel.writeInt(mExternalSd ? 1 : 0);
+     }
+ }
+diff --git a/core/res/res/values/attrs.xml b/core/res/res/values/attrs.xml
+index 42e3b50..f0e6203 100644
+--- a/core/res/res/values/attrs.xml
++++ b/core/res/res/values/attrs.xml
+@@ -6005,6 +6005,8 @@
+         <attr name="allowMassStorage" format="boolean" />
+         <!-- maximum file size for the volume in megabytes, zero or unspecified if it is unbounded -->
+         <attr name="maxFileSize" format="integer" />
++        <!-- true if volume is the external SD card -->
++        <attr name="externalSd" format="boolean" />
+     </declare-styleable>
+ 
+     <declare-styleable name="SwitchPreference">
+diff --git a/packages/DefaultContainerService/src/com/android/defcontainer/DefaultContainerService.java b/packages/DefaultContainerService/src/com/android/defcontainer/DefaultContainerService.java
+index b4eb922..5857208 100644
+--- a/packages/DefaultContainerService/src/com/android/defcontainer/DefaultContainerService.java
++++ b/packages/DefaultContainerService/src/com/android/defcontainer/DefaultContainerService.java
+@@ -233,7 +233,7 @@ public class DefaultContainerService extends IntentService {
+         public long calculateDirectorySize(String path) throws RemoteException {
+             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+ 
+-            final File dir = Environment.maybeTranslateEmulatedPathToInternal(new File(path));
++            final File dir = new File(path);
+             if (dir.exists() && dir.isDirectory()) {
+                 final String targetPath = dir.getAbsolutePath();
+                 return MeasurementUtils.measureDirectory(targetPath);
+@@ -763,7 +763,7 @@ public class DefaultContainerService extends IntentService {
+             prefer = PREFER_INTERNAL;
+         }
+ 
+-        final boolean emulated = Environment.isExternalStorageEmulated();
++        final boolean externalSd = Environment.isExternalSdAvailableAndMounted();
+ 
+         final File apkFile = new File(archiveFilePath);
+ 
+@@ -777,7 +777,7 @@ public class DefaultContainerService extends IntentService {
+         }
+ 
+         boolean fitsOnSd = false;
+-        if (!emulated && (checkBoth || prefer == PREFER_EXTERNAL)) {
++        if (externalSd && (checkBoth || prefer == PREFER_EXTERNAL)) {
+             try {
+                 fitsOnSd = isUnderExternalThreshold(apkFile, isForwardLocked);
+             } catch (IOException e) {
+@@ -789,7 +789,7 @@ public class DefaultContainerService extends IntentService {
+             if (fitsOnInternal) {
+                 return PackageHelper.RECOMMEND_INSTALL_INTERNAL;
+             }
+-        } else if (!emulated && prefer == PREFER_EXTERNAL) {
++        } else if (externalSd && prefer == PREFER_EXTERNAL) {
+             if (fitsOnSd) {
+                 return PackageHelper.RECOMMEND_INSTALL_EXTERNAL;
+             }
+@@ -798,7 +798,7 @@ public class DefaultContainerService extends IntentService {
+         if (checkBoth) {
+             if (fitsOnInternal) {
+                 return PackageHelper.RECOMMEND_INSTALL_INTERNAL;
+-            } else if (!emulated && fitsOnSd) {
++            } else if (externalSd && fitsOnSd) {
+                 return PackageHelper.RECOMMEND_INSTALL_EXTERNAL;
+             }
+         }
+@@ -808,7 +808,7 @@ public class DefaultContainerService extends IntentService {
+          * the media was unavailable. Otherwise, indicate there was insufficient
+          * storage space available.
+          */
+-        if (!emulated && (checkBoth || prefer == PREFER_EXTERNAL)
++        if (externalSd && (checkBoth || prefer == PREFER_EXTERNAL)
+                 && !Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+             return PackageHelper.RECOMMEND_MEDIA_UNAVAILABLE;
+         } else {
+@@ -852,15 +852,15 @@ public class DefaultContainerService extends IntentService {
+      */
+     private boolean isUnderExternalThreshold(File apkFile, boolean isForwardLocked)
+             throws IOException {
+-        if (Environment.isExternalStorageEmulated()) {
++        if (!Environment.isExternalSdAvailableAndMounted()) {
+             return false;
+         }
+ 
+         final int sizeMb = calculateContainerSize(apkFile, isForwardLocked);
+ 
+         final int availSdMb;
+-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+-            final StatFs sdStats = new StatFs(Environment.getExternalStorageDirectory().getPath());
++        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalSdState())) {
++            final StatFs sdStats = new StatFs(Environment.getExternalSdDirectory().getPath());
+             final int blocksToMb = (1 << 20) / sdStats.getBlockSize();
+             availSdMb = sdStats.getAvailableBlocks() / blocksToMb;
+         } else {
+diff --git a/services/java/com/android/server/MountService.java b/services/java/com/android/server/MountService.java
+index 9d92af0..c36942c 100644
+--- a/services/java/com/android/server/MountService.java
++++ b/services/java/com/android/server/MountService.java
+@@ -680,7 +680,7 @@ class MountService extends IMountService.Stub
+ 
+         // Tell PackageManager about changes to primary volume state, but only
+         // when not emulated.
+-        if (volume.isPrimary() && !volume.isEmulated()) {
++        if (volume.isExternalSd()) {
+             if (Environment.MEDIA_UNMOUNTED.equals(state)) {
+                 mPms.updateExternalMediaStatus(false, false);
+ 
+@@ -1035,7 +1035,7 @@ class MountService extends IMountService.Stub
+         Runtime.getRuntime().gc();
+ 
+         // Redundant probably. But no harm in updating state again.
+-        if (isPrimaryStorage(path)) {
++        if (isExternalSd(path)) {
+             mPms.updateExternalMediaStatus(false, false);
+         }
+         try {
+@@ -1217,18 +1217,21 @@ class MountService extends IMountService.Stub
+                     // resource parser does not support longs, so XML value is in megabytes
+                     long maxFileSize = a.getInt(
+                             com.android.internal.R.styleable.Storage_maxFileSize, 0) * 1024L * 1024L;
++                    boolean externalSd = a.getBoolean(
++                            com.android.internal.R.styleable.Storage_externalSd, false);
+ 
+                     Slog.d(TAG, "got storage path: " + path + " description: " + description +
+                             " primary: " + primary + " removable: " + removable +
+                             " emulated: " + emulated +  " mtpReserve: " + mtpReserve +
+                             " allowMassStorage: " + allowMassStorage +
+-                            " maxFileSize: " + maxFileSize);
++                            " maxFileSize: " + maxFileSize +
++                            " externalSd: " + externalSd);
+ 
+-                    if (emulated && primary) {
++                    if (emulated) {
+                         // For devices with emulated primary storage,
+                         // we create separate volumes for each known user.
+                         mEmulatedTemplate = new StorageVolume(null, descriptionId, true, false,
+-                                true, mtpReserve, false, maxFileSize, null);
++                                true, mtpReserve, false, maxFileSize, null, externalSd);
+ 
+                         final UserManagerService userManager = UserManagerService.getInstance();
+                         for (UserInfo user : userManager.getUsers(false)) {
+@@ -1241,7 +1244,7 @@ class MountService extends IMountService.Stub
+                         } else {
+                             final StorageVolume volume = new StorageVolume(new File(path),
+                                     descriptionId, primary, removable, emulated, mtpReserve,
+-                                    allowMassStorage, maxFileSize, null);
++                                    allowMassStorage, maxFileSize, null, externalSd);
+                             addVolumeLocked(volume);
+ 
+                             // Until we hear otherwise, treat as unmounted
+@@ -1491,6 +1494,17 @@ class MountService extends IMountService.Stub
+         }
+     }
+ 
++    private boolean isExternalSd(String path) {
++        synchronized (mVolumesLock) {
++            for (StorageVolume volume : mVolumes) {
++                if (volume.isExternalSd() && volume.getPath().equals(path)) {
++                    return true;
++                }
++            }
++            return false;
++        }
++    }
++
+     private boolean isPrimaryStorage(String path) {
+         synchronized (mVolumesLock) {
+             for (StorageVolume volume : mVolumes) {
+-- 
+1.8.4.2
+
