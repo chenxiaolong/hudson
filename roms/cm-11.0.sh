@@ -7,7 +7,6 @@ reset_dirs_cm-11.0() {
               'frameworks/base/'
               'system/core/'
               'device/samsung/jf-common/'
-              'device/samsung/msm8960-common/'
               'art/'
               'device/samsung/qcom-common/'
               'packages/apps/Settings/'
@@ -18,9 +17,14 @@ reset_dirs_cm-11.0() {
               'frameworks/native/'
               'vendor/samsung/'
               'packages/apps/Dialer/'
-              'packages/services/Telephony/')
+              'packages/services/Telephony/'
+              'external/clang/')
 
-  for i in ${RESET_DIRS[@]}; do
+  # Directories that should be reset for one more build
+  RESET_DIRS_OLD=('hardware/libhardware_legacy/'
+                  'device/samsung/msm8960-common/')
+
+  for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
     if [ -d "${i}" ]; then
       reset_git_state ${i} github/${REPO_BRANCH}
     fi
@@ -43,10 +47,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Allow-external-SD-to-be-mounted.patch
   # Revert "jf: Enable QC time services"
   git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
-  popd
-
-  pushd device/samsung/msm8960-common/
-  apply_patch_file_git ${JF}/0001-neon-vfpv4-neon.patch
   popd
 
   pushd art/
@@ -128,5 +128,7 @@ apply_patches_cm-11.0() {
     `# packages/apps/Dialer` \
     'http://review.cyanogenmod.org/#/c/53302/' `# Dialer: Update Icons to KitKat`                                    \
     `# packages/services/Telephony` \
-    'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`
+    'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`                                 \
+    `# external/clang` \
+    'http://review.cyanogenmod.org/#/c/53126/' `# clang: add support for neon-vfp instructions`
 }
