@@ -17,7 +17,9 @@ reset_dirs_cm-11.0() {
               'packages/providers/ContactsProvider/'
               'system/vold/'
               'frameworks/native/'
-              'vendor/samsung/')
+              'vendor/samsung/'
+              'packages/apps/Dialer/'
+              'packages/services/Telephony/')
 
   for i in ${RESET_DIRS[@]}; do
     if [ -d "${i}" ]; then
@@ -128,10 +130,15 @@ apply_patches_cm-11.0() {
     `# 'http://review.cyanogenmod.org/#/c/53165/'` `# audio_policy: Add EVRCB & EVRCWB formats`                      \
     `# frameworks/av` \
     'http://review.cyanogenmod.org/#/c/53324/' `# frameworks_av: Support pre-KitKat audio blobs`                     \
+    'http://review.cyanogenmod.org/#/c/53376/' `# frameworks/av: Squashed commit of media features from CAF`         \
     `# system/core` \
     'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
     'http://review.cyanogenmod.org/#/c/53310/' `# Add support for QCs time_daemon`                                   \
     `# device/samsung/qcom-common` \
-    'http://review.cyanogenmod.org/#/c/53115/' `# qcom: allow properly querying of battery capacity`
+    'http://review.cyanogenmod.org/#/c/53115/' `# qcom: allow properly querying of battery capacity`                 \
+    `# packages/apps/Dialer` \
+    'http://review.cyanogenmod.org/#/c/53302/' `# Dialer: Update Icons to KitKat`                                    \
+    `# packages/services/Telephony` \
+    'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`
 }
