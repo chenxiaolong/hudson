@@ -1,53 +1,38 @@
-From 2301432fa6e6a21d8c72a62388c0d7f01706fe03 Mon Sep 17 00:00:00 2001
-From: Matt Filetto <matt.filetto@gmail.com>
-Date: Mon, 11 Nov 2013 02:46:59 -0800
+From c5d780be59751229313140b9cdcb8d8a3481647e Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Tue, 12 Nov 2013 14:13:25 -0500
 Subject: [PATCH] Allow external SD to be mounted
 
-Change-Id: I5b4c60ecec5c5e383bbe2cf4c618ec76e924d574
+Change-Id: If2b451d6a58e13e7b5404e048d75fd8940dfa07f
 ---
  rootdir/etc/fstab.qcom   | 4 ++--
- rootdir/etc/init.qcom.rc | 7 ++++++-
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ rootdir/etc/init.qcom.rc | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/rootdir/etc/fstab.qcom b/rootdir/etc/fstab.qcom
-index fed1c96..4268a9e 100644
+index 3faf6f0..4268a9e 100644
 --- a/rootdir/etc/fstab.qcom
 +++ b/rootdir/etc/fstab.qcom
 @@ -16,5 +16,5 @@
  /dev/block/platform/msm_sdcc.1/by-name/efs            /efs          ext4    nosuid,nodev,noatime                        wait,check
  /dev/block/platform/msm_sdcc.1/by-name/userdata       /data        ext4    nosuid,nodev,noatime,noauto_da_alloc,journal_async_commit,errors=panic      wait,check,encryptable=footer,length=-16384
  
--/devices/platform/msm_sdcc.2/mmc_host/mmc2			/storage/sdcard1 		auto	default		voldmanaged=sdcard:auto
--/devices/platform/msm_hsusb_host/usb				/storage/usbdisk0		auto	default		voldmanaged=sda:auto
+-/devices/platform/msm_sdcc.2/mmc_host/mmc2			auto 		auto	default		voldmanaged=sdcard1:auto
+-/devices/platform/msm_hsusb_host/usb				auto		auto	default		voldmanaged=sda:auto
 +/devices/platform/msm_sdcc.2/mmc_host/mmc2			auto 		auto	defaults		voldmanaged=sdcard1:auto
 +/devices/platform/msm_hsusb_host/usb				auto		auto	defaults		voldmanaged=sda:auto
 diff --git a/rootdir/etc/init.qcom.rc b/rootdir/etc/init.qcom.rc
-index 32f65ab..f031190 100644
+index 4c128c1..4e6ece4 100644
 --- a/rootdir/etc/init.qcom.rc
 +++ b/rootdir/etc/init.qcom.rc
-@@ -36,6 +36,7 @@ on init
-     mkdir /storage/emulated 0555 root root
- 
-     #External storage directories
-+    mkdir /mnt/media_rw/sdcard1 0700 media_rw media_rw
-     mkdir /storage/sdcard1 0000 system system
-     mkdir /storage/usbdisk0 0000 system system
- 
-@@ -625,10 +626,14 @@ service profiler_daemon /system/bin/profiler_daemon
-     disabled
- 
- # virtual sdcard daemon running as media_rw (1023)
--service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
-+service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emulated
+@@ -633,7 +633,7 @@ service sdcard /system/bin/sdcard -u 1023 -g 1023 -l /data/media /mnt/shell/emul
      class late_start
      oneshot
  
+-service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/sdcard1 /storage/sdcard1
 +service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 -w 1015 -d /mnt/media_rw/sdcard1 /storage/sdcard1
-+    class late_start
-+    disabled
-+
- on property:ro.fuse_sdcard=true
-     start sdcard
+     class late_start
+     disabled
  
 -- 
 1.8.4.2

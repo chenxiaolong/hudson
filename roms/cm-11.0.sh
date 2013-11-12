@@ -3,7 +3,6 @@ reset_dirs_cm-11.0() {
               'hardware/qcom/audio-caf/'
               'hardware/qcom/display-caf/'
               'hardware/libhardware/'
-              'hardware/libhardware_legacy/'
               'frameworks/av/'
               'frameworks/base/'
               'system/core/'
@@ -37,11 +36,10 @@ apply_patches_cm-11.0() {
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
-  apply_patch_file_git ${JF}/0001-Do-not-mount-apnhlos-or-mdm-under-a-SELinux-context.patch
   apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
-  apply_patch_file_git ${JF}/0001-Disable-some-overlays-for-now.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
   apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
+  apply_patch_file_git ${JF}/0001-Use-IRDA-service.patch
   apply_patch_file_git ${JF}/0001-Allow-external-SD-to-be-mounted.patch
   # Revert "jf: Enable QC time services"
   git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
@@ -118,16 +116,6 @@ apply_patches_cm-11.0() {
     `# 'http://review.cyanogenmod.org/#/c/53267/'` `# jf: selinux bringup`                                           \
     'http://review.cyanogenmod.org/#/c/53265/' `# jf: update wifi config`                                            \
     `# 'http://review.cyanogenmod.org/#/c/53266/'` `# jf: remove gsm/cdma overlay dirs`                              \
-    'http://review.cyanogenmod.org/#/c/53264/' `# jf: dont build qcom camera HAL`                                    \
-    `# 'http://review.cyanogenmod.org/#/c/53372/'` `# Fix mounting of external sd`                                       \
-    'http://review.cyanogenmod.org/#/c/53373/' `# jf-common: translucent lockscreen decor`                           \
-    `# hardware/libhardware` \
-    'http://review.cyanogenmod.org/#/c/53072/' `# libhardware: Add APIs to support DirectTrack`                      \
-    'http://review.cyanogenmod.org/#/c/53328/' `# libhardware: Add MSM string parameters.`                           \
-    `# hardware/libhardware_legacy` \
-    'http://review.cyanogenmod.org/#/c/53073/' `# libhardware_legacy: Add MSM specific flags, devices and channels.` \
-    'http://review.cyanogenmod.org/#/c/53074/' `# libhardware_legacy: Add support for DirectTrack`                   \
-    `# 'http://review.cyanogenmod.org/#/c/53165/'` `# audio_policy: Add EVRCB & EVRCWB formats`                      \
     `# frameworks/av` \
     'http://review.cyanogenmod.org/#/c/53324/' `# frameworks_av: Support pre-KitKat audio blobs`                     \
     'http://review.cyanogenmod.org/#/c/53376/' `# frameworks/av: Squashed commit of media features from CAF`         \
