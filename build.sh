@@ -20,7 +20,7 @@ elif [ -f /etc/debian-release ]; then
 elif [ -f /etc/fedora-release ]; then
   DISTRO=fedora
 elif [ -f /etc/os-release ]; then
-  if grep -q Ubuntu <<< /etc/os-release; then
+  if grep -q Ubuntu /etc/os-release; then
     DISTRO=ubuntu
   fi
 fi
