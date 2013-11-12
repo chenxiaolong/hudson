@@ -40,6 +40,7 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Disable-some-overlays-for-now.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
   apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
+  apply_patch_file_git ${JF}/0001-Allow-external-SD-to-be-mounted.patch
   # Revert "jf: Enable QC time services"
   git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
   popd
@@ -116,7 +117,7 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53265/' `# jf: update wifi config`                                            \
     `# 'http://review.cyanogenmod.org/#/c/53266/'` `# jf: remove gsm/cdma overlay dirs`                              \
     'http://review.cyanogenmod.org/#/c/53264/' `# jf: dont build qcom camera HAL`                                    \
-    'http://review.cyanogenmod.org/#/c/53372/' `# Fix mounting of external sd`                                       \
+    `# 'http://review.cyanogenmod.org/#/c/53372/'` `# Fix mounting of external sd`                                       \
     'http://review.cyanogenmod.org/#/c/53373/' `# jf-common: translucent lockscreen decor`                           \
     `# hardware/libhardware` \
     'http://review.cyanogenmod.org/#/c/53072/' `# libhardware: Add APIs to support DirectTrack`                      \
