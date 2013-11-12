@@ -1,6 +1,7 @@
 ubuntu_checkdeps() {
   # There are quite a few that can be removed from this list
-  NEEDED=('git-core'
+  NEEDED=('ccache'
+          'git-core'
           'gnupg'
           'flex'
           'bison'

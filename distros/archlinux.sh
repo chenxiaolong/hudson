@@ -2,6 +2,7 @@ arch_checkdeps() {
   NEEDED=('jre6-compat'
           'jdk6-compat'
           'bison'
+          'ccache'
           'curl'
           'flex'
           'gcc-multilib'
