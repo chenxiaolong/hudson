@@ -94,7 +94,7 @@ export PATH="$(pwd)/bin:${PATH}"
 
 if ! which repo &>/dev/null; then
   mkdir -p bin/
-  curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > bin/repo
+  curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > bin/repo
   chmod a+x bin/repo
   REPO="$(pwd)/bin/repo"
 else
