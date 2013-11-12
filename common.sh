@@ -6,7 +6,6 @@ common_envsetup() {
   # ccache
   export USE_CCACHE=1
   export CCACHE_NLEVELS=4
-  export PATH="${PATH}:$(pwd)/prebuilts/misc/$(uname | tr '[A-Z]' '[a-z]')-x86/ccache"
   if [ -z "${CCACHE_DIR}" ]; then
     export CCACHE_DIR=${WORKSPACE}/ccache
   fi
