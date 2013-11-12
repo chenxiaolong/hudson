@@ -1,0 +1,26 @@
+From dced490c15cbebcaa360761b99921ead1e38df2a Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Tue, 12 Nov 2013 15:14:39 -0500
+Subject: [PATCH] Use ccache version 3
+
+Change-Id: Ib8c04c81039c12833d73a9a34716b2278e54e718
+---
+ core/combo/select.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/combo/select.mk b/core/combo/select.mk
+index e485d00..cba9987 100644
+--- a/core/combo/select.mk
++++ b/core/combo/select.mk
+@@ -83,7 +83,7 @@ ifneq ($(USE_CCACHE),)
+   ifeq ($(HOST_OS)-$(BUILD_OS),windows-linux)
+     CCACHE_HOST_TAG := linux-$(BUILD_ARCH)
+   endif
+-  ccache := prebuilts/misc/$(CCACHE_HOST_TAG)/ccache/ccache
++  ccache := /usr/bin/ccache
+   # Check that the executable is here.
+   ccache := $(strip $(wildcard $(ccache)))
+   ifdef ccache
+-- 
+1.8.4.2
+

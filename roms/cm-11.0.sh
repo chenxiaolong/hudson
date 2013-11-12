@@ -18,7 +18,8 @@ reset_dirs_cm-11.0() {
               'vendor/samsung/'
               'packages/apps/Dialer/'
               'packages/services/Telephony/'
-              'external/clang/')
+              'external/clang/'
+              'build/')
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=('hardware/libhardware_legacy/'
@@ -93,6 +94,10 @@ apply_patches_cm-11.0() {
   pushd vendor/samsung/
   # Revert "jf: Update blobs"
   git revert --no-edit 25abb7ace77be2ad3c52df93dd7044d50b8fee1d
+  popd
+
+  pushd build/
+  apply_patch_file_git ${PATCHES}/0001-Use-ccache-version-3.patch
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \
