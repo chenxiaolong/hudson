@@ -92,11 +92,13 @@ mkdir -p archive
 
 export PATH="$(pwd)/bin:${PATH}"
 
-REPO=$(which repo)
-if [ -z "$REPO" ]; then
+if ! which repo &>/dev/null; then
   mkdir -p bin/
   curl https://dl-ssl.google.com/dl/googlesource/git-repo/repo > bin/repo
   chmod a+x bin/repo
+  REPO="$(pwd)/bin/repo"
+else
+  REPO="$(which repo)"
 fi
 
 # Set up environment
