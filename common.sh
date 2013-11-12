@@ -144,8 +144,11 @@ common_build() {
     ;;
   esac
 
-  #time schedtool -B -n 1 -e ionice -n 1 make -j${THREADS} bacon
-  time schedtool -B -n -10 -e ionice -n 1 make -j${THREADS} bacon
+  if [ "x${DISTRO}" = "xubuntu" ]; then
+    time schedtool -B -n 1 -e ionice -n 1 make -j${THREADS} bacon
+  else
+    time schedtool -B -n -10 -e ionice -n 1 make -j${THREADS} bacon
+  fi
 }
 
 common_postbuild() {
