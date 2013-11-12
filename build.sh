@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#set -ex
-set -e
+set -ex
+#set -e
 
 source common.sh
 
