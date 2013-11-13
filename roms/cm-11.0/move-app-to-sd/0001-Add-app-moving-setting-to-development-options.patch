@@ -1,4 +1,4 @@
-From 32195e648b03b5302f3b70772d8894f2b985e660 Mon Sep 17 00:00:00 2001
+From 63457ef83535f38228729c414794a84e87ec951e Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Thu, 12 Sep 2013 23:22:25 -0400
 Subject: [PATCH] Add app moving setting to development options
@@ -26,23 +26,25 @@ index 04f2b43..c10d708 100644
 +    <string name="app_moving_summary">Aktivieren Sie das Verschieben von Anwendungen auf externe Speichermedien (Neustart nach Änderung der Einstellung)</string>
  </resources>
 diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
-index c7d4871..92d6791 100644
+index d8404b6..78e1080 100644
 --- a/res/values/cm_strings.xml
 +++ b/res/values/cm_strings.xml
-@@ -338,4 +338,8 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
-     <string name="more_device_settings_title">Other device options</string>
+@@ -339,6 +339,10 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
      <string name="sensors_motors_title">Sensors &amp; motors</string>
      <string name="display_calibration_title">Display calibration</string>
-+
+ 
 +    <!-- App moving settings -->
 +    <string name="app_moving">App moving</string>
 +    <string name="app_moving_summary">Enable the moving of applications to external storage (reboot after changing setting)</string>
- </resources>
++
+     <!-- Setting checkbox summary for displaying USB debugging notification -->
+     <string name="adb_notify">USB debugging notify</string>
+     <string name="adb_notify_summary">Display a notification when USB debugging is connected</string>
 diff --git a/res/xml/development_prefs.xml b/res/xml/development_prefs.xml
-index 75cc5f0..8e2084d 100644
+index 5c96513..2cfc3fb 100644
 --- a/res/xml/development_prefs.xml
 +++ b/res/xml/development_prefs.xml
-@@ -286,6 +286,12 @@
+@@ -298,6 +298,12 @@
              android:title="@string/show_all_anrs"
              android:summary="@string/show_all_anrs_summary"/>
  
@@ -56,10 +58,10 @@ index 75cc5f0..8e2084d 100644
  
  </PreferenceScreen>
 diff --git a/src/com/android/settings/DevelopmentSettings.java b/src/com/android/settings/DevelopmentSettings.java
-index 54351f8..f407d09 100644
+index dd32d34..26ce4a5 100644
 --- a/src/com/android/settings/DevelopmentSettings.java
 +++ b/src/com/android/settings/DevelopmentSettings.java
-@@ -65,6 +65,8 @@ import android.widget.TextView;
+@@ -68,6 +68,8 @@ import android.widget.TextView;
  
  import dalvik.system.VMRuntime;
  
@@ -68,7 +70,7 @@ index 54351f8..f407d09 100644
  import java.io.File;
  import java.util.ArrayList;
  import java.util.HashSet;
-@@ -142,6 +144,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
+@@ -147,6 +149,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
  
      private static final String SHOW_ALL_ANRS_KEY = "show_all_anrs";
  
@@ -77,7 +79,7 @@ index 54351f8..f407d09 100644
      private static final String TAG_CONFIRM_ENFORCE = "confirm_enforce";
  
      private static final String PACKAGE_MIME_TYPE = "application/vnd.android.package-archive";
-@@ -204,6 +208,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
+@@ -211,6 +215,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
      private ListPreference mAppProcessLimit;
  
      private CheckBoxPreference mShowAllANRs;
@@ -85,7 +87,7 @@ index 54351f8..f407d09 100644
  
      private ListPreference mRootAccess;
      private Object mSelectedRootValue;
-@@ -324,6 +329,9 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
+@@ -334,6 +339,9 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
          mAllPrefs.add(mShowAllANRs);
          mResetCbPrefs.add(mShowAllANRs);
  
@@ -95,7 +97,7 @@ index 54351f8..f407d09 100644
          Preference selectRuntime = findPreference(SELECT_RUNTIME_KEY);
          if (selectRuntime != null) {
              mAllPrefs.add(selectRuntime);
-@@ -481,6 +489,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
+@@ -491,6 +499,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
              mEnabledSwitch.setChecked(mLastEnabledState);
              setPrefsEnabledState(mLastEnabledState);
          }
@@ -104,7 +106,7 @@ index 54351f8..f407d09 100644
      }
  
      void updateCheckBox(CheckBoxPreference checkBox, boolean value) {
-@@ -536,6 +546,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
+@@ -549,6 +559,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
          updateWifiDisplayCertificationOptions();
          updateRootAccessOptions();
          updateAdvancedRebootOptions();
@@ -112,7 +114,7 @@ index 54351f8..f407d09 100644
      }
  
      private void resetAdvancedRebootOptions() {
-@@ -682,6 +693,14 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
+@@ -723,6 +734,14 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
          }
      }
  
@@ -127,7 +129,7 @@ index 54351f8..f407d09 100644
      private void updatePasswordSummary() {
          try {
              if (mBackupManager.hasBackupPassword()) {
-@@ -1341,6 +1360,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
+@@ -1408,6 +1427,8 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
              writeWifiDisplayCertificationOptions();
          } else if (preference == mAdvancedReboot) {
              writeAdvancedRebootOptions();
