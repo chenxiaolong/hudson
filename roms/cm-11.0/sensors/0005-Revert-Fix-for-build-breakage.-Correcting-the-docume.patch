@@ -1,0 +1,28 @@
+From e39e51fea0cefe3e801d86994544def408b73279 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Wed, 13 Nov 2013 00:19:25 -0500
+Subject: [PATCH 5/7] Revert "Fix for build breakage. Correcting the
+ documentatation link in Sensor.java. I added a wrong link {@link
+ #SENSOR_TYPE_ROTATION_VECTOR} instead of {@link #TYPE_ROTATION_VECTOR}."
+
+This reverts commit f0f4a831128c57acb52ce91f6d96a9f2b710c80f.
+---
+ core/java/android/hardware/Sensor.java | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/java/android/hardware/Sensor.java b/core/java/android/hardware/Sensor.java
+index 9bffdbe..d708791 100644
+--- a/core/java/android/hardware/Sensor.java
++++ b/core/java/android/hardware/Sensor.java
+@@ -213,7 +213,7 @@ public final class Sensor {
+     /**
+      * A constant describing the geo-magnetic rotation vector.
+      * <p>
+-     * Similar to {@link #TYPE_ROTATION_VECTOR}, but using a magnetometer instead of using a
++     * Similar to {@link #SENSOR_TYPE_ROTATION_VECTOR}, but using a magnetometer instead of using a
+      * gyroscope. This sensor uses lower power than the other rotation vectors, because it doesn't
+      * use the gyroscope. However, it is more noisy and will work best outdoors.
+      * <p>
+-- 
+1.8.4.2
+

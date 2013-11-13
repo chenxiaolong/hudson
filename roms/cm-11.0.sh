@@ -38,6 +38,7 @@ apply_patches_cm-11.0() {
   HIGHTOUCHSENSITIVITY=${PATCHES}/high-touch-sensitivity
   FACEBOOKSYNC=${PATCHES}/facebook-sync
   MOVEAPPTOSD=${PATCHES}/move-app-to-sd
+  SENSORS=${PATCHES}/sensors
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
@@ -57,6 +58,21 @@ apply_patches_cm-11.0() {
   pushd frameworks/base/
   apply_patch_file_git ${JF}/0001-Irda-Add-Irda-System-Service.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-changes-for-moving-applications-to-externa.patch
+  # Thanks to Team Guppy for finding the commits to revert!
+  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/eeeca93aa110bc2b59290b5e048c15162bfb1780
+  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/9dbf6faeb2ddd6fd031f51e788dc437e496cc1ce
+  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/f64cbd2b4512ad1b2c6cbaabe08a22a097a26b6a
+  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/eef1ffd30fb050af3a9b51af4ff62ff7323fb593
+  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/a33672672c380b95843226c48858224e2d299057
+  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/f95516fd54f1ed5359e4b79d748172a5e1a80c19
+  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/6dd50a6edb7916256ef83fd7e938e001aad6b465
+  apply_patch_file_git ${SENSORS}/0001-Revert-Fix-registerListener-and-flush-bugs.patch
+  apply_patch_file_git ${SENSORS}/0002-Revert-Sensor-batching-APIs-for-review.patch
+  apply_patch_file_git ${SENSORS}/0003-Revert-Fix-for-build-breakage.-Remove-documentation-.patch
+  apply_patch_file_git ${SENSORS}/0004-Revert-Sensor-batching.-Implementation-for-registerL.patch
+  apply_patch_file_git ${SENSORS}/0005-Revert-Fix-for-build-breakage.-Correcting-the-docume.patch
+  apply_patch_file_git ${SENSORS}/0006-Revert-Adding-new-constants-for-STEP_DETECTOR-STEP_C.patch
+  apply_patch_file_git ${SENSORS}/0007-Revert-Revert-Revert-be-more-robust-with-handling-un.patch
   popd
 
   pushd hardware/libhardware/
@@ -89,6 +105,13 @@ apply_patches_cm-11.0() {
 
   pushd frameworks/native/
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Calculate-application-sizes-correctly.patch
+  # Thanks to Team Guppy for finding the commits to revert!
+  # https://github.com/TEAM-Gummy/platform_frameworks_native/commit/4980b82179fb742a830e3fc68781e35bb4a3ee81
+  # https://github.com/TEAM-Gummy/platform_frameworks_native/commit/9f73d1e2e1ca4f59abe5a5ef2b607b8996f67bd2
+  # https://github.com/TEAM-Gummy/platform_frameworks_native/commit/59fcdbef1e75bef84d22f8353544973807bb785a
+  apply_patch_file_git ${SENSORS}/0001-revert-to-4.3-sensors-for-testing.patch
+  apply_patch_file_git ${SENSORS}/0002-complete-the-sensor-swapout.patch
+  apply_patch_file_git ${SENSORS}/0003-Make-Flattenable-not-virtual.patch
   popd
 
   pushd vendor/samsung/

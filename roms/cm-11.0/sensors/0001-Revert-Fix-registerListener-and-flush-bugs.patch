@@ -1,0 +1,509 @@
+From 38c209a055de34086643c4bc2033c0645ad29112 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Wed, 13 Nov 2013 00:17:17 -0500
+Subject: [PATCH 1/7] Revert "Fix registerListener and flush bugs."
+
+This reverts commit 4bdc37d315a6dbdcf2425e70423ec43d7b74e102.
+---
+ api/current.txt                                    |  14 +--
+ .../android/hardware/FlushCompleteListener.java    |  34 +++++++
+ .../android/hardware/SensorEventListener2.java     |  34 -------
+ core/java/android/hardware/SensorManager.java      | 109 ++++++++++-----------
+ .../java/android/hardware/SystemSensorManager.java |  85 ++++++++++------
+ core/jni/android_hardware_SensorManager.cpp        |   6 +-
+ 6 files changed, 151 insertions(+), 131 deletions(-)
+ create mode 100644 core/java/android/hardware/FlushCompleteListener.java
+ delete mode 100644 core/java/android/hardware/SensorEventListener2.java
+
+diff --git a/api/current.txt b/api/current.txt
+index b0450a4..aee1fe9 100644
+--- a/api/current.txt
++++ b/api/current.txt
+@@ -10701,6 +10701,10 @@ package android.hardware {
+     method public int getMinFrequency();
+   }
+ 
++  public abstract interface FlushCompleteListener {
++    method public abstract void onFlushCompleted(android.hardware.Sensor);
++  }
++
+   public class GeomagneticField {
+     ctor public GeomagneticField(float, float, float, long);
+     method public float getDeclination();
+@@ -10758,10 +10762,6 @@ package android.hardware {
+     method public abstract void onSensorChanged(android.hardware.SensorEvent);
+   }
+ 
+-  public abstract interface SensorEventListener2 implements android.hardware.SensorEventListener {
+-    method public abstract void onFlushCompleted(android.hardware.Sensor);
+-  }
+-
+   public abstract deprecated interface SensorListener {
+     method public abstract void onAccuracyChanged(int, int);
+     method public abstract void onSensorChanged(int, float[]);
+@@ -10769,7 +10769,7 @@ package android.hardware {
+ 
+   public abstract class SensorManager {
+     method public boolean cancelTriggerSensor(android.hardware.TriggerEventListener, android.hardware.Sensor);
+-    method public boolean flush(android.hardware.SensorEventListener);
++    method public boolean flush(android.hardware.Sensor);
+     method public static float getAltitude(float, float);
+     method public static void getAngleChange(float[], float[], float[]);
+     method public android.hardware.Sensor getDefaultSensor(int);
+@@ -10783,9 +10783,9 @@ package android.hardware {
+     method public deprecated boolean registerListener(android.hardware.SensorListener, int);
+     method public deprecated boolean registerListener(android.hardware.SensorListener, int, int);
+     method public boolean registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int);
+-    method public boolean registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, int);
++    method public boolean registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, int, int, android.hardware.FlushCompleteListener);
+     method public boolean registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, android.os.Handler);
+-    method public boolean registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, int, android.os.Handler);
++    method public boolean registerListener(android.hardware.SensorEventListener, android.hardware.Sensor, int, int, int, android.os.Handler, android.hardware.FlushCompleteListener);
+     method public static boolean remapCoordinateSystem(float[], int, int, float[]);
+     method public boolean requestTriggerSensor(android.hardware.TriggerEventListener, android.hardware.Sensor);
+     method public deprecated void unregisterListener(android.hardware.SensorListener);
+diff --git a/core/java/android/hardware/FlushCompleteListener.java b/core/java/android/hardware/FlushCompleteListener.java
+new file mode 100644
+index 0000000..fbdf4c8
+--- /dev/null
++++ b/core/java/android/hardware/FlushCompleteListener.java
+@@ -0,0 +1,34 @@
++/*
++ * Copyright (C) 2008 The Android Open Source Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package android.hardware;
++
++/**
++ * Used for receiving a notification when a flush() has been successfully completed.
++ */
++public interface FlushCompleteListener {
++    /**
++     * Called after flush() is completed. This flush() could have been initiated by this application
++     * or some other application. All the events in the batch at the point when the flush was called
++     * have been delivered to the applications registered for those sensor events.
++     * <p>
++     *
++     * @param sensor The {@link android.hardware.Sensor Sensor} on which flush was called.
++     *
++     * @see android.hardware.SensorManager#flush(Sensor)
++     */
++    public void onFlushCompleted(Sensor sensor);
++}
+diff --git a/core/java/android/hardware/SensorEventListener2.java b/core/java/android/hardware/SensorEventListener2.java
+deleted file mode 100644
+index 4c3b429..0000000
+--- a/core/java/android/hardware/SensorEventListener2.java
++++ /dev/null
+@@ -1,34 +0,0 @@
+-/*
+- * Copyright (C) 2008 The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-package android.hardware;
+-
+-/**
+- * Used for receiving a notification when a flush() has been successfully completed.
+- */
+-public interface SensorEventListener2 extends SensorEventListener {
+-    /**
+-     * Called after flush() is completed. This flush() could have been initiated by this application
+-     * or some other application. All the events in the batch at the point when the flush was called
+-     * have been delivered to the applications registered for those sensor events.
+-     * <p>
+-     *
+-     * @param sensor The {@link android.hardware.Sensor Sensor} on which flush was called.
+-     *
+-     * @see android.hardware.SensorManager#flush(SensorEventListener)
+-     */
+-    public void onFlushCompleted(Sensor sensor);
+-}
+diff --git a/core/java/android/hardware/SensorManager.java b/core/java/android/hardware/SensorManager.java
+index b931313..8a4aa1d 100644
+--- a/core/java/android/hardware/SensorManager.java
++++ b/core/java/android/hardware/SensorManager.java
+@@ -533,6 +533,8 @@ public abstract class SensorManager {
+      *
+      * @see #unregisterListener(SensorEventListener)
+      * @see #registerListener(SensorEventListener, Sensor, int)
++     *
++     * @throws IllegalArgumentException when sensor is a trigger sensor.
+      */
+     public void unregisterListener(SensorEventListener listener, Sensor sensor) {
+         if (listener == null || sensor == null) {
+@@ -599,6 +601,7 @@ public abstract class SensorManager {
+      * @see #unregisterListener(SensorEventListener)
+      * @see #unregisterListener(SensorEventListener, Sensor)
+      *
++     * @throws IllegalArgumentException when sensor is null or a trigger sensor
+      */
+     public boolean registerListener(SensorEventListener listener, Sensor sensor, int rateUs) {
+         return registerListener(listener, sensor, rateUs, null);
+@@ -635,9 +638,7 @@ public abstract class SensorManager {
+      * {@link #requestTriggerSensor(TriggerEventListener, Sensor)} instead. </p>
+      *
+      * @param listener A {@link android.hardware.SensorEventListener SensorEventListener} object
+-     *            that will receive the sensor events. If the application is interested in receiving
+-     *            flush complete notifications, it should register with
+-     *            {@link android.hardware.SensorEventListener SensorEventListener2} instead.
++     *            that will receive the sensor events.
+      * @param sensor The {@link android.hardware.Sensor Sensor} to register to.
+      * @param rateUs The desired delay between two consecutive events in microseconds. This is only
+      *            a hint to the system. Events may be received faster or slower than the specified
+@@ -650,23 +651,30 @@ public abstract class SensorManager {
+      *            large. If this is set to zero, batch mode is disabled and events are delivered in
+      *            continuous mode as soon as they are available which is equivalent to calling
+      *            {@link #registerListener(SensorEventListener, Sensor, int)}.
+-     * @return <code>true</code> if batch mode is successfully enabled for this sensor,
+-     *         <code>false</code> otherwise.
++     * @param reservedFlags Always set to Zero.
++     * @param flushCompleteListener A {@link android.hardware.FlushCompleteListener
++     *            FlushCompleteListener} object which is called when any application calls flush()
++     *            on this sensor and all the events in the batch at the time of calling flush() are
++     *            successfully delivered to the listeners.
++     * @return true if batch mode is successfully enabled for this sensor, false otherwise.
+      * @see #registerListener(SensorEventListener, Sensor, int)
+      * @see #unregisterListener(SensorEventListener)
+-     * @see #flush(SensorEventListener)
++     * @see #flush(Sensor)
++     * @throws IllegalArgumentException when sensor or listener is null or a trigger sensor.
+      */
+     public boolean registerListener(SensorEventListener listener, Sensor sensor, int rateUs,
+-            int maxBatchReportLatencyUs) {
++            int maxBatchReportLatencyUs, int reservedFlags,
++            FlushCompleteListener flushCompleteListener) {
+         int delay = getDelay(rateUs);
+-        return registerListenerImpl(listener, sensor, delay, null, maxBatchReportLatencyUs, 0);
++        return registerListenerImpl(listener, sensor, delay, null, maxBatchReportLatencyUs,
++                                        reservedFlags, flushCompleteListener);
+     }
+ 
+     /**
+      * Registers a {@link android.hardware.SensorEventListener SensorEventListener} for the given
+      * sensor. Events are delivered in continuous mode as soon as they are available. To reduce the
+-     * battery usage, use {@link #registerListener(SensorEventListener, Sensor, int, int)} which
+-     * enables batch mode for the sensor.
++     * battery usage, use {@link #registerListener(SensorEventListener, Sensor, int, int, int,
++     * FlushCompleteListener)} which enables batch mode for the sensor.
+      *
+      * <p class="note"></p>
+      * Note: Don't use this method with a one shot trigger sensor such as
+@@ -698,80 +706,67 @@ public abstract class SensorManager {
+      *        {@link android.hardware.SensorEvent sensor events} will be
+      *        delivered to.
+      *
+-     * @return <code>true</code> if the sensor is supported and successfully enabled.
++     * @return true if the sensor is supported and successfully enabled.
+      *
+      * @see #registerListener(SensorEventListener, Sensor, int)
+      * @see #unregisterListener(SensorEventListener)
+      * @see #unregisterListener(SensorEventListener, Sensor)
++     *
++     * @throws IllegalArgumentException when sensor is null or a trigger sensor
+      */
+     public boolean registerListener(SensorEventListener listener, Sensor sensor, int rateUs,
+             Handler handler) {
++        if (listener == null || sensor == null) {
++            return false;
++        }
++
+         int delay = getDelay(rateUs);
+-        return registerListenerImpl(listener, sensor, delay, handler, 0, 0);
++        return registerListenerImpl(listener, sensor, delay, handler, 0, 0, null);
+     }
+ 
+     /**
+      * Enables batch mode for a sensor with the given rate and maxBatchReportLatency.
+-     * @param listener A {@link android.hardware.SensorEventListener SensorEventListener} object
+-     *            that will receive the sensor events. If the application is interested in receiving
+-     *            flush complete notifications, it should register with
+-     *            {@link android.hardware.SensorEventListener SensorEventListener2} instead.
+-     * @param sensor The {@link android.hardware.Sensor Sensor} to register to.
+-     * @param rateUs The desired delay between two consecutive events in microseconds. This is only
+-     *            a hint to the system. Events may be received faster or slower than the specified
+-     *            rate. Usually events are received faster. Can be one of
+-     *            {@link #SENSOR_DELAY_NORMAL}, {@link #SENSOR_DELAY_UI},
+-     *            {@link #SENSOR_DELAY_GAME}, {@link #SENSOR_DELAY_FASTEST} or the delay in
+-     *            microseconds.
+-     * @param maxBatchReportLatencyUs An event in the batch can be delayed by at most
+-     *            maxBatchReportLatency microseconds. More events can be batched if this value is
+-     *            large. If this is set to zero, batch mode is disabled and events are delivered in
+-     *            continuous mode as soon as they are available which is equivalent to calling
+-     *            {@link #registerListener(SensorEventListener, Sensor, int)}.
+-     * @param handler The {@link android.os.Handler Handler} the
+-     *        {@link android.hardware.SensorEvent sensor events} will be delivered to.
++     * @param handler
++     *        The {@link android.os.Handler Handler} the
++     *        {@link android.hardware.SensorEvent sensor events} will be
++     *        delivered to.
+      *
+-     * @return <code>true</code> if batch mode is successfully enabled for this sensor,
+-     *         <code>false</code> otherwise.
+-     * @see #registerListener(SensorEventListener, Sensor, int, int)
++     * @see #registerListener(SensorEventListener, Sensor, int, int, int, FlushCompleteListener)
+      */
+     public boolean registerListener(SensorEventListener listener, Sensor sensor, int rateUs,
+-            int maxBatchReportLatencyUs, Handler handler) {
++            int maxBatchReportLatencyUs, int reservedFlags, Handler handler,
++            FlushCompleteListener flushCompleteListener) {
+         int delayUs = getDelay(rateUs);
+-        return registerListenerImpl(listener, sensor, delayUs, handler, maxBatchReportLatencyUs, 0);
++        return registerListenerImpl(listener, sensor, delayUs, handler, maxBatchReportLatencyUs,
++                                        reservedFlags, flushCompleteListener);
+     }
+ 
+     /** @hide */
+     protected abstract boolean registerListenerImpl(SensorEventListener listener, Sensor sensor,
+-            int delayUs, Handler handler, int maxBatchReportLatencyUs, int reservedFlags);
++            int delayUs, Handler handler, int maxBatchReportLatencyUs, int reservedFlags,
++            FlushCompleteListener flushCompleteListener);
+ 
+ 
+     /**
+-     * Flushes the batch FIFO of all the sensors registered for this listener. If there are events
+-     * in the FIFO of the sensor, they are returned as if the batch timeout in the FIFO of the
+-     * sensors had expired. Events are returned in the usual way through the SensorEventListener.
+-     * This call doesn't affect the batch timeout for this sensor. This call is asynchronous and
+-     * returns immediately.
+-     * {@link android.hardware.SensorEventListener2#onFlushCompleted onFlushCompleted} is called
+-     * after all the events in the batch at the time of calling this method have been delivered
+-     * successfully. If the hardware doesn't support flush, it still returns true and a trivial
+-     * flush complete event is sent after the current event for all the clients registered for this
+-     * sensor.
+-     *
+-     * @param listener A {@link android.hardware.SensorEventListener SensorEventListener} object
+-     *        which was previously used in a registerListener call.
+-     * @return <code>true</code> if the flush is initiated successfully on all the sensors
+-     *         registered for this listener, false if no sensor is previously registered for this
+-     *         listener or flush on one of the sensors fails.
+-     * @see #registerListener(SensorEventListener, Sensor, int, int)
+-     * @throws IllegalArgumentException when listener is null.
++     * Flushes the batch FIFO of the given sensor. If there are events in the FIFO of this sensor,
++     * they are returned as if the batch timeout has expired. Events are returned in the
++     * usual way through the SensorEventListener. This call doesn't effect the batch timeout for
++     * this sensor. This call is asynchronous and returns immediately. FlushCompleteListener is
++     * called after all the events in the batch at the time of calling this method have been
++     * delivered successfully.
++     * @param sensor
++     *        The {@link android.hardware.Sensor Sensor} to flush.
++     * @return true if the flush is initiated successfully. false if the sensor isn't active
++     *         i.e no application is registered for updates from this sensor.
++     * @see #registerListener(SensorEventListener, Sensor, int, int, int, FlushCompleteListener)
++     * @throws IllegalArgumentException when sensor is null or a trigger sensor.
+      */
+-    public boolean flush(SensorEventListener listener) {
+-        return flushImpl(listener);
++    public boolean flush(Sensor sensor) {
++        return flushImpl(sensor);
+     }
+ 
+     /** @hide */
+-    protected abstract boolean flushImpl(SensorEventListener listener);
++    protected abstract boolean flushImpl(Sensor sensor);
+ 
+     /**
+      * <p>
+diff --git a/core/java/android/hardware/SystemSensorManager.java b/core/java/android/hardware/SystemSensorManager.java
+index 14f67c5..9747f0d 100644
+--- a/core/java/android/hardware/SystemSensorManager.java
++++ b/core/java/android/hardware/SystemSensorManager.java
+@@ -93,20 +93,17 @@ public class SystemSensorManager extends SensorManager {
+     /** @hide */
+     @Override
+     protected boolean registerListenerImpl(SensorEventListener listener, Sensor sensor,
+-            int delayUs, Handler handler, int maxBatchReportLatencyUs, int reservedFlags) {
+-        if (listener == null || sensor == null) {
+-            Log.e(TAG, "sensor or listener is null");
+-            return false;
+-        }
++            int delayUs, Handler handler, int maxBatchReportLatencyUs, int reservedFlags,
++            FlushCompleteListener flushCompleteListener) {
++        if (sensor == null) throw new IllegalArgumentException("sensor cannot be null");
++        if (listener == null) throw new IllegalArgumentException("listener cannot be null");
++        if (reservedFlags != 0) throw new IllegalArgumentException("reservedFlags should be zero");
++        if (delayUs < 0) throw new IllegalArgumentException("rateUs should be positive");
++        if (maxBatchReportLatencyUs < 0)
++            throw new IllegalArgumentException("maxBatchReportLatencyUs should be positive");
+         // Trigger Sensors should use the requestTriggerSensor call.
+-        if (Sensor.getReportingMode(sensor) == Sensor.REPORTING_MODE_ONE_SHOT) {
+-            Log.e(TAG, "Trigger Sensors should use the requestTriggerSensor.");
+-            return false;
+-        }
+-        if (maxBatchReportLatencyUs < 0 || delayUs < 0) {
+-            Log.e(TAG, "maxBatchReportLatencyUs and delayUs should be non-negative");
+-            return false;
+-        }
++        if (Sensor.getReportingMode(sensor) == Sensor.REPORTING_MODE_ONE_SHOT)
++            throw new IllegalArgumentException("Trigger Sensors cannot use registerListener");
+ 
+         // Invariants to preserve:
+         // - one Looper per SensorEventListener
+@@ -116,7 +113,7 @@ public class SystemSensorManager extends SensorManager {
+             SensorEventQueue queue = mSensorListeners.get(listener);
+             if (queue == null) {
+                 Looper looper = (handler != null) ? handler.getLooper() : mMainLooper;
+-                queue = new SensorEventQueue(listener, looper, this);
++                queue = new SensorEventQueue(listener, looper, this, flushCompleteListener);
+                 if (!queue.addSensor(sensor, delayUs, maxBatchReportLatencyUs, reservedFlags)) {
+                     queue.dispose();
+                     return false;
+@@ -203,17 +200,16 @@ public class SystemSensorManager extends SensorManager {
+         }
+     }
+ 
+-    protected boolean flushImpl(SensorEventListener listener) {
+-        if (listener == null) throw new IllegalArgumentException("listener cannot be null");
++    protected boolean flushImpl(Sensor sensor) {
++        if (sensor == null) throw new IllegalArgumentException("sensor cannot be null");
++        if(Sensor.getReportingMode(sensor) == Sensor.REPORTING_MODE_ONE_SHOT)
++            throw new IllegalArgumentException("Trigger Sensors cannot call flush");
+ 
+-        synchronized (mSensorListeners) {
+-            SensorEventQueue queue = mSensorListeners.get(listener);
+-            if (queue == null) {
+-                return false;
+-            } else {
+-                return (queue.flush() == 0);
+-            }
++        FlushEventQueue queue = new FlushEventQueue(mMainLooper, this);
++        if (queue.flushSensor(sensor) != 0) {
++            return false;
+         }
++        return true;
+     }
+ 
+     /*
+@@ -228,7 +224,7 @@ public class SystemSensorManager extends SensorManager {
+                 int maxBatchReportLatencyUs, int reservedFlags);
+         private static native int nativeDisableSensor(int eventQ, int handle);
+         private static native void nativeDestroySensorEventQueue(int eventQ);
+-        private static native int nativeFlushSensor(int eventQ);
++        private static native int nativeFlushSensor(int eventQ, int handle);
+         private int nSensorEventQueue;
+         private final SparseBooleanArray mActiveSensors = new SparseBooleanArray();
+         protected final SparseIntArray mSensorAccuracies = new SparseIntArray();
+@@ -295,9 +291,10 @@ public class SystemSensorManager extends SensorManager {
+             return false;
+         }
+ 
+-        public int flush() {
++        public int flushSensor(Sensor sensor) {
+             if (nSensorEventQueue == 0) throw new NullPointerException();
+-            return nativeFlushSensor(nSensorEventQueue);
++            if (sensor == null) throw new NullPointerException();
++            return nativeFlushSensor(nSensorEventQueue, sensor.getHandle());
+         }
+ 
+         public boolean hasSensors() {
+@@ -350,12 +347,14 @@ public class SystemSensorManager extends SensorManager {
+ 
+     static final class SensorEventQueue extends BaseEventQueue {
+         private final SensorEventListener mListener;
++        private final FlushCompleteListener mFlushCompleteListener;
+         private final SparseArray<SensorEvent> mSensorsEvents = new SparseArray<SensorEvent>();
+ 
+         public SensorEventQueue(SensorEventListener listener, Looper looper,
+-                SystemSensorManager manager) {
++                SystemSensorManager manager, FlushCompleteListener flushCompleteListener) {
+             super(looper, manager);
+             mListener = listener;
++            mFlushCompleteListener = flushCompleteListener;
+         }
+ 
+         public void addSensorEvent(Sensor sensor) {
+@@ -409,9 +408,9 @@ public class SystemSensorManager extends SensorManager {
+ 
+         @SuppressWarnings("unused")
+         protected void dispatchFlushCompleteEvent(int handle) {
+-            if (mListener instanceof SensorEventListener2) {
+-                final Sensor sensor = sHandleToSensor.get(handle);
+-                ((SensorEventListener2)mListener).onFlushCompleted(sensor);
++            final Sensor sensor = sHandleToSensor.get(handle);
++            if (mFlushCompleteListener != null) {
++                mFlushCompleteListener.onFlushCompleted(sensor);
+             }
+             return;
+         }
+@@ -465,4 +464,30 @@ public class SystemSensorManager extends SensorManager {
+         protected void dispatchFlushCompleteEvent(int handle) {
+         }
+     }
++
++    static final class FlushEventQueue extends BaseEventQueue {
++        public FlushEventQueue(Looper looper, SystemSensorManager manager) {
++            super(looper, manager);
++        }
++
++        @SuppressWarnings("unused")
++        @Override
++        protected void dispatchSensorEvent(int handle, float[] values, int accuracy,
++                long timestamp) {
++        }
++
++        @Override
++        @SuppressWarnings("unused")
++        protected void addSensorEvent(Sensor sensor) {
++        }
++
++        @Override
++        @SuppressWarnings("unused")
++        protected void removeSensorEvent(Sensor sensor) {
++        }
++
++        @SuppressWarnings("unused")
++        protected void dispatchFlushCompleteEvent(int handle) {
++        }
++    }
+ }
+diff --git a/core/jni/android_hardware_SensorManager.cpp b/core/jni/android_hardware_SensorManager.cpp
+index 793d1bf..4290a6e 100644
+--- a/core/jni/android_hardware_SensorManager.cpp
++++ b/core/jni/android_hardware_SensorManager.cpp
+@@ -220,9 +220,9 @@ static void nativeDestroySensorEventQueue(JNIEnv *env, jclass clazz, jint eventQ
+     receiver->decStrong((void*)nativeInitSensorEventQueue);
+ }
+ 
+-static jint nativeFlushSensor(JNIEnv *env, jclass clazz, jint eventQ) {
++static jint nativeFlushSensor(JNIEnv *env, jclass clazz, jint eventQ, jint handle) {
+     sp<Receiver> receiver(reinterpret_cast<Receiver *>(eventQ));
+-    return receiver->getSensorEventQueue()->flush();
++    return receiver->getSensorEventQueue()->flushSensor(handle);
+ }
+ 
+ //----------------------------------------------------------------------------
+@@ -255,7 +255,7 @@ static JNINativeMethod gBaseEventQueueMethods[] = {
+             (void*)nativeDestroySensorEventQueue },
+ 
+     {"nativeFlushSensor",
+-            "(I)I",
++            "(II)I",
+             (void*)nativeFlushSensor },
+ };
+ 
+-- 
+1.8.4.2
+

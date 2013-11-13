@@ -1,0 +1,251 @@
+From a002be78fc1da1e2594f6410fca9f2d4930248e0 Mon Sep 17 00:00:00 2001
+From: kejar31 <justin.a.rogers@gmail.com>
+Date: Tue, 12 Nov 2013 11:50:46 -0600
+Subject: [PATCH 2/3] complete the sensor swapout
+
+---
+ include/gui/Sensor.h |  10 +---
+ libs/gui/Sensor.cpp  | 161 ++++++++++++++++++++++-----------------------------
+ 2 files changed, 73 insertions(+), 98 deletions(-)
+
+diff --git a/include/gui/Sensor.h b/include/gui/Sensor.h
+index 6a98821..2a218ba 100644
+--- a/include/gui/Sensor.h
++++ b/include/gui/Sensor.h
+@@ -53,7 +53,7 @@ public:
+     };
+ 
+             Sensor();
+-            Sensor(struct sensor_t const* hwSensor, int halVersion = 0);
++            Sensor(struct sensor_t const* hwSensor);
+             ~Sensor();
+ 
+     const String8& getName() const;
+@@ -67,13 +67,11 @@ public:
+     int32_t getMinDelay() const;
+     nsecs_t getMinDelayNs() const;
+     int32_t getVersion() const;
+-    int32_t getFifoReservedEventCount() const;
+-    int32_t getFifoMaxEventCount() const;
+ 
+     // LightFlattenable protocol
+     inline bool isFixedSize() const { return false; }
+-    size_t getFlattenedSize() const;
+-    status_t flatten(void* buffer, size_t size) const;
++    size_t getSize() const;
++    status_t flatten(void* buffer) const;
+     status_t unflatten(void const* buffer, size_t size);
+ 
+ private:
+@@ -87,8 +85,6 @@ private:
+     float   mPower;
+     int32_t mMinDelay;
+     int32_t mVersion;
+-    int32_t mFifoReservedEventCount;
+-    int32_t mFifoMaxEventCount;
+ };
+ 
+ // ----------------------------------------------------------------------------
+diff --git a/libs/gui/Sensor.cpp b/libs/gui/Sensor.cpp
+index abda004..1259557 100644
+--- a/libs/gui/Sensor.cpp
++++ b/libs/gui/Sensor.cpp
+@@ -32,11 +32,11 @@ namespace android {
+ Sensor::Sensor()
+     : mHandle(0), mType(0),
+       mMinValue(0), mMaxValue(0), mResolution(0),
+-      mPower(0), mMinDelay(0), mFifoReservedEventCount(0), mFifoMaxEventCount(0)
++      mPower(0), mMinDelay(0)
+ {
+ }
+ 
+-Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
++Sensor::Sensor(struct sensor_t const* hwSensor)
+ {
+     mName = hwSensor->name;
+     mVendor = hwSensor->vendor;
+@@ -48,15 +48,6 @@ Sensor::Sensor(struct sensor_t const* hwSensor, int halVersion)
+     mResolution = hwSensor->resolution;
+     mPower = hwSensor->power;
+     mMinDelay = hwSensor->minDelay;
+-    // Set fifo event count zero for older devices which do not support batching. Fused
+-    // sensors also have their fifo counts set to zero.
+-    if (halVersion >= SENSORS_DEVICE_API_VERSION_1_1) {
+-        mFifoReservedEventCount = hwSensor->fifoReservedEventCount;
+-        mFifoMaxEventCount = hwSensor->fifoMaxEventCount;
+-    } else {
+-        mFifoReservedEventCount = 0;
+-        mFifoMaxEventCount = 0;
+-    }
+ }
+ 
+ Sensor::~Sensor()
+@@ -107,97 +98,85 @@ int32_t Sensor::getVersion() const {
+     return mVersion;
+ }
+ 
+-int32_t Sensor::getFifoReservedEventCount() const {
+-    return mFifoReservedEventCount;
++size_t Sensor::getSize() const
++{
++    return  sizeof(int32_t) + ((mName.length() + 3) & ~3) +
++            sizeof(int32_t) + ((mVendor.length() + 3) & ~3) +
++            sizeof(int32_t) * 3 +
++            sizeof(float) * 4 +
++            sizeof(int32_t);
++}
++
++static inline
++size_t write(void* buffer, size_t offset, const String8& value) {
++    memcpy(static_cast<char*>(buffer) + offset, value.string(), value.length());
++    return (value.length() + 3) & ~3;
++}
++
++static inline
++size_t write(void* buffer, size_t offset, float value) {
++    *reinterpret_cast<float*>(static_cast<char*>(buffer) + offset) = value;
++    return sizeof(float);
+ }
+ 
+-int32_t Sensor::getFifoMaxEventCount() const {
+-    return mFifoMaxEventCount;
++static inline
++size_t write(void* buffer, size_t offset, int32_t value) {
++    *reinterpret_cast<int32_t*>(static_cast<char*>(buffer) + offset) = value;
++    return sizeof(int32_t);
+ }
+ 
+-size_t Sensor::getFlattenedSize() const
++status_t Sensor::flatten(void* buffer) const
+ {
+-    size_t fixedSize =
+-            sizeof(int32_t) * 3 +
+-            sizeof(float) * 4 +
+-            sizeof(int32_t) * 3;
+-
+-    size_t variableSize =
+-            sizeof(int32_t) + FlattenableUtils::align<4>(mName.length()) +
+-            sizeof(int32_t) + FlattenableUtils::align<4>(mVendor.length());
+-
+-    return fixedSize + variableSize;
+-}
+-
+-status_t Sensor::flatten(void* buffer, size_t size) const {
+-    if (size < getFlattenedSize()) {
+-        return NO_MEMORY;
+-    }
+-
+-    FlattenableUtils::write(buffer, size, mName.length());
+-    memcpy(static_cast<char*>(buffer), mName.string(), mName.length());
+-    FlattenableUtils::advance(buffer, size, FlattenableUtils::align<4>(mName.length()));
+-
+-    FlattenableUtils::write(buffer, size, mVendor.length());
+-    memcpy(static_cast<char*>(buffer), mVendor.string(), mVendor.length());
+-    FlattenableUtils::advance(buffer, size, FlattenableUtils::align<4>(mVendor.length()));
+-
+-    FlattenableUtils::write(buffer, size, mVersion);
+-    FlattenableUtils::write(buffer, size, mHandle);
+-    FlattenableUtils::write(buffer, size, mType);
+-    FlattenableUtils::write(buffer, size, mMinValue);
+-    FlattenableUtils::write(buffer, size, mMaxValue);
+-    FlattenableUtils::write(buffer, size, mResolution);
+-    FlattenableUtils::write(buffer, size, mPower);
+-    FlattenableUtils::write(buffer, size, mMinDelay);
+-    FlattenableUtils::write(buffer, size, mFifoReservedEventCount);
+-    FlattenableUtils::write(buffer, size, mFifoMaxEventCount);
++    size_t offset = 0;
++    offset += write(buffer, offset, int32_t(mName.length()));
++    offset += write(buffer, offset, mName);
++    offset += write(buffer, offset, int32_t(mVendor.length()));
++    offset += write(buffer, offset, mVendor);
++    offset += write(buffer, offset, mVersion);
++    offset += write(buffer, offset, mHandle);
++    offset += write(buffer, offset, mType);
++    offset += write(buffer, offset, mMinValue);
++    offset += write(buffer, offset, mMaxValue);
++    offset += write(buffer, offset, mResolution);
++    offset += write(buffer, offset, mPower);
++    offset += write(buffer, offset, mMinDelay);
+     return NO_ERROR;
+ }
+ 
+-status_t Sensor::unflatten(void const* buffer, size_t size) {
+-    size_t len;
+-
+-    if (size < sizeof(size_t)) {
+-        return NO_MEMORY;
+-    }
+-    FlattenableUtils::read(buffer, size, len);
+-    if (size < len) {
+-        return NO_MEMORY;
+-    }
+-    mName.setTo(static_cast<char const*>(buffer), len);
+-    FlattenableUtils::advance(buffer, size, FlattenableUtils::align<4>(len));
++static inline
++size_t read(void const* buffer, size_t offset, String8* value, int32_t len) {
++    value->setTo(static_cast<char const*>(buffer) + offset, len);
++    return (len + 3) & ~3;
++}
+ 
++static inline
++size_t read(void const* buffer, size_t offset, float* value) {
++    *value = *reinterpret_cast<float const*>(static_cast<char const*>(buffer) + offset);
++    return sizeof(float);
++}
+ 
+-    if (size < sizeof(size_t)) {
+-        return NO_MEMORY;
+-    }
+-    FlattenableUtils::read(buffer, size, len);
+-    if (size < len) {
+-        return NO_MEMORY;
+-    }
+-    mVendor.setTo(static_cast<char const*>(buffer), len);
+-    FlattenableUtils::advance(buffer, size, FlattenableUtils::align<4>(len));
++static inline
++size_t read(void const* buffer, size_t offset, int32_t* value) {
++    *value = *reinterpret_cast<int32_t const*>(static_cast<char const*>(buffer) + offset);
++    return sizeof(int32_t);
++}
+ 
+-    size_t fixedSize =
+-            sizeof(int32_t) * 3 +
+-            sizeof(float) * 4 +
+-            sizeof(int32_t) * 3;
+-
+-    if (size < fixedSize) {
+-        return NO_MEMORY;
+-    }
+-
+-    FlattenableUtils::read(buffer, size, mVersion);
+-    FlattenableUtils::read(buffer, size, mHandle);
+-    FlattenableUtils::read(buffer, size, mType);
+-    FlattenableUtils::read(buffer, size, mMinValue);
+-    FlattenableUtils::read(buffer, size, mMaxValue);
+-    FlattenableUtils::read(buffer, size, mResolution);
+-    FlattenableUtils::read(buffer, size, mPower);
+-    FlattenableUtils::read(buffer, size, mMinDelay);
+-    FlattenableUtils::read(buffer, size, mFifoReservedEventCount);
+-    FlattenableUtils::read(buffer, size, mFifoMaxEventCount);
++status_t Sensor::unflatten(void const* buffer, size_t size)
++{
++    int32_t len;
++    size_t offset = 0;
++    offset += read(buffer, offset, &len);
++    offset += read(buffer, offset, &mName, len);
++    offset += read(buffer, offset, &len);
++    offset += read(buffer, offset, &mVendor, len);
++    offset += read(buffer, offset, &mVersion);
++    offset += read(buffer, offset, &mHandle);
++    offset += read(buffer, offset, &mType);
++    offset += read(buffer, offset, &mMinValue);
++    offset += read(buffer, offset, &mMaxValue);
++    offset += read(buffer, offset, &mResolution);
++    offset += read(buffer, offset, &mPower);
++    offset += read(buffer, offset, &mMinDelay);
+     return NO_ERROR;
+ }
+ 
+-- 
+1.8.4.2
+
