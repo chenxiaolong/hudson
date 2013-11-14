@@ -146,7 +146,7 @@ apply_patches_cm-11.0() {
     `# 'http://review.cyanogenmod.org/#/c/53266/'` `# jf: remove gsm/cdma overlay dirs`                              \
     `# frameworks/av` \
     'http://review.cyanogenmod.org/#/c/53324/' `# frameworks_av: Support pre-KitKat audio blobs`                     \
-    'http://review.cyanogenmod.org/#/c/53376/' `# frameworks/av: Squashed commit of media features from CAF`         \
+    `# 'http://review.cyanogenmod.org/#/c/53376/'` `# frameworks/av: Squashed commit of media features from CAF`         \
     `# system/core` \
     'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
