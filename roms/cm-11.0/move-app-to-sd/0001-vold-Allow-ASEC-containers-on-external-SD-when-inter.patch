@@ -1,4 +1,4 @@
-From f0e495a2a27b358fa8d73f585d67b523ee09f9d1 Mon Sep 17 00:00:00 2001
+From e16423d005113346392dc7417fe8bb95200d321b Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Sun, 25 Aug 2013 22:28:41 -0400
 Subject: [PATCH] vold: Allow ASEC containers on external SD when internal is
@@ -20,23 +20,26 @@ of whether or not it was the SD card.
 
 Change-Id: Ic2c45d275179099065a10e1e664a08efea66acf1
 ---
- Volume.cpp | 22 +++++++++++++++++++---
+ Volume.cpp | 25 ++++++++++++++++++++++---
  Volume.h   |  1 +
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
 diff --git a/Volume.cpp b/Volume.cpp
-index 820d69e..ea9e4f4 100644
+index 820d69e..4046084 100644
 --- a/Volume.cpp
 +++ b/Volume.cpp
-@@ -184,6 +184,20 @@ int Volume::handleBlockEvent(NetlinkEvent *evt) {
+@@ -184,6 +184,23 @@ int Volume::handleBlockEvent(NetlinkEvent *evt) {
      return -1;
  }
  
 +bool Volume::isExternalSd() {
-+    const char* externalSd = getenv("EXTERNAL_SD") ? : "/storage/sdcard1";
++    const char* externalSdPath1 = getenv("EXTERNAL_SD") ? : "/storage/sdcard1";
++    // Necessary for Kit Kat
++    const char* externalSdPath2 = "/mnt/media_rw/sdcard1";
 +    const char* disablePath = "/data/system/no-external-apps";
 +
-+    if (!strcmp(getMountpoint(), externalSd)) {
++    if (strcmp(getMountpoint(), externalSdPath1) == 0
++          || strcmp(getMountpoint(), externalSdPath2) == 0) {
 +        if (access(disablePath, F_OK) != -1) {
 +            SLOGV("Application moving disabled; will not touch ASEC\n");
 +            return false;
@@ -49,7 +52,7 @@ index 820d69e..ea9e4f4 100644
  void Volume::setState(int state) {
      char msg[255];
      int oldState = mState;
-@@ -323,6 +337,7 @@ int Volume::mountVol() {
+@@ -323,6 +340,7 @@ int Volume::mountVol() {
      dev_t deviceNodes[4];
      int n, i, rc = 0;
      char errmsg[255];
@@ -57,7 +60,7 @@ index 820d69e..ea9e4f4 100644
  
      int flags = getFlags();
      bool providesAsec = (flags & VOL_PROVIDES_ASEC) != 0;
-@@ -516,7 +531,8 @@ int Volume::mountVol() {
+@@ -516,7 +534,8 @@ int Volume::mountVol() {
          protectFromAutorunStupidity();
  
  #ifndef MINIVOLD
@@ -67,7 +70,7 @@ index 820d69e..ea9e4f4 100644
              SLOGE("Failed to mount secure area (%s)", strerror(errno));
              umount(getMountpoint());
              setState(Volume::State_Idle);
-@@ -623,7 +639,7 @@ int Volume::unmountVol(bool force, bool revert) {
+@@ -623,7 +642,7 @@ int Volume::unmountVol(bool force, bool revert) {
  
      // TODO: determine failure mode if FUSE times out
  
@@ -76,7 +79,7 @@ index 820d69e..ea9e4f4 100644
          SLOGE("Failed to unmount secure area on %s (%s)", getMountpoint(), strerror(errno));
          goto out_mounted;
      }
-@@ -657,7 +673,7 @@ int Volume::unmountVol(bool force, bool revert) {
+@@ -657,7 +676,7 @@ int Volume::unmountVol(bool force, bool revert) {
      return 0;
  
  fail_remount_secure:
