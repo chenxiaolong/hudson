@@ -50,7 +50,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
   apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
   apply_patch_file_git ${JF}/0001-Use-IRDA-service.patch
-  apply_patch_file_git ${JF}/0001-Allow-external-SD-to-be-mounted.patch
   apply_patch_file_git ${JF}/0001-Enable-Host-Card-Emulation.patch
   # Revert "jf: Enable QC time services"
   git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
@@ -136,6 +135,7 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53196/' `# alsa_sound: Enable support for LPA/Tunnel audio playback`          \
     `# device/samsung/jf-common` \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
+    'http://review.cyanogenmod.org/#/c/53622/' `# Fix sdcard in 4.4 for app r/w access`                              \
     `# system/core` \
     'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
