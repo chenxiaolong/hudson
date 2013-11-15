@@ -1,29 +1,33 @@
 reset_dirs_cm-11.0() {
-  RESET_DIRS=('hardware/qcom/media-caf/'
-              'hardware/qcom/audio-caf/'
-              'hardware/qcom/display-caf/'
-              'hardware/libhardware/'
-              'frameworks/av/'
-              'frameworks/base/'
-              'system/core/'
-              'device/samsung/jf-common/'
-              'art/'
-              'device/samsung/qcom-common/'
-              'packages/apps/Settings/'
-              'frameworks/opt/hardware/'
-              'hardware/samsung/'
-              'packages/providers/ContactsProvider/'
-              'system/vold/'
-              'frameworks/native/'
-              'vendor/samsung/'
-              'packages/apps/Dialer/'
-              'packages/services/Telephony/'
-              'external/clang/'
-              'build/')
+  RESET_DIRS=(
+    'hardware/qcom/audio-caf/'
+    'hardware/libhardware/'
+    'frameworks/base/'
+    'system/core/'
+    'device/samsung/jf-common/'
+    'art/'
+    'device/samsung/qcom-common/'
+    'packages/apps/Settings/'
+    'frameworks/opt/hardware/'
+    'hardware/samsung/'
+    'packages/providers/ContactsProvider/'
+    'system/vold/'
+    'frameworks/native/'
+    'vendor/samsung/'
+    'packages/apps/Dialer/'
+    'packages/services/Telephony/'
+    'external/clang/'
+    'build/'
+  )
 
   # Directories that should be reset for one more build
-  RESET_DIRS_OLD=('hardware/libhardware_legacy/'
-                  'device/samsung/msm8960-common/')
+  RESET_DIRS_OLD=(
+    'hardware/libhardware_legacy/'
+    'device/samsung/msm8960-common/'
+    'hardware/qcom/media-caf/'
+    'hardware/qcom/display-caf/'
+    'frameworks/av/'
+  )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
     if [ -d "${i}" ]; then
@@ -126,29 +130,12 @@ apply_patches_cm-11.0() {
 
   GERRIT_URL="http://review.cyanogenmod.org" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    `# hardware/qcom/media-caf` \
-    `# 'http://review.cyanogenmod.org/#/c/53030/'` `# Revert "mm-video: vidc: Add support for dynamic debug logging"`    \
-    `# 'http://review.cyanogenmod.org/#/c/53034/'` `# mm-video: vdec: Support adaptive playback mode`                    \
     `# hardware/qcom/audio-caf` \
-    `# 'http://review.cyanogenmod.org/#/c/52997/'` `# audio/msm7x30: Sync audio_policy with ALSA`                    \
     'http://review.cyanogenmod.org/#/c/53194/' `# alsa_sound: Initial changes for basic FM feature`                  \
     'http://review.cyanogenmod.org/#/c/53195/' `# alsa_sound: Add support for Voip`                                  \
-    `# 'http://review.cyanogenmod.org/#/c/53023/'` `# msm8660: update audio policy`                                  \
-    `# 'http://review.cyanogenmod.org/#/c/53166/'` `# msm8660: increase size of buffers to fit PROP_VALUE_MAX`       \
     'http://review.cyanogenmod.org/#/c/53196/' `# alsa_sound: Enable support for LPA/Tunnel audio playback`          \
-    `# hardware/qcom/display-caf` \
-    `# 'http://review.cyanogenmod.org/#/c/53339/'` `# gralloc: Add allocation support for sRGB formats`                  \
-    `# 'http://review.cyanogenmod.org/#/c/53340/'` `# Replace sRGB_888 with sRGB_X_8888`                                 \
-    `# 'http://review.cyanogenmod.org/#/c/53344/'` `# hwc: Add support to smooth streaming feature.`                     \
-    `# 'http://review.cyanogenmod.org/#/c/53350/'` `# hwc: Fix rotator size allocation to max buffer size`               \
     `# device/samsung/jf-common` \
-    `# 'http://review.cyanogenmod.org/#/c/53267/'` `# jf: selinux bringup`                                           \
-    'http://review.cyanogenmod.org/#/c/53265/' `# jf: update wifi config`                                            \
-    `# 'http://review.cyanogenmod.org/#/c/53266/'` `# jf: remove gsm/cdma overlay dirs`                              \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
-    `# frameworks/av` \
-    'http://review.cyanogenmod.org/#/c/53324/' `# frameworks_av: Support pre-KitKat audio blobs`                     \
-    `# 'http://review.cyanogenmod.org/#/c/53376/'` `# frameworks/av: Squashed commit of media features from CAF`         \
     `# system/core` \
     'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
