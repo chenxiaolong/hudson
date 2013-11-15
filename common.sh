@@ -78,7 +78,7 @@ common_prebuild() {
   fi
 
   # Generate changelog
-  if ! python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH_OLD}; then
+  if ! python3 ${WORKSPACE}/hudson/changelog.py ${LUNCH_OLD} ${ROM} ${REPO_BRANCH}; then
     exit 2
   fi
 
@@ -152,10 +152,10 @@ common_build() {
 
 common_postbuild() {
   if [ "x${UPDATE_TIMESTAMP}" = "xtrue" ]; then
-    mv ${WORKSPACE}/changes.${LUNCH_OLD}.new \
-       ${WORKSPACE}/changes.${LUNCH_OLD}
+    mv ${WORKSPACE}/changes_${ROM}_${REPO_BRANCH}_${LUNCH_OLD}.new \
+       ${WORKSPACE}/changes_${ROM}_${REPO_BRANCH}_${LUNCH_OLD}
   else
-    rm ${WORKSPACE}/changes.${LUNCH_OLD}.new
+    rm ${WORKSPACE}/changes_${ROM}_${REPO_BRANCH}_${LUNCH_OLD}.new
   fi
 
   rm -f .repo/local_manifests/dyn-${REPO_BRANCH}.xml

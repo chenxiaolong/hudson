@@ -7,8 +7,8 @@ import subprocess
 import sys
 from email.utils import formatdate
 
-if len(sys.argv) < 2:
-  print("Pass the device name as the parameter")
+if len(sys.argv) < 4:
+  print("Usage: changelog.py [device] [rom] [branch]")
   exit(1)
 
 html_path = os.environ["WORKSPACE"] + "/archive/changelog.html"
@@ -20,6 +20,8 @@ def write_html(string):
 
 current_time = formatdate()
 device = sys.argv[1]
+rom = sys.argv[2]
+branch = sys.argv[3]
 repo = ""
 
 # Look for repo tool
@@ -35,7 +37,7 @@ if not repo:
 
 # Read previous build time
 previous_time = ""
-changes = os.environ["WORKSPACE"] + "/changes." + device
+changes = os.environ["WORKSPACE"] + "/changes_%s_%s_%s" % (rom, branch, device)
 if not os.path.exists(changes):
   fd = open(changes + '.new', 'w')
   fd.write(current_time)
