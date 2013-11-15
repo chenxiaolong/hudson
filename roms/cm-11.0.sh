@@ -47,6 +47,7 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
   apply_patch_file_git ${JF}/0001-Use-IRDA-service.patch
   apply_patch_file_git ${JF}/0001-Allow-external-SD-to-be-mounted.patch
+  apply_patch_file_git ${JF}/0001-Enable-Host-Card-Emulation.patch
   # Revert "jf: Enable QC time services"
   git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
   popd
