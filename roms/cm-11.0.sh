@@ -145,6 +145,7 @@ apply_patches_cm-11.0() {
     `# 'http://review.cyanogenmod.org/#/c/53267/'` `# jf: selinux bringup`                                           \
     'http://review.cyanogenmod.org/#/c/53265/' `# jf: update wifi config`                                            \
     `# 'http://review.cyanogenmod.org/#/c/53266/'` `# jf: remove gsm/cdma overlay dirs`                              \
+    'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
     `# frameworks/av` \
     'http://review.cyanogenmod.org/#/c/53324/' `# frameworks_av: Support pre-KitKat audio blobs`                     \
     `# 'http://review.cyanogenmod.org/#/c/53376/'` `# frameworks/av: Squashed commit of media features from CAF`         \
