@@ -45,14 +45,14 @@ apply_patches_cm-11.0() {
   SENSORS=${PATCHES}/sensors
 
   pushd device/samsung/jf-common/
-  apply_patch_file_git ${JF}/0001-Set-SELinux-to-permissive-mode.patch
-  apply_patch_file_git ${JF}/0001-Don-t-build-SELinux-policy-for-now.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
   apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
   apply_patch_file_git ${JF}/0001-Use-IRDA-service.patch
   apply_patch_file_git ${JF}/0001-Enable-Host-Card-Emulation.patch
   # Revert "jf: Enable QC time services"
   git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
+  # Revert "jf: remove irda stuff"
+  git revert --no-edit 052665362ab0ee6763a541e124baf4166e9fed3f
   popd
 
   pushd art/
