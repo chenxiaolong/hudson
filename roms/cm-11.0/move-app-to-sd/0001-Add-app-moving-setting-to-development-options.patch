@@ -1,18 +1,20 @@
-From 63457ef83535f38228729c414794a84e87ec951e Mon Sep 17 00:00:00 2001
+From 07f5aef1a56ccb1583d0c7cb275a10d37ebff494 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Thu, 12 Sep 2013 23:22:25 -0400
 Subject: [PATCH] Add app moving setting to development options
 
 Thanks to:
   maikinho10 - German translations
+  blala      - Italian translations
 
 Change-Id: I5fdbc6c46a6ba7f348c0310eb83e96a2784256df
 ---
  res/values-de/strings.xml                         |  2 ++
+ res/values-it/strings.xml                         |  2 ++
  res/values/cm_strings.xml                         |  4 ++++
  res/xml/development_prefs.xml                     |  6 ++++++
  src/com/android/settings/DevelopmentSettings.java | 21 +++++++++++++++++++++
- 4 files changed, 33 insertions(+)
+ 5 files changed, 35 insertions(+)
 
 diff --git a/res/values-de/strings.xml b/res/values-de/strings.xml
 index 04f2b43..c10d708 100644
@@ -25,11 +27,22 @@ index 04f2b43..c10d708 100644
 +    <string name="app_moving">Apps verschieben</string>
 +    <string name="app_moving_summary">Aktivieren Sie das Verschieben von Anwendungen auf externe Speichermedien (Neustart nach Änderung der Einstellung)</string>
  </resources>
+diff --git a/res/values-it/strings.xml b/res/values-it/strings.xml
+index 0931447..3b18c3a 100644
+--- a/res/values-it/strings.xml
++++ b/res/values-it/strings.xml
+@@ -2046,4 +2046,6 @@
+     <string name="user_image_take_photo" msgid="1280274310152803669">"Scatta foto"</string>
+     <string name="user_image_choose_photo" msgid="7940990613897477057">"Scegli la foto dalla Galleria"</string>
+     <string name="regulatory_info_text" msgid="5623087902354026557"></string>
++    <string name="app_moving">Spostamento apps</string>
++    <string name="app_moving_summary">Abilita lo spostamento delle applicazioni su supporti di memorizzazione esterni (riavvia dopo aver cambiato le impostazioni)</string>
+ </resources>
 diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
-index d8404b6..78e1080 100644
+index d01ba2b..87d78d2 100644
 --- a/res/values/cm_strings.xml
 +++ b/res/values/cm_strings.xml
-@@ -339,6 +339,10 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
+@@ -484,6 +484,10 @@ two in order to insert additional control points. \'Remove\' deletes the selecte
      <string name="sensors_motors_title">Sensors &amp; motors</string>
      <string name="display_calibration_title">Display calibration</string>
  
