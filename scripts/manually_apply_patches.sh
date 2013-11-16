@@ -2,6 +2,7 @@
 
 if ! [ "${#}" -eq 2 ]; then
   echo "Usage: ${0} [workspace directory] [branch]"
+  exit 1
 fi
 
 export REPO_BRANCH="${2}"
