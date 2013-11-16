@@ -1,7 +1,5 @@
 arch_checkdeps() {
-  NEEDED=('jre6-compat'
-          'jdk6-compat'
-          'bison'
+  NEEDED=('bison'
           'ccache'
           'curl'
           'flex'
