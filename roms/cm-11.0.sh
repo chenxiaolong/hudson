@@ -18,6 +18,9 @@ reset_dirs_cm-11.0() {
     'packages/services/Telephony/'
     'external/clang/'
     'build/'
+    'external/busybox/'
+    'vendor/cm/'
+    'system/core/'
   )
 
   # Directories that should be reset for one more build
@@ -43,6 +46,7 @@ apply_patches_cm-11.0() {
   FACEBOOKSYNC=${PATCHES}/facebook-sync
   MOVEAPPTOSD=${PATCHES}/move-app-to-sd
   SENSORS=${PATCHES}/sensors
+  DUALBOOT=${PATCHES}/dual-boot
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
@@ -125,6 +129,19 @@ apply_patches_cm-11.0() {
 
   pushd build/
   apply_patch_file_git ${PATCHES}/0001-Use-ccache-version-3.patch
+  apply_patch_file_git ${DUALBOOT}/0001-Allow-dual-boot-installation-in-updater-script.patch
+  popd
+
+  pushd external/busybox/
+  apply_patch_file_git ${DUALBOOT}/0001-Busybox-Include-in-boot-image.patch
+  popd
+
+  pushd vendor/cm/
+  apply_patch_file_git ${DUALBOOT}/0001-Add-helper-script-for-dual-boot-detection-in-updater.patch
+  popd
+
+  pushd system/core/
+  apply_patch_file_git ${DUALBOOT}/0001-init.rc-Dual-boot-preparation.patch
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \
@@ -136,6 +153,7 @@ apply_patches_cm-11.0() {
     `# device/samsung/jf-common` \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
     'http://review.cyanogenmod.org/#/c/53622/' `# Fix sdcard in 4.4 for app r/w access`                              \
+    'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
     `# system/core` \
     'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
@@ -148,4 +166,8 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`                                 \
     `# external/clang` \
     'http://review.cyanogenmod.org/#/c/53126/' `# clang: add support for neon-vfp instructions`
+
+  pushd device/samsung/jf-common/
+  apply_patch_file_git ${DUALBOOT}/0001-jf-Add-dual-booting-support.patch
+  popd
 }

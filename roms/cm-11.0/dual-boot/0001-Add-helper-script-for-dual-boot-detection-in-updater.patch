@@ -1,0 +1,90 @@
+From f89a66e98cd88bdbfafbfafca44b2d48af57df03 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Mon, 7 Oct 2013 23:51:47 -0400
+Subject: [PATCH] Add helper script for dual boot detection in updater-script
+
+Change-Id: I206445464b6b5b48f7cbf274899eaae18d87e024
+---
+ config/common.mk                |  4 +++
+ prebuilt/common/bin/dualboot.sh | 54 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 58 insertions(+)
+ create mode 100644 prebuilt/common/bin/dualboot.sh
+
+diff --git a/config/common.mk b/config/common.mk
+index babe449..713e416 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -91,6 +91,10 @@ PRODUCT_COPY_FILES += \
+     vendor/cm/prebuilt/common/bin/blacklist:system/addon.d/blacklist
+ endif
+ 
++# Dual Boot
++PRODUCT_COPY_FILES += \
++    vendor/cm/prebuilt/common/bin/dualboot.sh:system/bin/dualboot.sh
++
+ # init.d support
+ PRODUCT_COPY_FILES += \
+     vendor/cm/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
+diff --git a/prebuilt/common/bin/dualboot.sh b/prebuilt/common/bin/dualboot.sh
+new file mode 100644
+index 0000000..4fddd40
+--- /dev/null
++++ b/prebuilt/common/bin/dualboot.sh
+@@ -0,0 +1,54 @@
++#!/sbin/sh
++
++## MUST CHANGE TO YOUR ROM NAME ##
++ROMNAME=noobdev-cm-11.0
++
++PROP=/tmp/dualboot.prop
++
++write_prop() {
++  if [ -f /system/.dualboot ]; then
++    echo 'ro.dualboot=1' > $PROP
++  else
++    echo 'ro.dualboot=0' > $PROP
++  fi
++}
++
++set_secondary() {
++  echo $ROMNAME > /system/.secondary
++}
++
++set_secondary_kernel() {
++  dd if=/dev/block/platform/msm_sdcc.1/by-name/boot of=/raw-system/dual-kernels/secondary.img
++}
++
++mount_system() {
++  mkdir -p /raw-system /system
++  chmod 0755 /raw-system
++  chown 0:0 /raw-system
++  mount -t $1 $2 /raw-system
++  mkdir -p /raw-system/dual
++  mount -o bind /raw-system/dual /system
++}
++
++unmount_system() {
++  umount /system
++  umount /raw-system
++}
++
++case "$1" in
++  is-dualboot)
++    write_prop
++    ;;
++  set-secondary)
++    set_secondary
++    ;;
++  set-secondary-kernel)
++    set_secondary_kernel
++    ;;
++  mount-system)
++    mount_system $2 $3
++    ;;
++  unmount-system)
++    unmount_system
++    ;;
++esac
+-- 
+1.8.4
+

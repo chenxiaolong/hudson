@@ -1,0 +1,29 @@
+From 8f0bbb493ed069ecbadf668e04890195ad6c0e9c Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Sun, 1 Sep 2013 21:19:50 -0400
+Subject: [PATCH] init.rc: Dual boot preparation
+
+Change-Id: I4c8a2d7880644a358b9c00567857d5370e4dc3ec
+---
+ rootdir/init.rc | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/rootdir/init.rc b/rootdir/init.rc
+index 0f14f32..235923f 100644
+--- a/rootdir/init.rc
++++ b/rootdir/init.rc
+@@ -64,8 +64,11 @@ loglevel 3
+     chmod 0660 /sys/fs/cgroup/memory/sw/tasks
+ 
+     mkdir /system
++    mkdir /raw-system
+     mkdir /data 0771 system system
++    mkdir /raw-data 0771 system system
+     mkdir /cache 0771 system cache
++    mkdir /raw-cache 0771 system cache
+     mkdir /config 0500 root root
+ 
+     # See storage config details at http://source.android.com/tech/storage/
+-- 
+1.8.4.2
+
