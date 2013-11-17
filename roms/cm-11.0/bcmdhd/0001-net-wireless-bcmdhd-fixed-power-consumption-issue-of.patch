@@ -1,4 +1,4 @@
-From 5b2c9e1a0b1b2cd1b7eeb817f5340d6b4f70fab9 Mon Sep 17 00:00:00 2001
+From 76f1e15a581b71eb70d3345517c8d9dc6ed66fe9 Mon Sep 17 00:00:00 2001
 From: Ecco Park <eccopark@broadcom.com>
 Date: Thu, 10 Oct 2013 11:43:56 +0900
 Subject: [PATCH] net: wireless: bcmdhd: fixed power consumption issue of P2P.
@@ -14,15 +14,16 @@ Subject: [PATCH] net: wireless: bcmdhd: fixed power consumption issue of P2P.
 	This issue is reported by LG team.
 Signed-off-by: Ecco Park <eccopark@broadcom.com>
 
+Change-Id: I7d2d684bafb773f8664f4c4a27f6eeeaac708a16
 Signed-off-by: Francisco Franco <franciscofranco.1990@gmail.com>
 ---
- drivers/net/wireless/bcmdhd/dhd.h         |  7 +++++++
+ drivers/net/wireless/bcmdhd/dhd.h         |  9 +++++++++
  drivers/net/wireless/bcmdhd/dhd_linux.c   | 17 +++++++++++++++++
  drivers/net/wireless/bcmdhd/wl_cfg80211.c |  6 +++++-
- 3 files changed, 29 insertions(+), 1 deletion(-)
+ 3 files changed, 31 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/bcmdhd/dhd.h b/drivers/net/wireless/bcmdhd/dhd.h
-index 2669b27..9ff39ce 100644
+index 2669b27..1c528f8 100644
 --- a/drivers/net/wireless/bcmdhd/dhd.h
 +++ b/drivers/net/wireless/bcmdhd/dhd.h
 @@ -405,6 +405,7 @@ extern int dhd_os_wake_unlock(dhd_pub_t *pub);
@@ -46,8 +47,17 @@ index 2669b27..9ff39ce 100644
  #else
  #define DHD_OS_WAKE_LOCK(pub)			dhd_os_wake_lock(pub)
  #define DHD_OS_WAKE_UNLOCK(pub)		dhd_os_wake_unlock(pub)
+@@ -470,6 +477,8 @@ inline static void MUTEX_UNLOCK_SOFTAP_SET(dhd_pub_t * dhdp)
+ 	dhd_os_wake_lock_rx_timeout_enable(pub, val)
+ #define DHD_OS_WAKE_LOCK_CTRL_TIMEOUT_ENABLE(pub, val) \
+ 	dhd_os_wake_lock_ctrl_timeout_enable(pub, val)
++#define DHD_OS_WAKE_LOCK_CTRL_TIMEOUT_CANCEL(pub) \
++	dhd_os_wake_lock_ctrl_timeout_cancel(pub)
+ #endif /* DHD_DEBUG_WAKE_LOCK */
+ #define DHD_PACKET_TIMEOUT_MS	1000
+ #define DHD_EVENT_TIMEOUT_MS	1500
 diff --git a/drivers/net/wireless/bcmdhd/dhd_linux.c b/drivers/net/wireless/bcmdhd/dhd_linux.c
-index bdd0ef7..5d2c401 100644
+index bdd0ef7..a33057f 100644
 --- a/drivers/net/wireless/bcmdhd/dhd_linux.c
 +++ b/drivers/net/wireless/bcmdhd/dhd_linux.c
 @@ -6323,6 +6323,23 @@ int dhd_os_wake_lock_ctrl_timeout_enable(dhd_pub_t *pub, int val)
@@ -63,8 +73,8 @@ index bdd0ef7..5d2c401 100644
 +		spin_lock_irqsave(&dhd->wakelock_spinlock, flags);
 +		dhd->wakelock_ctrl_timeout_enable = 0;
 +#ifdef CONFIG_HAS_WAKELOCK
-+		if (wake_lock_active(&dhd->wl_ctrlwake))
-+			wake_unlock(&dhd->wl_ctrlwake);
++		if (wake_lock_active(dhd->wl_ctrlwake))
++			wake_unlock(dhd->wl_ctrlwake);
 +#endif
 +		spin_unlock_irqrestore(&dhd->wakelock_spinlock, flags);
 +	}
