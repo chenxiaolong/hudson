@@ -21,6 +21,7 @@ reset_dirs_cm-11.0() {
     'external/busybox/'
     'vendor/cm/'
     'system/core/'
+    'kernel/samsung/jf/'
   )
 
   # Directories that should be reset for one more build
@@ -47,6 +48,7 @@ apply_patches_cm-11.0() {
   MOVEAPPTOSD=${PATCHES}/move-app-to-sd
   SENSORS=${PATCHES}/sensors
   DUALBOOT=${PATCHES}/dual-boot
+  BCMDHD=${PATCHES}/bcmdhd
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
@@ -142,6 +144,23 @@ apply_patches_cm-11.0() {
 
   pushd system/core/
   apply_patch_file_git ${DUALBOOT}/0001-init.rc-Dual-boot-preparation.patch
+  popd
+
+  pushd kernel/samsung/jf/
+  # Patches from https://github.com/franciscofranco/hammerhead.git
+  # Thanks to Entropy512/Andrew Dodd and Francisco Franco for finding them!
+  # https://plus.google.com/109625418534467664286/posts/7X4sUWPKeGX
+
+  # 837961187ec3ecf82a11b89d7cf8fb267d3ed9ce
+  apply_patch_file_git ${BCMDHD}/0001-net-wireless-bcmdhd-fixed-power-consumption-issue-of.patch
+  # 24bf61016206ba6fb0edb2b4593f8197fd89137e
+  apply_patch_file_git ${BCMDHD}/0001-net-wireless-bcmdhd-Fixed-a-problem-of-buganizer-iss.patch
+  # 5dd724eb19f768e641041a0b897c5e8464077949
+  apply_patch_file_git ${BCMDHD}/0001-net-wireless-bcmdhd-reduced-the-wakelock-time-of-RX-.patch
+  # c8092f60419fcec95cc5c4b458de9d6be2fc60fc
+  apply_patch_file_git ${BCMDHD}/0001-net-wireless-bcmdhd-Change-DTIM-skip-policy-in-suspe.patch
+  # 6076d5a4d5724b6f941a0ca86d62708786cdab84
+  apply_patch_file_git ${BCMDHD}/0001-drivers-bcmdhd-filter-only-unicast-packets-during-su.patch
   popd
 
   GERRIT_URL="http://review.cyanogenmod.org" \
