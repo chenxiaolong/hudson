@@ -148,9 +148,9 @@ for current_repo in all_repos:
 write_html(html_footer)
 html_file.close()
 
-if counter == 0:
-  print("NO CHANGES SINCE LAST BUILD!!!")
-  sys.exit(1)
+#if counter == 0:
+#  print("NO CHANGES SINCE LAST BUILD!!!")
+#  sys.exit(1)
 
 fd = open(changes + '.new', 'w')
 fd.write(current_time)
