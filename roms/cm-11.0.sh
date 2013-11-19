@@ -13,7 +13,6 @@ reset_dirs_cm-11.0() {
     'packages/providers/ContactsProvider/'
     'system/vold/'
     'frameworks/native/'
-    'vendor/samsung/'
     'packages/apps/Dialer/'
     'packages/services/Telephony/'
     'external/clang/'
@@ -31,6 +30,7 @@ reset_dirs_cm-11.0() {
     'hardware/qcom/media-caf/'
     'hardware/qcom/display-caf/'
     'frameworks/av/'
+    'vendor/samsung/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -55,8 +55,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
   apply_patch_file_git ${JF}/0001-Use-IRDA-service.patch
   apply_patch_file_git ${JF}/0001-Enable-Host-Card-Emulation.patch
-  # Revert "jf: Enable QC time services"
-  git revert --no-edit 9223038d0886370c8957d279ba721d5c50aba74d
   # Revert "jf: remove irda stuff"
   git revert --no-edit 052665362ab0ee6763a541e124baf4166e9fed3f
   popd
@@ -122,11 +120,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${SENSORS}/0001-revert-to-4.3-sensors-for-testing.patch
   apply_patch_file_git ${SENSORS}/0002-complete-the-sensor-swapout.patch
   apply_patch_file_git ${SENSORS}/0003-Make-Flattenable-not-virtual.patch
-  popd
-
-  pushd vendor/samsung/
-  # Revert "jf: Update blobs"
-  git revert --no-edit 25abb7ace77be2ad3c52df93dd7044d50b8fee1d
   popd
 
   pushd build/
