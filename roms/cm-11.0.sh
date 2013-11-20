@@ -6,7 +6,6 @@ reset_dirs_cm-11.0() {
     'art/'
     'device/samsung/qcom-common/'
     'packages/apps/Settings/'
-    'hardware/samsung/'
     'packages/providers/ContactsProvider/'
     'system/vold/'
     'frameworks/native/'
@@ -30,6 +29,7 @@ reset_dirs_cm-11.0() {
     'build/'
     'hardware/libhardware/'
     'frameworks/opt/hardware/'
+    'hardware/samsung/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -85,10 +85,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Auto-copied-translations-for-high-touch-sensitivity.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Enable-moving-applications-to-the-external-SD-card.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Add-app-moving-setting-to-development-options.patch
-  popd
-
-  pushd hardware/samsung/
-  apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Samsung-add-support-for-high-touch-sensitivity.patch
   popd
 
   pushd packages/providers/ContactsProvider/
