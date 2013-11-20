@@ -1,17 +1,16 @@
-From 31952f2a96c2a6f229946ebd78b2801e911a91e0 Mon Sep 17 00:00:00 2001
+From c3aba327dcd84d1fea7e0818016f5559daf83357 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
-Date: Mon, 11 Nov 2013 15:14:31 -0500
+Date: Wed, 20 Nov 2013 08:31:52 -0500
 Subject: [PATCH] Add Telephony overlay (fixes missing LTE toggle)
 
-Change-Id: Ib363feddc0b10d446e1bc5c550724c40d256d84e
+Change-Id: I74ac89b556cadd3e8dd49d7b919fc2dc16535609
 ---
  overlay/packages/apps/Phone/res/values/config.xml  | 34 -------------------
  .../apps/Phone/res/values/network_mode.xml         | 38 ----------------------
- .../services/Telephony/res/values/config.xml       | 36 ++++++++++++++++++++
- 3 files changed, 36 insertions(+), 72 deletions(-)
+ .../services/Telephony/res/values/config.xml       | 14 ++++++++
+ 3 files changed, 14 insertions(+), 72 deletions(-)
  delete mode 100644 overlay/packages/apps/Phone/res/values/config.xml
  delete mode 100644 overlay/packages/apps/Phone/res/values/network_mode.xml
- create mode 100644 overlay/packages/services/Telephony/res/values/config.xml
 
 diff --git a/overlay/packages/apps/Phone/res/values/config.xml b/overlay/packages/apps/Phone/res/values/config.xml
 deleted file mode 100644
@@ -98,32 +97,13 @@ index 38989fe..0000000
 -    <integer name="toggleLTE_lte_cdma_nt_mode">8</integer>
 -</resources>
 diff --git a/overlay/packages/services/Telephony/res/values/config.xml b/overlay/packages/services/Telephony/res/values/config.xml
-new file mode 100644
-index 0000000..a6e0ee7
---- /dev/null
+index bd304c1..72db602 100644
+--- a/overlay/packages/services/Telephony/res/values/config.xml
 +++ b/overlay/packages/services/Telephony/res/values/config.xml
-@@ -0,0 +1,36 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<!-- Copyright (C) 2013 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
-+
-+     Licensed under the Apache License, Version 2.0 (the "License");
-+     you may not use this file except in compliance with the License.
-+     You may obtain a copy of the License at
-+
-+          http://www.apache.org/licenses/LICENSE-2.0
-+
-+     Unless required by applicable law or agreed to in writing, software
-+     distributed under the License is distributed on an "AS IS" BASIS,
-+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-+     See the License for the specific language governing permissions and
-+     limitations under the License.
-+-->
-+
-+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-+
-+    <!-- Enable LTE -->
-+    <bool name="config_enabled_lte" translatable="false">true</bool>
-+
+@@ -19,4 +19,18 @@
+     <!-- Show enabled lte option for lte device -->
+     <bool name="config_enabled_lte" translatable="false">true</bool>
+ 
 +    <!-- Determine whether calls to mute the microphone in PhoneUtils
 +         are routed through the android.media.AudioManager class (true) or through
 +         the com.android.internal.telephony.Phone interface (false). -->
@@ -138,7 +118,7 @@ index 0000000..a6e0ee7
 +    <!-- Flag indicating if the phone is a world phone -->
 +    <bool name="world_phone">true</bool>
 +
-+</resources>
+ </resources>
 -- 
 1.8.4.2
 
