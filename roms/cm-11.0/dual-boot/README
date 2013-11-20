@@ -1,8 +1,0 @@
-To ROM Maintainers:
-
-Please do NOT directly apply these patches. You will need to edit:
-
-  0001-jf-Add-dual-booting-support.patch
-  0001-Add-helper-script-for-dual-boot-detection-in-updater.patch
-
-so that they use your ROM's name. Otherwise, two dual-booting ROMs cannot be used together.
