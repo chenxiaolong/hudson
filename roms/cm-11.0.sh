@@ -58,7 +58,6 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53196/' `# alsa_sound: Enable support for LPA/Tunnel audio playback`          \
     `# device/samsung/jf-common` \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
-    'http://review.cyanogenmod.org/#/c/53622/' `# Fix sdcard in 4.4 for app r/w access`                              \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
     `# system/core` \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
