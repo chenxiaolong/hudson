@@ -50,10 +50,7 @@ apply_patches_cm-11.0() {
   BCMDHD=${PATCHES}/bcmdhd
 
   pushd device/samsung/jf-common/
-  apply_patch_file_git ${JF}/0001-Use-IRDA-service.patch
   apply_patch_file_git ${JF}/0001-Enable-Host-Card-Emulation.patch
-  # Revert "jf: remove irda stuff"
-  git revert --no-edit 052665362ab0ee6763a541e124baf4166e9fed3f
   popd
 
   pushd art/
