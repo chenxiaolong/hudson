@@ -88,7 +88,6 @@ apply_patches_cm-11.0() {
   popd
 
   pushd frameworks/opt/hardware/
-  apply_patch_file_git ${HIGHTOUCHSENSITIVITY}/0001-Hardware-Add-high-touch-sensitivity-support.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Add-class-for-enabling-and-disabling-moving-apps-to-.patch
   popd
 
