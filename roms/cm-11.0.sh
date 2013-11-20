@@ -3,7 +3,6 @@ reset_dirs_cm-11.0() {
     'hardware/qcom/audio-caf/'
     'hardware/libhardware/'
     'frameworks/base/'
-    'system/core/'
     'device/samsung/jf-common/'
     'art/'
     'device/samsung/qcom-common/'
@@ -120,10 +119,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${SENSORS}/0001-revert-to-4.3-sensors-for-testing.patch
   apply_patch_file_git ${SENSORS}/0002-complete-the-sensor-swapout.patch
   apply_patch_file_git ${SENSORS}/0003-Make-Flattenable-not-virtual.patch
-  popd
-
-  pushd system/core/
-  apply_patch_file_git ${DUALBOOT}/0001-init.rc-Dual-boot-preparation.patch
   popd
 
   pushd kernel/samsung/jf/
