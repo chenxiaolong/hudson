@@ -1,12 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
 
-  <remote fetch="http://github.com/"
-          name="github2" />
-
   <project path="vendor/samsung"
            name="TheMuppets/proprietary_vendor_samsung"
-           remote="github2"
+           remote="github"
            revision="cm-11.0" />
+
+  <!-- JFLTE -->
+
+  <project name="CM_device_samsung_jf-common"
+           path="device/samsung/jf-common"
+           remote="cxl" />
+
+  <project name="CM_hardware_samsung"
+           path="hardware/samsung"
+           remote="cxl" />
+
+  <project name="CyanogenMod/android_device_samsung_qcom-common"
+           path="device/samsung/qcom-common"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_msm8960-common"
+           path="device/samsung/msm8960-common"
+           remote="github" />
+
+  <project name="CyanogenMod/android_kernel_samsung_jf"
+           path="kernel/samsung/jf"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jfltetmo"
+           path="device/samsung/jfltetmo"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jfltevzw"
+           path="device/samsung/jfltevzw"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jflteatt"
+           path="device/samsung/jflteatt"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jfltecan"
+           path="device/samsung/jfltecan"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jfltespr"
+           path="device/samsung/jfltespr"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jflteusc"
+           path="device/samsung/jflteusc"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jfltecri"
+           path="device/samsung/jfltecri"
+           remote="github" />
+
+  <project name="CyanogenMod/android_device_samsung_jfltecsp"
+           path="device/samsung/jfltecsp"
+           remote="github" />
 
 </manifest>
