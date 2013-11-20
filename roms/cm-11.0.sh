@@ -57,7 +57,6 @@ apply_patches_cm-11.0() {
   popd
 
   pushd frameworks/native/
-  apply_patch_file_git ${MOVEAPPTOSD}/0001-Calculate-application-sizes-correctly.patch
   # Thanks to Team Guppy for finding the commits to revert!
   # https://github.com/TEAM-Gummy/platform_frameworks_native/commit/4980b82179fb742a830e3fc68781e35bb4a3ee81
   # https://github.com/TEAM-Gummy/platform_frameworks_native/commit/9f73d1e2e1ca4f59abe5a5ef2b607b8996f67bd2
