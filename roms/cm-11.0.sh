@@ -50,8 +50,6 @@ apply_patches_cm-11.0() {
   BCMDHD=${PATCHES}/bcmdhd
 
   pushd device/samsung/jf-common/
-  apply_patch_file_git ${MOVEAPPTOSD}/0001-Set-externalSd-attribute-for-the-external-SD-card.patch
-  apply_patch_file_git ${JF}/0001-Add-Telephony-overlay-fixes-missing-LTE-toggle.patch
   apply_patch_file_git ${JF}/0001-Use-IRDA-service.patch
   apply_patch_file_git ${JF}/0001-Enable-Host-Card-Emulation.patch
   # Revert "jf: remove irda stuff"
