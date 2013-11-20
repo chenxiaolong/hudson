@@ -49,10 +49,6 @@ apply_patches_cm-11.0() {
   DUALBOOT=${PATCHES}/dual-boot
   BCMDHD=${PATCHES}/bcmdhd
 
-  pushd device/samsung/jf-common/
-  apply_patch_file_git ${JF}/0001-Enable-Host-Card-Emulation.patch
-  popd
-
   pushd art/
   apply_patch_file_git ${PATCHES}/0001-Run-generate-operator-out.py-with-Python-2.patch
   popd
