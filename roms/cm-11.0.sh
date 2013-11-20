@@ -17,7 +17,6 @@ reset_dirs_cm-11.0() {
     'packages/services/Telephony/'
     'external/clang/'
     'build/'
-    'vendor/cm/'
     'system/core/'
     'kernel/samsung/jf/'
   )
@@ -31,6 +30,7 @@ reset_dirs_cm-11.0() {
     'frameworks/av/'
     'vendor/samsung/'
     'external/busybox/'
+    'vendor/cm/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -125,10 +125,6 @@ apply_patches_cm-11.0() {
   pushd build/
   apply_patch_file_git ${PATCHES}/0001-Use-ccache-version-3.patch
   apply_patch_file_git ${DUALBOOT}/0001-Allow-dual-boot-installation-in-updater-script.patch
-  popd
-
-  pushd vendor/cm/
-  apply_patch_file_git ${DUALBOOT}/0001-Add-helper-script-for-dual-boot-detection-in-updater.patch
   popd
 
   pushd system/core/
