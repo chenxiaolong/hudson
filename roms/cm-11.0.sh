@@ -64,8 +64,6 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
     'http://review.cyanogenmod.org/#/c/53310/' `# Add support for QCs time_daemon`                                   \
-    `# device/samsung/qcom-common` \
-    'http://review.cyanogenmod.org/#/c/53115/' `# qcom: allow properly querying of battery capacity`                 \
     `# packages/apps/Dialer` \
     'http://review.cyanogenmod.org/#/c/53302/' `# Dialer: Update Icons to KitKat`                                    \
     `# packages/services/Telephony` \
