@@ -63,7 +63,6 @@ apply_patches_cm-11.0() {
   popd
 
   pushd frameworks/base/
-  apply_patch_file_git ${JF}/0001-Irda-Add-Irda-System-Service.patch
   apply_patch_file_git ${MOVEAPPTOSD}/0001-Framework-changes-for-moving-applications-to-externa.patch
   # Thanks to Team Guppy for finding the commits to revert!
   # https://github.com/TEAM-Gummy/android_frameworks_base/commit/eeeca93aa110bc2b59290b5e048c15162bfb1780
