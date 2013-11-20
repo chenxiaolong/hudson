@@ -16,7 +16,6 @@ reset_dirs_cm-11.0() {
     'packages/apps/Dialer/'
     'packages/services/Telephony/'
     'external/clang/'
-    'build/'
     'system/core/'
     'kernel/samsung/jf/'
   )
@@ -31,6 +30,7 @@ reset_dirs_cm-11.0() {
     'vendor/samsung/'
     'external/busybox/'
     'vendor/cm/'
+    'build/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -120,10 +120,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${SENSORS}/0001-revert-to-4.3-sensors-for-testing.patch
   apply_patch_file_git ${SENSORS}/0002-complete-the-sensor-swapout.patch
   apply_patch_file_git ${SENSORS}/0003-Make-Flattenable-not-virtual.patch
-  popd
-
-  pushd build/
-  apply_patch_file_git ${PATCHES}/0001-Use-ccache-version-3.patch
   popd
 
   pushd system/core/
