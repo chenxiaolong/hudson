@@ -5,7 +5,6 @@ reset_dirs_cm-11.0() {
     'device/samsung/jf-common/'
     'art/'
     'device/samsung/qcom-common/'
-    'packages/apps/Settings/'
     'packages/providers/ContactsProvider/'
     'frameworks/native/'
     'packages/apps/Dialer/'
@@ -30,6 +29,7 @@ reset_dirs_cm-11.0() {
     'frameworks/opt/hardware/'
     'hardware/samsung/'
     'system/vold/'
+    'packages/apps/Settings/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -68,10 +68,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${SENSORS}/0005-Revert-Fix-for-build-breakage.-Correcting-the-docume.patch
   apply_patch_file_git ${SENSORS}/0006-Revert-Adding-new-constants-for-STEP_DETECTOR-STEP_C.patch
   apply_patch_file_git ${SENSORS}/0007-Revert-Revert-Revert-be-more-robust-with-handling-un.patch
-  popd
-
-  pushd packages/apps/Settings/
-  apply_patch_file_git ${MOVEAPPTOSD}/0001-Add-app-moving-setting-to-development-options.patch
   popd
 
   pushd packages/providers/ContactsProvider/
