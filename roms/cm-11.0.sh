@@ -124,7 +124,6 @@ apply_patches_cm-11.0() {
 
   pushd build/
   apply_patch_file_git ${PATCHES}/0001-Use-ccache-version-3.patch
-  apply_patch_file_git ${DUALBOOT}/0001-Allow-dual-boot-installation-in-updater-script.patch
   popd
 
   pushd system/core/
