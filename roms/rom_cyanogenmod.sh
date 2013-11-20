@@ -41,7 +41,8 @@ cyanogenmod_presync() {
 }
 
 cyanogenmod_repoinit() {
-  repo init -u https://github.com/CyanogenMod/android.git -b ${REPO_BRANCH}
+  #repo init -u https://github.com/CyanogenMod/android.git -b ${REPO_BRANCH}
+  repo init -u https://github.com/chenxiaolong/CM_android.git -b ${REPO_BRANCH}
 }
 
 cyanogenmod_postsync() {
