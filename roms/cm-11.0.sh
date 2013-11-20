@@ -3,13 +3,10 @@ reset_dirs_cm-11.0() {
     'hardware/qcom/audio-caf/'
     'device/samsung/jf-common/'
     'art/'
-    'device/samsung/qcom-common/'
     'packages/providers/ContactsProvider/'
     'packages/apps/Dialer/'
     'packages/services/Telephony/'
-    'external/clang/'
     'system/core/'
-    'kernel/samsung/jf/'
   )
 
   # Directories that should be reset for one more build
@@ -30,6 +27,9 @@ reset_dirs_cm-11.0() {
     'packages/apps/Settings/'
     'frameworks/base/'
     'frameworks/native/'
+    'device/samsung/qcom-common/'
+    'external/clang/'
+    'kernel/samsung/jf/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -67,8 +67,6 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53302/' `# Dialer: Update Icons to KitKat`                                    \
     `# packages/services/Telephony` \
     'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`                                 \
-    `# external/clang` \
-    'http://review.cyanogenmod.org/#/c/53126/' `# clang: add support for neon-vfp instructions`
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${DUALBOOT}/0001-jf-Add-dual-booting-support.patch
