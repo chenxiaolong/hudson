@@ -61,7 +61,6 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53622/' `# Fix sdcard in 4.4 for app r/w access`                              \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
     `# system/core` \
-    'http://review.cyanogenmod.org/#/c/53102/' `# healthd: allow devices to provide their own libhealthd`            \
     'http://review.cyanogenmod.org/#/c/53075/' `# Add back DurationTimer to fix camera.msm8960 load`                 \
     'http://review.cyanogenmod.org/#/c/53310/' `# Add support for QCs time_daemon`                                   \
     `# packages/apps/Dialer` \
