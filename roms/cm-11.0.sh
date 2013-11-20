@@ -1,7 +1,6 @@
 reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'hardware/qcom/audio-caf/'
-    'frameworks/base/'
     'device/samsung/jf-common/'
     'art/'
     'device/samsung/qcom-common/'
@@ -30,6 +29,7 @@ reset_dirs_cm-11.0() {
     'hardware/samsung/'
     'system/vold/'
     'packages/apps/Settings/'
+    'frameworks/base/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -50,24 +50,6 @@ apply_patches_cm-11.0() {
 
   pushd art/
   apply_patch_file_git ${PATCHES}/0001-Run-generate-operator-out.py-with-Python-2.patch
-  popd
-
-  pushd frameworks/base/
-  # Thanks to Team Guppy for finding the commits to revert!
-  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/eeeca93aa110bc2b59290b5e048c15162bfb1780
-  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/9dbf6faeb2ddd6fd031f51e788dc437e496cc1ce
-  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/f64cbd2b4512ad1b2c6cbaabe08a22a097a26b6a
-  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/eef1ffd30fb050af3a9b51af4ff62ff7323fb593
-  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/a33672672c380b95843226c48858224e2d299057
-  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/f95516fd54f1ed5359e4b79d748172a5e1a80c19
-  # https://github.com/TEAM-Gummy/android_frameworks_base/commit/6dd50a6edb7916256ef83fd7e938e001aad6b465
-  apply_patch_file_git ${SENSORS}/0001-Revert-Fix-registerListener-and-flush-bugs.patch
-  apply_patch_file_git ${SENSORS}/0002-Revert-Sensor-batching-APIs-for-review.patch
-  apply_patch_file_git ${SENSORS}/0003-Revert-Fix-for-build-breakage.-Remove-documentation-.patch
-  apply_patch_file_git ${SENSORS}/0004-Revert-Sensor-batching.-Implementation-for-registerL.patch
-  apply_patch_file_git ${SENSORS}/0005-Revert-Fix-for-build-breakage.-Correcting-the-docume.patch
-  apply_patch_file_git ${SENSORS}/0006-Revert-Adding-new-constants-for-STEP_DETECTOR-STEP_C.patch
-  apply_patch_file_git ${SENSORS}/0007-Revert-Revert-Revert-be-more-robust-with-handling-un.patch
   popd
 
   pushd packages/providers/ContactsProvider/
