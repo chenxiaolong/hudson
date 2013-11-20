@@ -1,7 +1,6 @@
 reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'hardware/qcom/audio-caf/'
-    'hardware/libhardware/'
     'frameworks/base/'
     'device/samsung/jf-common/'
     'art/'
@@ -30,6 +29,7 @@ reset_dirs_cm-11.0() {
     'external/busybox/'
     'vendor/cm/'
     'build/'
+    'hardware/libhardware/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -78,10 +78,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${SENSORS}/0005-Revert-Fix-for-build-breakage.-Correcting-the-docume.patch
   apply_patch_file_git ${SENSORS}/0006-Revert-Adding-new-constants-for-STEP_DETECTOR-STEP_C.patch
   apply_patch_file_git ${SENSORS}/0007-Revert-Revert-Revert-be-more-robust-with-handling-un.patch
-  popd
-
-  pushd hardware/libhardware/
-  apply_patch_file_git ${JF}/0001-Irda-Added-IrDA-HAL-Library.patch
   popd
 
   pushd packages/apps/Settings/
