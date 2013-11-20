@@ -7,7 +7,6 @@ reset_dirs_cm-11.0() {
     'device/samsung/qcom-common/'
     'packages/apps/Settings/'
     'packages/providers/ContactsProvider/'
-    'system/vold/'
     'frameworks/native/'
     'packages/apps/Dialer/'
     'packages/services/Telephony/'
@@ -30,6 +29,7 @@ reset_dirs_cm-11.0() {
     'hardware/libhardware/'
     'frameworks/opt/hardware/'
     'hardware/samsung/'
+    'system/vold/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -89,10 +89,6 @@ apply_patches_cm-11.0() {
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
-  popd
-
-  pushd system/vold/
-  apply_patch_file_git ${MOVEAPPTOSD}/0001-vold-Allow-ASEC-containers-on-external-SD-when-inter.patch
   popd
 
   pushd frameworks/native/
