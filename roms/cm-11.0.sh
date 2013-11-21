@@ -1,6 +1,5 @@
 reset_dirs_cm-11.0() {
   RESET_DIRS=(
-    'hardware/qcom/audio-caf/'
     'device/samsung/jf-common/'
     'art/'
     'packages/providers/ContactsProvider/'
@@ -30,6 +29,7 @@ reset_dirs_cm-11.0() {
     'device/samsung/qcom-common/'
     'external/clang/'
     'kernel/samsung/jf/'
+    'hardware/qcom/audio-caf/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -54,8 +54,6 @@ apply_patches_cm-11.0() {
 
   GERRIT_URL="http://review.cyanogenmod.org" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    `# hardware/qcom/audio-caf` \
-    'http://review.cyanogenmod.org/#/c/53196/' `# alsa_sound: Enable support for LPA/Tunnel audio playback`          \
     `# device/samsung/jf-common` \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
