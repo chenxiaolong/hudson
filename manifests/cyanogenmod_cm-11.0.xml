@@ -60,4 +60,8 @@
            path="device/samsung/jfltecsp"
            remote="github" />
 
+  <project name="CyanogenMod/android_device_samsung_jfltexx"
+           path="device/samsung/jfltexx"
+           remote="github" />
+
 </manifest>
