@@ -63,14 +63,14 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53302/' `# Dialer: Update Icons to KitKat`                                    \
     `# packages/services/Telephony` \
     'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`                                 \
-    `# Netflix stuff` \
-    'http://review.cyanogenmod.org/#/c/54152/' \
-    'http://review.cyanogenmod.org/#/c/54193/' \
-    'http://review.cyanogenmod.org/#/c/53434/' \
-    'http://review.cyanogenmod.org/#/c/50368/' \
-    'http://review.cyanogenmod.org/#/c/54346/' \
-    'http://review.cyanogenmod.org/#/c/54347/' \
-    `# Camera stuff` \
+#    `# Netflix stuff` \
+#    'http://review.cyanogenmod.org/#/c/54152/' \
+#    'http://review.cyanogenmod.org/#/c/54193/' \
+#    'http://review.cyanogenmod.org/#/c/53434/' \
+#    'http://review.cyanogenmod.org/#/c/50368/' \
+#    'http://review.cyanogenmod.org/#/c/54346/' \
+#    'http://review.cyanogenmod.org/#/c/54347/' \
+#    `# Camera stuff` \
 #    I26898b82f6c9ab81e6f1681805de229e4ac2f308 \
 #    I56739157380f596c9f3bbbe7aecd8f532d619c72 \
 #    Ia0f5716d5e6815d249040b08313482a103a36863 \
