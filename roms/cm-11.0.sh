@@ -52,7 +52,6 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
   popd
 
-  GERRIT_URL="http://review.cyanogenmod.org" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     `# device/samsung/jf-common` \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \

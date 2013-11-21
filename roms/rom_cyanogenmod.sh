@@ -27,6 +27,8 @@ cyanogenmod_envsetup() {
 #    unset CM_NIGHTLY CM_RELEASE
 #  fi
 
+  export GERRIT_URL="http://review.cyanogenmod.org"
+
   source ${WORKSPACE}/hudson/roms/${REPO_BRANCH}.sh
 }
 
