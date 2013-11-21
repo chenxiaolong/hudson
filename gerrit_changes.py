@@ -113,8 +113,14 @@ for change in sys.argv[1:]:
       break
 
   if not projectpath:
-    print("Project %s not found!" % project)
-    sys.exit(1)
+    for i in repos:
+      if project == re.sub("CyanogenMod/android", "CM", i[1]):
+        projectpath = i[0]
+        break
+
+    if not projectpath:
+      print("Project %s not found!" % project)
+      sys.exit(1)
 
   if not os.path.isdir(projectpath):
     print("%s is not a directory!" % projectpath)
