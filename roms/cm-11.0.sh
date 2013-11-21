@@ -63,6 +63,13 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53302/' `# Dialer: Update Icons to KitKat`                                    \
     `# packages/services/Telephony` \
     'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`                                 \
+    `# Camera stuff` \
+    Iff859f68f7097a36262bd24c0face0edf63f4a4c \
+    I26898b82f6c9ab81e6f1681805de229e4ac2f308 \
+    I56739157380f596c9f3bbbe7aecd8f532d619c72 \
+    Ia0f5716d5e6815d249040b08313482a103a36863 \
+    I216502fe032a89f69e1aea11bc50c51634d40991 \
+    Ib36bd21c9a76b45bced3eee2f25acc35b5d82b30
 
   pushd device/samsung/jf-common/
   apply_patch_file_git ${DUALBOOT}/0001-jf-Add-dual-booting-support.patch
