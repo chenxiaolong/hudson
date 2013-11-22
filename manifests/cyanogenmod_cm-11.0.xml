@@ -8,11 +8,11 @@
 
   <!-- JFLTE -->
 
-  <project name="CM_device_samsung_jf-common"
+  <project name="chenxiaolong/CM_device_samsung_jf-common"
            path="device/samsung/jf-common"
            remote="cxl" />
 
-  <project name="CM_hardware_samsung"
+  <project name="chenxiaolong/CM_hardware_samsung"
            path="hardware/samsung"
            remote="cxl" />
 
