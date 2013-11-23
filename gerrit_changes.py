@@ -114,7 +114,7 @@ for change in sys.argv[1:]:
 
   if not projectpath:
     for i in repos:
-      if re.sub("CyanogenMod/android", "CM", project) == i[1]:
+      if re.sub("CyanogenMod/android", "chenxiaolong/CM", project) == i[1]:
         projectpath = i[0]
         break
 
