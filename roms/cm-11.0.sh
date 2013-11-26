@@ -56,6 +56,7 @@ apply_patches_cm-11.0() {
   #git revert --no-edit 25abb7ace77be2ad3c52df93dd7044d50b8fee1d
   git rm jf-common/Android.mk
   sed -i '/time_daemon/d' jf-common/jf-common-vendor-blobs.mk
+  sed -i '/libtime_genoff/d' jf-common/jf-common-vendor-blobs.mk
   sed -i '/libtime_genoff/d' jf-common/jf-common-vendor.mk
   git add jf-common/jf-common-vendor-blobs.mk
   git add jf-common/jf-common-vendor.mk
