@@ -75,8 +75,7 @@ apply_patches_cm-11.0() {
     `# packages/services/Telephony` \
     'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`                                 \
     `# Netflix stuff` \
-    'http://review.cyanogenmod.org/#/c/54274/' \
-    'http://review.cyanogenmod.org/#/c/54276/' \
+    'http://review.cyanogenmod.org/#/c/54484/' \
 
 #    'http://review.cyanogenmod.org/#/c/54152/' \
 #    'http://review.cyanogenmod.org/#/c/54193/' \
