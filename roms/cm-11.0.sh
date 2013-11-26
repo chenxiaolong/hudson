@@ -69,7 +69,7 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
     `# system/core` \
-    'http://review.cyanogenmod.org/#/c/53310/' `# Add support for QCs time_daemon`                                   \
+    `# 'http://review.cyanogenmod.org/#/c/53310/'` `# Add support for QCs time_daemon`                                   \
     `# packages/apps/Dialer` \
     'http://review.cyanogenmod.org/#/c/53302/' `# Dialer: Update Icons to KitKat`                                    \
     `# packages/services/Telephony` \
