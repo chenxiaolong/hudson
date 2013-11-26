@@ -6,6 +6,7 @@ reset_dirs_cm-11.0() {
     'packages/apps/Dialer/'
     'packages/services/Telephony/'
     'system/core/'
+    'vendor/samsung/'
   )
 
   # Directories that should be reset for one more build
@@ -15,7 +16,6 @@ reset_dirs_cm-11.0() {
     'hardware/qcom/media-caf/'
     'hardware/qcom/display-caf/'
     'frameworks/av/'
-    'vendor/samsung/'
     'external/busybox/'
     'vendor/cm/'
     'build/'
@@ -50,6 +50,18 @@ apply_patches_cm-11.0() {
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
+  popd
+
+  pushd vendor/samsung/
+  #git revert --no-edit 25abb7ace77be2ad3c52df93dd7044d50b8fee1d
+  git rm jf-common/Android.mk
+  sed -i '/time_daemon/d' jf-common/jf-common-vendor-blobs.mk
+  sed -i '/libtime_genoff/d' jf-common/jf-common-vendor.mk
+  git add jf-common/jf-common-vendor-blobs.mk
+  git add jf-common/jf-common-vendor.mk
+  git rm jf-common/proprietary/bin/time_daemon
+  git rm jf-common/proprietary/lib/libtime_genoff.so
+  git commit -m 'Revert 25abb7ace77be2ad3c52df93dd7044d50b8fee1d'
   popd
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
