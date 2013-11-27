@@ -1,7 +1,6 @@
 reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'device/samsung/jf-common/'
-    'art/'
     'packages/providers/ContactsProvider/'
     'packages/apps/Dialer/'
     'packages/services/Telephony/'
@@ -30,6 +29,7 @@ reset_dirs_cm-11.0() {
     'external/clang/'
     'kernel/samsung/jf/'
     'hardware/qcom/audio-caf/'
+    'art/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -43,10 +43,6 @@ apply_patches_cm-11.0() {
   PATCHES=${WORKSPACE}/hudson/roms/${REPO_BRANCH}
   FACEBOOKSYNC=${PATCHES}/facebook-sync
   DUALBOOT=${PATCHES}/dual-boot
-
-  pushd art/
-  apply_patch_file_git ${PATCHES}/0001-Run-generate-operator-out.py-with-Python-2.patch
-  popd
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
