@@ -2,9 +2,6 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'device/samsung/jf-common/'
     'packages/providers/ContactsProvider/'
-    'packages/apps/Dialer/'
-    'packages/services/Telephony/'
-    'system/core/'
   )
 
   # Directories that should be reset for one more build
@@ -30,6 +27,9 @@ reset_dirs_cm-11.0() {
     'hardware/qcom/audio-caf/'
     'art/'
     'vendor/samsung/'
+    'system/core/'
+    'packages/apps/Dialer/'
+    'packages/services/Telephony/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
