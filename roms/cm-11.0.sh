@@ -53,12 +53,6 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
 
-#    'http://review.cyanogenmod.org/#/c/54152/' \
-#    'http://review.cyanogenmod.org/#/c/54193/' \
-#    'http://review.cyanogenmod.org/#/c/53434/' \
-#    'http://review.cyanogenmod.org/#/c/50368/' \
-#    'http://review.cyanogenmod.org/#/c/54346/' \
-#    'http://review.cyanogenmod.org/#/c/54347/' \
 #    `# Camera stuff` \
 #    I26898b82f6c9ab81e6f1681805de229e4ac2f308 \
 #    I56739157380f596c9f3bbbe7aecd8f532d619c72 \
