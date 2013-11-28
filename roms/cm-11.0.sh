@@ -52,8 +52,6 @@ apply_patches_cm-11.0() {
     `# device/samsung/jf-common` \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
-    `# packages/services/Telephony` \
-    'http://review.cyanogenmod.org/#/c/53356/' `# Telephony: Update Icons to Kitkat`                                 \
     `# Netflix stuff` \
     'http://review.cyanogenmod.org/#/c/54484/' \
 
