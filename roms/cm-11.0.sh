@@ -34,7 +34,11 @@ reset_dirs_cm-11.0() {
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
     if [ -d "${i}" ]; then
-      reset_git_state ${i} github/${REPO_BRANCH}
+      if [ -d "${i}/.git/refs/remotes/cxl" ]; then
+        reset_git_state ${i} cxl/${REPO_BRANCH}
+      else
+        reset_git_state ${i} github/${REPO_BRANCH}
+      fi
     fi
   done
 }
