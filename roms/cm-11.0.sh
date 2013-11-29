@@ -6,30 +6,6 @@ reset_dirs_cm-11.0() {
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=(
-    'hardware/libhardware_legacy/'
-    'device/samsung/msm8960-common/'
-    'hardware/qcom/media-caf/'
-    'hardware/qcom/display-caf/'
-    'frameworks/av/'
-    'external/busybox/'
-    'vendor/cm/'
-    'build/'
-    'hardware/libhardware/'
-    'frameworks/opt/hardware/'
-    'hardware/samsung/'
-    'system/vold/'
-    'packages/apps/Settings/'
-    'frameworks/base/'
-    'frameworks/native/'
-    'device/samsung/qcom-common/'
-    'external/clang/'
-    'kernel/samsung/jf/'
-    'hardware/qcom/audio-caf/'
-    'art/'
-    'vendor/samsung/'
-    'system/core/'
-    'packages/apps/Dialer/'
-    'packages/services/Telephony/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
