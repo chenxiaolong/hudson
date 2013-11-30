@@ -2,8 +2,6 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'device/samsung/jf-common/'
     'packages/providers/ContactsProvider/'
-    'frameworks/opt/telephony/'
-    'vendor/cm/'
   )
 
   # Directories that should be reset for one more build
@@ -28,16 +26,6 @@ apply_patches_cm-11.0() {
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
-  popd
-
-  pushd frameworks/opt/telephony/
-  git revert --no-edit 4036e712b85ef11b370d85ca620ed7f2cd678072
-  popd
-
-  pushd vendor/cm/
-  sed -i '/VoicePlus/d' config/common.mk
-  git add config/common.mk
-  git commit -m 'Remove VoicePlus'
   popd
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
