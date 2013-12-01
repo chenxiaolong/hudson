@@ -2,6 +2,7 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'device/samsung/jf-common/'
     'packages/providers/ContactsProvider/'
+    'bionic/'
   )
 
   # Directories that should be reset for one more build
@@ -31,9 +32,11 @@ apply_patches_cm-11.0() {
   popd
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    `# device/samsung/jf-common` \
-    'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`                                                \
-    'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`                                                     \
+    `# device/samsung/jf-common`                                      \
+    'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS` \
+    'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`      \
+    `# bionic`                                                        \
+    'http://review.cyanogenmod.org/#/c/54822/'
 
 #    `# Camera stuff` \
 #    I26898b82f6c9ab81e6f1681805de229e4ac2f308 \
