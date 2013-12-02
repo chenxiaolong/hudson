@@ -36,11 +36,29 @@ apply_patches_cm-11.0() {
   git pull --no-edit http://review.chameleonos.org/ChameleonOS/android_packages_apps_ScreenRecorder refs/changes/30/2730/1
   popd
 
+  pushd device/samsung/jf-common/
+  cat >> BoardConfigCommon.mk << EOF
+# Adreno
+OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
+HAVE_ADRENO_SOURCE := false
+EOF
+
+  cat >> jf-common.mk << EOF
+# Sensors
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \\
+    frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \\
+    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \\
+    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml
+EOF
+
+  git commit -am "blob stuff"
+  popd
+
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     `# device/samsung/jf-common`                                      \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS` \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`      \
-    'http://review.cyanogenmod.org/#/c/54888/' `# jf: use flo adreno` \
     `# bionic`                                                        \
     `# 'http://review.cyanogenmod.org/#/c/54822/'`
 
