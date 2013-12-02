@@ -2,14 +2,15 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'device/samsung/jf-common/'
     'packages/providers/ContactsProvider/'
-    'bionic/'
     'packages/apps/ScreenRecorder/'
+    'kernel/samsung/jf/'
   )
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=(
     'frameworks/opt/telephony/'
     'vendor/cm/'
+    'bionic/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -60,7 +61,19 @@ EOF
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS` \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`      \
     `# bionic`                                                        \
-    `# 'http://review.cyanogenmod.org/#/c/54822/'`
+    `# 'http://review.cyanogenmod.org/#/c/54822/'`                    \
+    `# kernel/samsung/jf`                                             \
+    'http://review.cyanogenmod.org/#/c/54920/'                        \
+    'http://review.cyanogenmod.org/#/c/54921/'                        \
+    'http://review.cyanogenmod.org/#/c/54922/'                        \
+    'http://review.cyanogenmod.org/#/c/54923/'                        \
+    'http://review.cyanogenmod.org/#/c/54924/'                        \
+    'http://review.cyanogenmod.org/#/c/54925/'                        \
+    'http://review.cyanogenmod.org/#/c/54926/'                        \
+    'http://review.cyanogenmod.org/#/c/54927/'                        \
+    'http://review.cyanogenmod.org/#/c/54928/'                        \
+    'http://review.cyanogenmod.org/#/c/54929/'                        \
+    'http://review.cyanogenmod.org/#/c/54962/'
 
 #    `# Camera stuff` \
 #    I26898b82f6c9ab81e6f1681805de229e4ac2f308 \
