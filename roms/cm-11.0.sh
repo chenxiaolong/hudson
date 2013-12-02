@@ -40,6 +40,7 @@ apply_patches_cm-11.0() {
     `# device/samsung/jf-common`                                      \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS` \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`      \
+    'http://review.cyanogenmod.org/#/c/54888/' `# jf: use flo adreno` \
     `# bionic`                                                        \
     `# 'http://review.cyanogenmod.org/#/c/54822/'`
 

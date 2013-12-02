@@ -2,7 +2,7 @@
 <manifest>
 
   <project path="vendor/samsung"
-           name="TheMuppets/proprietary_vendor_samsung"
+           name="invisiblek/proprietary_vendor_samsung"
            remote="github"
            revision="cm-11.0" />
 
