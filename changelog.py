@@ -93,26 +93,19 @@ counter = 0
 for current_repo in all_repos:
   if not current_repo: continue
 
-  # Get repo URL
-  process = subprocess.Popen(
-    [ 'git', 'remote' ],
-    stdout = subprocess.PIPE,
-    cwd = current_repo,
-    universal_newlines = True
-  )
-
-  remote = process.communicate()[0].split('\n')[0]
-
   # Get project path
   process = subprocess.Popen(
-    [ 'git', 'config',
-      '--get', 'remote.' + remote + '.projectname' ],
+    [ repo, 'info', '.' ],
     stdout = subprocess.PIPE,
     cwd = current_repo,
     universal_newlines = True
   )
 
-  project_name = process.communicate()[0].split('\n')[0]
+  output = process.communicate()[0].split('\n')
+  project_name = "UNKNOWN"
+  for i in output:
+    if i.startswith("Project:"):
+      project_name = i.split(' ')[1]
 
   # Get commit log
   process = subprocess.Popen(
