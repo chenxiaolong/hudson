@@ -3,7 +3,6 @@ reset_dirs_cm-11.0() {
     'device/samsung/jf-common/'
     'packages/providers/ContactsProvider/'
     'packages/apps/ScreenRecorder/'
-    'kernel/samsung/jf/'
   )
 
   # Directories that should be reset for one more build
@@ -11,6 +10,7 @@ reset_dirs_cm-11.0() {
     'frameworks/opt/telephony/'
     'vendor/cm/'
     'bionic/'
+    'kernel/samsung/jf/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -37,43 +37,12 @@ apply_patches_cm-11.0() {
   git pull --no-edit http://review.chameleonos.org/ChameleonOS/android_packages_apps_ScreenRecorder refs/changes/30/2730/1
   popd
 
-  pushd device/samsung/jf-common/
-  cat >> BoardConfigCommon.mk << EOF
-# Adreno
-OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
-HAVE_ADRENO_SOURCE := false
-EOF
-
-  cat >> jf-common.mk << EOF
-# Sensors
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \\
-    frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \\
-    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \\
-    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml
-EOF
-
-  git commit -am "blob stuff"
-  popd
-
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     `# device/samsung/jf-common`                                      \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS` \
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`      \
     `# bionic`                                                        \
     `# 'http://review.cyanogenmod.org/#/c/54822/'`                    \
-    `# kernel/samsung/jf`                                             \
-    'http://review.cyanogenmod.org/#/c/54920/'                        \
-    'http://review.cyanogenmod.org/#/c/54921/'                        \
-    'http://review.cyanogenmod.org/#/c/54922/'                        \
-    'http://review.cyanogenmod.org/#/c/54923/'                        \
-    'http://review.cyanogenmod.org/#/c/54924/'                        \
-    'http://review.cyanogenmod.org/#/c/54925/'                        \
-    'http://review.cyanogenmod.org/#/c/54926/'                        \
-    'http://review.cyanogenmod.org/#/c/54927/'                        \
-    'http://review.cyanogenmod.org/#/c/54928/'                        \
-    'http://review.cyanogenmod.org/#/c/54929/'                        \
-    'http://review.cyanogenmod.org/#/c/54962/'
 
 #    `# Camera stuff` \
 #    I26898b82f6c9ab81e6f1681805de229e4ac2f308 \
