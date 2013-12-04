@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
 
-  <project path="vendor/samsung"
-           name="invisiblek/proprietary_vendor_samsung"
+  <project path="vendor/lge"
+           name="TheMuppets/proprietary_vendor_lge"
            remote="github"
            revision="cm-11.0" />
 
   <!-- JFLTE -->
+
+  <project path="vendor/samsung"
+           name="invisiblek/proprietary_vendor_samsung"
+           remote="github"
+           revision="cm-11.0" />
 
   <project name="chenxiaolong/CM_device_samsung_jf-common"
            path="device/samsung/jf-common"
