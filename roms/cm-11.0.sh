@@ -2,13 +2,13 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'device/samsung/jf-common/'
     'packages/providers/ContactsProvider/'
-    'packages/apps/ScreenRecorder/'
     'packages/apps/Apollo/'
     'packages/apps/Launcher3/'
   )
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=(
+    'packages/apps/ScreenRecorder/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -29,10 +29,6 @@ apply_patches_cm-11.0() {
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
-  popd
-
-  pushd packages/apps/ScreenRecorder/
-  git pull --no-edit http://review.chameleonos.org/ChameleonOS/android_packages_apps_ScreenRecorder refs/changes/30/2730/1
   popd
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
