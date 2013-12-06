@@ -41,8 +41,6 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`      \
     `# packages/apps/Apollo`                                          \
     'http://review.cyanogenmod.org/#/c/54722/'                        \
-    `# packages/apps/Launcher3`                                       \
-    'http://review.cyanogenmod.org/#/c/54987/'                        \
 
 #    `# Camera stuff` \
 #    I26898b82f6c9ab81e6f1681805de229e4ac2f308 \
