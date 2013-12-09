@@ -26,8 +26,8 @@ LAST2=($(echo -e "${SFTP}" \
          | tail -n 2 \
          | awk '{print $1}'))
 
-CURRENT="${LAST2[0]}"
-LAST="${LAST2[1]}"
+CURRENT="${LAST2[1]}"
+LAST="${LAST2[0]}"
 
 if [[ -z "${CURRENT}" ]] || [[ -z "${LAST}" ]]; then
   echo "Less than two latest builds. Cannot create delta."
