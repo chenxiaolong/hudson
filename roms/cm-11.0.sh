@@ -34,7 +34,6 @@ apply_patches_cm-11.0() {
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     `# device/samsung/jf-common`                                      \
     'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS` \
-    'http://review.cyanogenmod.org/#/c/53969/' `# jf: fix fstab`      \
     `# packages/apps/Apollo`                                          \
     'http://review.cyanogenmod.org/#/c/54722/'                        \
 
