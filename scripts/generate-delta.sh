@@ -85,7 +85,7 @@ fi
 # Create delta
 echo "Downloading latest delta generation script ..."
 rm -f opendelta.py
-wget -q https://raw.github.com/chenxiaolong/hudson/delta/scripts/opendelta.py
+wget -q https://raw.github.com/chenxiaolong/hudson/master/scripts/opendelta.py
 python3 opendelta.py ${LUNCH} ${OLDDIR} ${NEWDIR} ${BINARIES_DIR} ${TARGETDIR}
 rm -f opendelta.py
 
