@@ -98,8 +98,8 @@ fi
 echo "Downloading latest SourceForge upload script ..."
 rm -f sourceforge-upload.sh
 wget -q https://raw.github.com/chenxiaolong/hudson/master/scripts/sourceforge-upload.sh
-bash sourceforge-upload.sh UpdateDelta ${TARGETDIR}/*.update
-bash sourceforge-upload.sh UpdateDelta ${TARGETDIR}/*.delta
+bash sourceforge-upload.sh UpdateDelta/${LUNCH} ${TARGETDIR}/*.update
+bash sourceforge-upload.sh UpdateDelta/${LUNCH} ${TARGETDIR}/*.delta
 rm -f sourceforge-upload.sh
 
 exit 0
