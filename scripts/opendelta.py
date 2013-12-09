@@ -181,7 +181,7 @@ exit_status, output, error = run_command(
   [ xdelta3, '-9evfS', 'none', '-s',
     os.path.join(tempdir, 'last.zip'),
     os.path.join(tempdir, 'current.zip'),
-    os.path.join(outdir, file_last_base + '.update') ]
+    os.path.join(outputdir, file_last_base + '.update') ]
 )
 
 if exit_status is None or exit_status != 0:
@@ -192,13 +192,13 @@ md5_current       = get_file_md5(os.path.join(path_current, file_current))
 md5_current_store = get_file_md5(os.path.join(tempdir, 'current.zip'))
 md5_last          = get_file_md5(os.path.join(path_last, file_last))
 md5_last_store    = get_file_md5(os.path.join(tempdir, 'last.zip'))
-md5_update        = get_file_md5(os.path.join(outdir, file_last_base + '.update'))
+md5_update        = get_file_md5(os.path.join(outputdir, file_last_base + '.update'))
 
 size_current       = get_file_size(os.path.join(path_current, file_current))
 size_current_store = get_file_size(os.path.join(tempdir, 'current.zip'))
 size_last          = get_file_size(os.path.join(path_last, file_last))
 size_last_store    = get_file_size(os.path.join(tempdir, 'last.zip'))
-size_update        = get_file_size(os.path.join(outdir, file_last_base + '.update'))
+size_update        = get_file_size(os.path.join(outputdir, file_last_base + '.update'))
 
 print('-' * 80)
 print("Last build:")
@@ -218,7 +218,7 @@ print("  MD5:\t\t\t"           + md5_update)
 print("  Size:\t\t\t"          + str(size_update))
 
 
-f = open(os.path.join(outdir, file_last_base + '.delta'), 'wb')
+f = open(os.path.join(outputdir, file_last_base + '.delta'), 'wb')
 
 f.write((template % (
   # in
