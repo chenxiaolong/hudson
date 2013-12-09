@@ -185,7 +185,7 @@ exit_status, output, error = run_command(
 )
 
 if exit_status is None or exit_status != 0:
-  print("Failed create delta file")
+  print("Failed to create delta file")
   clean_up_and_exit(1)
 
 md5_current       = get_file_md5(os.path.join(path_current, file_current))
