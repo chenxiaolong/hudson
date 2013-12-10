@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
 
+  <!-- Nexus 5 -->
+
   <project path="vendor/lge"
            name="TheMuppets/proprietary_vendor_lge"
            remote="github"
            revision="cm-11.0" />
+
+  <project name="chenxiaolong/CM_device_lge_hammerhead"
+           path="device/lge/hammerhead"
+           remote="cxl" />
 
   <!-- JFLTE -->
 
