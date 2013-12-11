@@ -104,10 +104,7 @@ common_prebuild() {
   TIME_SINCE_LAST_CLEAN=$(expr $(date +%s) - ${LAST_CLEAN})
   # convert this to hours
   TIME_SINCE_LAST_CLEAN=$(expr ${TIME_SINCE_LAST_CLEAN} / 60 / 60)
-###
-#  TIME_SINCE_LAST_CLEAN=1
-###
-  if [ "${TIME_SINCE_LAST_CLEAN}" -gt "24" -o "${CLEAN}" = "true" ]; then
+  if [ "${TIME_SINCE_LAST_CLEAN}" -gt "18" -o "${CLEAN}" = "true" ]; then
     echo "Cleaning!"
     touch .clean
     set -e
