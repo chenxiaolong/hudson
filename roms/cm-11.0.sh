@@ -4,6 +4,7 @@ reset_dirs_cm-11.0() {
     'packages/providers/ContactsProvider/'
     'packages/apps/Apollo/'
     'packages/apps/Launcher3/'
+    'external/bluetooth/bluedroid/'
   )
 
   # Directories that should be reset for one more build
@@ -29,6 +30,10 @@ apply_patches_cm-11.0() {
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
+  popd
+
+  pushd external/bluetooth/bluedroid/
+  apply_patch_file_git ${PATCHES}/0001-Disable-Werror.patch
   popd
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
