@@ -57,9 +57,7 @@ cyanogenmod_prebuild() {
   # Remove old zips
   rm -f "${OUT}"/cm-*.zip*
 
-  set -e
   apply_patches_${REPO_BRANCH}
-  set +e
 
   if [ ! -z "${CM_NIGHTLY}" ]; then
     make update-api
