@@ -1,15 +1,14 @@
 reset_dirs_cm-11.0() {
   RESET_DIRS=(
-    'device/samsung/jf-common/'
     'packages/providers/ContactsProvider/'
     'packages/apps/Apollo/'
-    'packages/apps/Launcher3/'
     'external/bluetooth/bluedroid/'
   )
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=(
-    'packages/apps/ScreenRecorder/'
+    'device/samsung/jf-common/'
+    'packages/apps/Launcher3/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -48,8 +47,4 @@ apply_patches_cm-11.0() {
 #    Ia0f5716d5e6815d249040b08313482a103a36863 \
 #    I216502fe032a89f69e1aea11bc50c51634d40991 \
 #    Ib36bd21c9a76b45bced3eee2f25acc35b5d82b30
-
-  pushd device/samsung/jf-common/
-  apply_patch_file_git ${DUALBOOT}/0001-jf-Add-dual-booting-support.patch
-  popd
 }
