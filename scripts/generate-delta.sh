@@ -62,7 +62,7 @@ download_file() {
 
 echo "Checking if latest build is available locally ..."
 CURRENT_FILENAME=$(basename ${CURRENT})
-CURRENT_LOCAL=$(find ${JOB_DIR} -name ${CURRENT_FILENAME})
+CURRENT_LOCAL=$(find ${JOB_DIR} -name ${CURRENT_FILENAME} | tail -n 1)
 if [[ -z "${CURRENT_LOCAL}" ]]; then
   echo "Nope. Downloading to temporary directory ..."
   download_file ${CURRENT} ${NEWDIR}/${CURRENT_FILENAME}
@@ -73,7 +73,7 @@ fi
 
 echo "Checking if second latest build is available locally ..."
 LAST_FILENAME=$(basename ${LAST})
-LAST_LOCAL=$(find ${JOB_DIR} -name ${LAST_FILENAME})
+LAST_LOCAL=$(find ${JOB_DIR} -name ${LAST_FILENAME} | tail -n 1)
 if [[ -z "${LAST_LOCAL}" ]]; then
   echo "Nope. Downloading to temporary directory ..."
   download_file ${LAST} ${OLDDIR}/${LAST_FILENAME}
