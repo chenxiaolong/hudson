@@ -25,7 +25,6 @@ reset_dirs_cm-11.0() {
 apply_patches_cm-11.0() {
   PATCHES=${WORKSPACE}/hudson/roms/${REPO_BRANCH}
   FACEBOOKSYNC=${PATCHES}/facebook-sync
-  DUALBOOT=${PATCHES}/dual-boot
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
