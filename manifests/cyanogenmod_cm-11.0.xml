@@ -8,9 +8,9 @@
            remote="github"
            revision="cm-11.0" />
 
-  <project name="chenxiaolong/CM_device_lge_hammerhead"
+  <project name="CyanogenMod/android_device_lge_hammerhead"
            path="device/lge/hammerhead"
-           remote="cxl" />
+           remote="github" />
 
   <project name="CyanogenMod/android_kernel_lge_hammerhead"
            path="kernel/lge/hammerhead"
