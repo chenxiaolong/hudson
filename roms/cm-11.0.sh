@@ -2,13 +2,12 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'packages/providers/ContactsProvider/'
     'packages/apps/Apollo/'
-    'external/bluetooth/bluedroid/'
+    'device/samsung/jf-common/'
   )
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=(
-    'device/samsung/jf-common/'
-    'packages/apps/Launcher3/'
+    'external/bluetooth/bluedroid/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -28,10 +27,6 @@ apply_patches_cm-11.0() {
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
-  popd
-
-  pushd external/bluetooth/bluedroid/
-  apply_patch_file_git ${PATCHES}/0001-Disable-Werror.patch
   popd
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
