@@ -138,7 +138,11 @@ for change in sys.argv[1:]:
 
   for i in data['revisions']:
     if i == current_revision:
-      ref = data['revisions'][i]['fetch']['http']['ref']
+      fetch = data['revisions'][i]['fetch']
+      if 'http' in fetch:
+        ref = fetch['http']['ref']
+      else:
+        ref = fetch['anonymous http']['ref']
       patchset = data['revisions'][i]['_number']
       break
 
