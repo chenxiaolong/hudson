@@ -111,7 +111,8 @@ common_prebuild() {
     make clobber
     set +e
   else
-    echo "Skipping clean: ${TIME_SINCE_LAST_CLEAN} hours since last clean."
+    echo "Minimal clean: ${TIME_SINCE_LAST_CLEAN} hours since last full clean."
+    make installclean
   fi
 
   # Save current branch
