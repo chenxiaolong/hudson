@@ -3,6 +3,7 @@
 # Generate changelogs and create HTML output
 
 import os
+import re
 import subprocess
 import sys
 from email.utils import formatdate
@@ -103,7 +104,9 @@ for current_repo in all_repos:
 
   output = process.communicate()[0].split('\n')
   project_name = "UNKNOWN"
+  ansi = re.compile(r'\x1b[^m]*m')
   for i in output:
+    i = ansi.sub('', i)
     if i.startswith("Project:"):
       project_name = i.split(' ')[1]
 
