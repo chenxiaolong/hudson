@@ -1,0 +1,2252 @@
+From da2c1479b42367e8c300137f34317088a06c778d Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Mon, 30 Dec 2013 02:39:19 -0500
+Subject: [PATCH] Auto-merge Google Dialer translations
+
+Change-Id: I4f98ab675aeb2c5e6967a3e51ba0bab25cd08078
+---
+ res/values-af/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-am/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-ar/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-bg/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-ca/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-cs/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-da/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-de/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-el/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-en-rGB/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-en-rIN/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-es-rUS/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-es/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-et-rEE/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-et/strings.xml     |  3 +++
+ res/values-fa/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-fi/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-fr-rCA/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-fr/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-hi/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-hr/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-hu/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-hy-rAM/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-hy/strings.xml     |  3 +++
+ res/values-in/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-it/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-iw/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-ja/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-ka-rGE/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-ka/strings.xml     |  3 +++
+ res/values-km-rKH/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-km/strings.xml     |  3 +++
+ res/values-ko/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-lo-rLA/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-lo/strings.xml     |  3 +++
+ res/values-lt/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-lv/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-mn-rMN/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-mn/strings.xml     |  3 +++
+ res/values-ms-rMY/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-ms/strings.xml     |  3 +++
+ res/values-nb/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-nl/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-pl/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-pt-rPT/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-pt/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-ro/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-ru/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-sk/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-sl/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-sr/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-sv/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-sw/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-th/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-tl/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-tr/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-uk/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-vi/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values-zh-rCN/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-zh-rTW/strings.xml | 27 +++++++++++++++++++++++++++
+ res/values-zu/strings.xml     | 27 +++++++++++++++++++++++++++
+ res/values/strings.xml        | 17 +++++++++++++++++
+ 62 files changed, 1496 insertions(+)
+
+diff --git a/res/values-af/strings.xml b/res/values-af/strings.xml
+index e9e0676..276a671 100644
+--- a/res/values-af/strings.xml
++++ b/res/values-af/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Instellings</string>
++    <string name="dialer_hint_find_contact_google">Deursoek kontakte en nabygeleë plekke</string>
++    <string name="call_settings_label">Belinstellings</string>
++    <string name="view_location_settings">Bekyk ligginginstellings</string>
++    <string name="enable_reverse_lookup">Aktiveer beller-ID deur Google</string>
++    <string name="reverse_lookup_enabled">Beller-ID deur Google is geaktiveer</string>
++    <string name="google_caller_id_setting_title">Beller-ID deur Google</string>
++    <string name="google_caller_id_setting__on">Wys name vir mense en besighede wat nie in my kontakte is nie.</string>
++    <string name="google_caller_id_setting__off">Af</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Beller
++        ID deur Google&lt;/a> wys name vir mense en besighede wat nie in jou kontakte is nie.
++        &lt;br>&lt;br>
++        Dateer die opspoorbaarheid van jou foonnommer op in jou
++        &lt;a href=%2$s>Google-rekeninginstellings&lt;/a>.
++        &lt;br>&lt;br>
++        Data wat in hierdie kenmerke gebruik word, word deur Google en sy lisensieerders voorsien.
++        &lt;br>&lt;a href=%3$s>Kom meer te wete.&lt;/a>"</string>
++    <string name="local_search_directory_label">Nabygeleë plekke</string>
++    <string name="local_search_setting_title">Nabygeleë plekke</string>
++    <string name="local_search_setting_on">Wys soekresultate vir nabygeleë plekke.</string>
++    <string name="local_search_setting_off">Af</string>
++    <string name="local_search_settings_text">"Wanneer jy met die foon-program soek, gebruik hierdie kenmerk jou ligging om nabygeleë plekke te vind wat by jou navraag pas, selfs al is hulle nie in jou kontakte nie. &lt;br>&lt;br> Data wat in hierdie kenmerke gebruik word, word deur Google en sy lisensiegewers voorsien. &lt;br>&lt;a href=%1$s>Kom meer te wete.&lt;/a>
++        &lt;br>&lt;br>
++        Jy  moet Google Apps aktiveer om jou foon se ligging te aktiveer, om dit te gebruik.
++        &lt;br>&lt;a href=%2$s>Kom meer te wete.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Beller"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Foon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Foon"</string>
+diff --git a/res/values-am/strings.xml b/res/values-am/strings.xml
+index 9b38a74..cdb6aee 100644
+--- a/res/values-am/strings.xml
++++ b/res/values-am/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">ቅንብሮች</string>
++    <string name="dialer_hint_find_contact_google">እውቂያዎችን እና በአቅራቢያ ያሉ ቦታዎችን ይፈልጉ</string>
++    <string name="call_settings_label">የጥሪ ቅንብሮች</string>
++    <string name="view_location_settings">የአካባቢ ቅንብሮችን ይመልከቱ</string>
++    <string name="enable_reverse_lookup">የደዋይ መታወቂያ በGoogle ያንቁ</string>
++    <string name="reverse_lookup_enabled">የደዋይ መታወቂያ በGoogle ነቅቷል</string>
++    <string name="google_caller_id_setting_title">የደዋይ መታወቂያ በGoogle</string>
++    <string name="google_caller_id_setting__on">በዕውቂያዎቼ ውስጥ የሌሉ ሰዎችን እና ንግዶችን ስም አሳይ።</string>
++    <string name="google_caller_id_setting__off">ጠፍቷል</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>የደዋይ
++ መታወቂያ በGoogle&lt;/a> በእውቂያዎችዎ ውስጥ የሌሉ ሰዎችን እና ንግዶችን ስሞች ያሳያል።
++ &lt;br>&lt;br>
++ በእርስዎ 
++ &lt;a href=%2$s>የGoogle መለያ ቅንብሮች&lt;/a> ውስጥ የስልክ ቁጥርዎን ተገኚነት ያዘምኑ።
++ &lt;br>&lt;br>
++ በእነዚህ ባህሪያት ውስጥ ጥቅም ላይ የሚውለው ውሂብ የሚቀርበው በGoogle እና በፈቃድ ሰጪዎቹ ነው።
++ &lt;br>&lt;a href=%3$s>ተጨማሪ ይወቁ።&lt;/a>"</string>
++    <string name="local_search_directory_label">በአቅራቢያ ያሉ ቦታዎች</string>
++    <string name="local_search_setting_title">በአቅራቢያ ያሉ ቦታዎች</string>
++    <string name="local_search_setting_on">በአቅራቢያ ላሉ ቦታዎች የፍለጋ ውጤቶችን አሳይ።</string>
++    <string name="local_search_setting_off">ጠፍቷል</string>
++    <string name="local_search_settings_text">"ከስልክ መተግበሪያው ላይ ሲፈልጉ ይህ ባህሪ ከእርስዎ መጠይቅ ጋር የሚዛመዱ በአቅራቢያ ያሉ ቦታዎችን ለማግኘት የእርስዎን አካባቢ ይጠቀማል፣ በእርስዎ ዕውቂያዎች ውስጥ ባይኖሩም እንኳን። &lt;br>&lt;br> በእነዚህ ባህሪያት ውስጥ ስራ ላይ የሚውለው ውሂብ የሚቀርበው በGoogle እና በፈቃድ ሰጪዎቹ ነው። &lt;br>&lt;a href=%1$s>ተጨማሪ ይወቁ።&lt;/a>
++ &lt;br>&lt;br>
++        ይሄ እንዲሰራ የGoogle መተግበሪያዎች የስልክዎን አካባቢ እንዲጠቀም ማንቃት አለብዎት።
++ &lt;br>&lt;a href=%2$s>ተጨማሪ ይወቁ።&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"ደዋይ"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"ስልክ"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"ስልክ"</string>
+diff --git a/res/values-ar/strings.xml b/res/values-ar/strings.xml
+index 5b60eb9..b2cc40a 100644
+--- a/res/values-ar/strings.xml
++++ b/res/values-ar/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">الإعدادات</string>
++    <string name="dialer_hint_find_contact_google">البحث في جهات الاتصال والأماكن المجاورة</string>
++    <string name="call_settings_label">إعدادات الاتصال</string>
++    <string name="view_location_settings">عرض إعدادات الموقع</string>
++    <string name="enable_reverse_lookup">‏تمكين معرّف المتصل من Google</string>
++    <string name="reverse_lookup_enabled">‏تم تمكين معرف المتصل من Google</string>
++    <string name="google_caller_id_setting_title">‏معرف المتصل من Google</string>
++    <string name="google_caller_id_setting__on">عرض أسماء الأشخاص والأنشطة التجارية غير المضمنة في جهات الاتصال الخاصة بي.</string>
++    <string name="google_caller_id_setting__off">إيقاف</string>
++    <string name="google_caller_id_settings_text">"‏&lt;a href=%1$s>معرّف
++        المتصل من Google&lt;/a> يعرض أسماء الأشخاص والأنشطة التجارية التي ليست ضمن جهات الاتصال التابعة لك.
++        &lt;br>&lt;br>
++        يمكنك تحديث إمكانية اكتشاف رقم هاتفك في
++        &lt;a href=%2$s>إعدادات حساب Google&lt;/a>.
++        &lt;br>&lt;br>
++        البيانات التي يتم استخدامها في هذه الميزات توفرها Google ومرخصوها.
++        &lt;br>&lt;a href=%3$s>مزيد من المعلومات.&lt;/a>"</string>
++    <string name="local_search_directory_label">الأماكن المجاورة</string>
++    <string name="local_search_setting_title">الأماكن المجاورة</string>
++    <string name="local_search_setting_on">عرض نتائج البحث عن الأماكن القريبة.</string>
++    <string name="local_search_setting_off">إيقاف</string>
++    <string name="local_search_settings_text">"‏عند البحث من تطبيق الهاتف، ستستغل هذه الميزة موقع جهازك للعثور على الأماكن المجاورة التي تتطابق مع طلب البحث حتى إذا لم تكن ضمن جهات اتصالك. &lt;br>&lt;br> وتتوفر البيانات لهذه الميزات من قِبل شركة Google والجهات المرخصة التابعة لها. &lt;br>&lt;a href=%1$s>مزيد من المعلومات.&lt;/a>
++        &lt;br>&lt;br>
++               يتعين عليك تمكين استخدام موقع جهازك في تطبيقات Google حتى تعمل هذه الميزة.
++        &lt;br>&lt;a href=%2$s>مزيد من المعلومات.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"الهاتف"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"الهاتف"</string>
+diff --git a/res/values-bg/strings.xml b/res/values-bg/strings.xml
+index 419a191..ac64bae 100644
+--- a/res/values-bg/strings.xml
++++ b/res/values-bg/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Настройки</string>
++    <string name="dialer_hint_find_contact_google">Търс. на контакти и места в района</string>
++    <string name="call_settings_label">Настройки за обаждане</string>
++    <string name="view_location_settings">Настройки за местоположението</string>
++    <string name="enable_reverse_lookup">Идент. на обаждането: Актив.</string>
++    <string name="reverse_lookup_enabled">Идентификацията на обаждането чрез Google е актив.</string>
++    <string name="google_caller_id_setting_title">Идентификация на обаждането чрез Google</string>
++    <string name="google_caller_id_setting__on">Показване на имена на хора и фирми извън контактите ми.</string>
++    <string name="google_caller_id_setting__off">Изключено</string>
++    <string name="google_caller_id_settings_text">"Идентификацията на &lt;a href=%1$s>обаждането
++ от Google&lt;/a> показва имената на хората и фирмите, които не са в контактите ви.
++ &lt;br>&lt;br>
++ Актуализирайте откриваемостта на телефонния си номер от
++ &lt;a href=%2$s>настройките на профила си в Google&lt;/a>.
++ &lt;br>&lt;br>
++ Използваните в тези функции данни се предоставят от Google и лицензодателите й.
++ &lt;br>&lt;a href=%3$s>Научете повече.&lt;/a>"</string>
++    <string name="local_search_directory_label">Места в района</string>
++    <string name="local_search_setting_title">Места в района</string>
++    <string name="local_search_setting_on">Показване на резултатите от търсенето за местата в района.</string>
++    <string name="local_search_setting_off">Изключено</string>
++    <string name="local_search_settings_text">"Когато търсите от приложението на телефона, тази функция ще използва местоположението ви за намиране на места в района, които съответстват на заявката ви, дори ако не са в контактите ви. &lt;br>&lt;br> Използваните в тези функции данни се предоставят от Google и лицензодателите й. &lt;br>&lt;a href=%1$s>Научете повече.&lt;/a>
++&lt;br>&lt;br>
++За да работи функцията, трябва да активирате приложенията ни да ползват местоположението на телефона ви.
++&lt;br>&lt;a href=%2$s>Научете повече.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Набиране"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Телефон"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Телефон"</string>
+diff --git a/res/values-ca/strings.xml b/res/values-ca/strings.xml
+index bb658ad..0088e42 100644
+--- a/res/values-ca/strings.xml
++++ b/res/values-ca/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Configuració</string>
++    <string name="dialer_hint_find_contact_google">Cerca contactes i llocs propers</string>
++    <string name="call_settings_label">Configuració de trucades</string>
++    <string name="view_location_settings">"Mostra configuració d'ubicació"</string>
++    <string name="enable_reverse_lookup">Activa ID de trucada de Google</string>
++    <string name="reverse_lookup_enabled">"L'identificador de trucada de Google està activat"</string>
++    <string name="google_caller_id_setting_title">Identificador de trucada de Google</string>
++    <string name="google_caller_id_setting__on">Mostra noms de persones i empreses que no siguin contactes.</string>
++    <string name="google_caller_id_setting__off">Desactivat</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>L'identificador de trucada
++        de Google&lt;/a> mostra el nom de les persones i de les empreses que no són als teus contactes.
++        &lt;br>&lt;br>
++        Actualitza la visibilitat del teu número de telèfon des de la
++        &lt;a href=%2$s>configuració del compte de Google&lt;/a>.
++        &lt;br>&lt;br>
++        Google i els seus proveïdors de llicències proporcionen les dades que s'utilitzen en aquestes funcions.
++        &lt;br>&lt;a href=%3$s>Més informació&lt;/a>"</string>
++    <string name="local_search_directory_label">Llocs a prop</string>
++    <string name="local_search_setting_title">Llocs a prop</string>
++    <string name="local_search_setting_on">Mostra resultats de cerca de llocs propers.</string>
++    <string name="local_search_setting_off">Desactivat</string>
++    <string name="local_search_settings_text">"Quan facis cerques a l'aplicació del telèfon, aquesta funció utilitzarà la ubicació per trobar llocs propers que coincideixin amb la teva consulta, encara que no formin part dels teus contactes. &lt;br>&lt;br> Google i els seus proveïdors de llicències són els encarregats de proporcionar les dades que es fan servir per a aquestes funcions. &lt;br>&lt;a href=%1$s>Més informació&lt;/a>
++        &lt;br>&lt;br>
++        Has de permetre que les aplicacions de Google facin servir la ubicació del telèfon perquè aquest servei funcioni correctament.
++        &lt;br>&lt;a href=%2$s>Més informació&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Telèfon"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telèfon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telèfon"</string>
+diff --git a/res/values-cs/strings.xml b/res/values-cs/strings.xml
+index ee643da..7f9b41b 100644
+--- a/res/values-cs/strings.xml
++++ b/res/values-cs/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Nastavení</string>
++    <string name="dialer_hint_find_contact_google">Hledat kontakty a místa v okolí</string>
++    <string name="call_settings_label">Nastavení hovorů</string>
++    <string name="view_location_settings">Zobrazit nastavení polohy</string>
++    <string name="enable_reverse_lookup">Zap. identif. pomocí Googlu</string>
++    <string name="reverse_lookup_enabled">Identifikace volajícího pomocí Googlu aktivována</string>
++    <string name="google_caller_id_setting_title">Identifikace volajícího pomocí Googlu</string>
++    <string name="google_caller_id_setting__on">Zobrazovat jména lidí a firem, které nejsou v kontaktech.</string>
++    <string name="google_caller_id_setting__off">Vypnuto</string>
++    <string name="google_caller_id_settings_text">"Funkce &lt;a href=%1$s>Identifikace volajícího
++        od Googlu&lt;/a> zobrazuje jména lidí a názvy firem, které nejsou ve vašich kontaktech.
++        &lt;br>&lt;br>
++        Aktualizujte objevitelnost svého telefonního čísla v 
++        &lt;a href=%2$s>nastaveních účtu Google&lt;/a>.
++        &lt;br>&lt;br>
++        Údaje používané v těchto funkcích jsou poskytovány společností Google a jejími poskytovateli licencí.
++        &lt;br>&lt;a href=%3$s>Další informace&lt;/a>"</string>
++    <string name="local_search_directory_label">Místa v okolí</string>
++    <string name="local_search_setting_title">Místa v okolí</string>
++    <string name="local_search_setting_on">Zobrazovat výsledky vyhledávání pro místa v okolí</string>
++    <string name="local_search_setting_off">Vypnuto</string>
++    <string name="local_search_settings_text">"Když vyhledáváte z aplikace v telefonu, tato funkce použije vaši polohu k nalezení míst v okolí, která vyhovují vašemu dotazu, a to i v případě, že nejsou ve vašich kontaktech. &lt;br>&lt;br> Údaje používané v těchto funkcích jsou poskytovány společností Google a jejími poskytovateli licencí. &lt;br>&lt;a href=%1$s>Další informace.&lt;/a>
++        &lt;br>&lt;br>
++        Aby tato funkce fungovala, je třeba povolit aplikacím Google používání polohy telefonu.
++        &lt;br>&lt;a href=%2$s>Další informace.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Vytáčení"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-da/strings.xml b/res/values-da/strings.xml
+index 343016a..c5c783c 100644
+--- a/res/values-da/strings.xml
++++ b/res/values-da/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Indstillinger</string>
++    <string name="dialer_hint_find_contact_google">Søg kontakter og steder tæt på</string>
++    <string name="call_settings_label">Indstillinger for opkald</string>
++    <string name="view_location_settings">Se Placeringsindstillinger</string>
++    <string name="enable_reverse_lookup">Aktivér opkaldsid fra Google</string>
++    <string name="reverse_lookup_enabled">Opkalds-id fra Google er aktiveret</string>
++    <string name="google_caller_id_setting_title">Opkaldsid fra Google</string>
++    <string name="google_caller_id_setting__on">Vis person- og virksomhedsnavne, hvis ikke kontaktpersoner</string>
++    <string name="google_caller_id_setting__off">Fra</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Opkalds-id
++        fra Google&lt;/a> viser navne på personer og virksomheder, som ikke er blandt dine kontaktpersoner.
++        &lt;br>&lt;br>
++        Du kan opdatere, hvor nemt dit telefonnummer skal kunne findes, i 
++        &lt;a href=%2$s>indstillingerne for din Google-konto&lt;/a>.
++        &lt;br>&lt;br>
++        De data, der bruges i disse funktioner, leveres af Google og deres licensgivere.
++        &lt;br>&lt;a href=%3$s>Få flere oplysninger.&lt;/a>"</string>
++    <string name="local_search_directory_label">Steder i nærheden</string>
++    <string name="local_search_setting_title">Steder i nærheden</string>
++    <string name="local_search_setting_on">Vis søgeresultater for steder i nærheden.</string>
++    <string name="local_search_setting_off">Fra</string>
++    <string name="local_search_settings_text">"Når du foretager søgninger fra telefonappen, bruger denne funktion din placering til at finde steder i nærheden, som stemmer overens med din forespørgsel – også hvis disse steder ikke er blandt dine kontaktpersoner. &lt;br>&lt;br> Data, der bruges til disse funktioner, leveres af Google og dennes licensgivere. &lt;br>&lt;a href=%1$s>Få flere oplysninger.&lt;/a>
++        &lt;br>&lt;br>
++        Du skal aktivere anvendelse af din placering i Google-apps, før dette virker.
++        &lt;br>&lt;a href=%2$s>Få flere oplysninger.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Opkald"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-de/strings.xml b/res/values-de/strings.xml
+index a50055b..5f3dc6e 100644
+--- a/res/values-de/strings.xml
++++ b/res/values-de/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Einstellungen</string>
++    <string name="dialer_hint_find_contact_google">In Kontakten &amp; Orten in der Nähe suchen</string>
++    <string name="call_settings_label">Anrufeinstellungen</string>
++    <string name="view_location_settings">Standorteinstellungen anzeigen</string>
++    <string name="enable_reverse_lookup">Google Anrufer-ID aktivieren</string>
++    <string name="reverse_lookup_enabled">Anrufer-ID von Google ist aktiviert.</string>
++    <string name="google_caller_id_setting_title">Anrufer-ID von Google</string>
++    <string name="google_caller_id_setting__on">Personen und Firmen anzeigen, die in meinen Kontakten fehlen</string>
++    <string name="google_caller_id_setting__off">Aus</string>
++    <string name="google_caller_id_settings_text">"Die &lt;a href=%1$s>Anrufer-ID
++ von Google&lt;/a> zeigt die Namen von Personen und Unternehmen an, die nicht in Ihren Kontakten sind.
++ &lt;br>&lt;br>
++ Die Sichtbarkeit Ihrer Telefonnummer können Sie in den
++ &lt;a href=%2$s>Google-Kontoeinstellungen&lt;/a> ändern.
++ &lt;br>&lt;br>
++ Die in diesen Funktionen verwendeten Daten werden von Google und seinen Lizenzgebern bereitgestellt.
++ &lt;br>&lt;a href=%3$s>Weitere Informationen&lt;/a>"</string>
++    <string name="local_search_directory_label">Orte in der Nähe</string>
++    <string name="local_search_setting_title">Orte in der Nähe</string>
++    <string name="local_search_setting_on">Suchergebnisse für Orte in der Nähe anzeigen</string>
++    <string name="local_search_setting_off">Aus</string>
++    <string name="local_search_settings_text">"Wenn Sie über die App auf Ihrem Telefon suchen, wird für diese Funktion Ihr Standort verwendet, um Suchergebnisse für Orte in der Nähe zu finden. Dies gilt auch für Nummern, die nicht in Ihren Kontakten vorhanden sind. &lt;br>&lt;br> Die von diesen Funktionen verwendeten Daten werden von Google und seinen Lizenzgebern bereitgestellt. &lt;br>&lt;a href=%1$s>Weitere Informationen&lt;/a>
++        &lt;br>&lt;br>
++        Aktivieren Sie Google Apps, damit der Standort Ihres Telefons verwendet werden kann.
++        &lt;br>&lt;a href=%2$s>Weitere Informationen&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-el/strings.xml b/res/values-el/strings.xml
+index 061612b..7bf3b72 100644
+--- a/res/values-el/strings.xml
++++ b/res/values-el/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Ρυθμίσεις</string>
++    <string name="dialer_hint_find_contact_google">Αναζήτηση επαφών - κοντ.μερών</string>
++    <string name="call_settings_label">Ρυθμίσεις κλήσεων</string>
++    <string name="view_location_settings">Προβολή ρυθμίσεων τοποθεσίας</string>
++    <string name="enable_reverse_lookup">Ενεργ.αναγν.κλήσης από Google</string>
++    <string name="reverse_lookup_enabled">Ενεργοποιήθηκε η αναγνώριση κλήσης από την Google</string>
++    <string name="google_caller_id_setting_title">Αναγνωριστικό καλούντος από την Google</string>
++    <string name="google_caller_id_setting__on">Εμφάνιση ονομάτων ατόμων και επιχειρήσεων εκτός επαφών μου.</string>
++    <string name="google_caller_id_setting__off">Ανενεργό</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Το αναγνωριστικό
++        καλούντος από την Google&lt;/a> εμφανίζει ονόματα για άτομα και επιχειρήσεις που δεν βρίσκονται στις επαφές σας.
++        &lt;br>&lt;br>
++        Ενημερώστε την ανιχνευσιμότητα του αριθμού τηλεφώνου σας στις
++        &lt;a href=%2$s>ρυθμίσεις λογαριασμού Google&lt;/a>.
++        &lt;br>&lt;br>
++        Τα δεδομένα που χρησιμοποιούνται σε αυτές τις λειτουργίες παρέχονται από την Google και τους παρόχους αδείας της.
++        &lt;br>&lt;a href=%3$s>Μάθετε περισσότερα.&lt;/a>"</string>
++    <string name="local_search_directory_label">Κοντινά μέρη</string>
++    <string name="local_search_setting_title">Κοντινά μέρη</string>
++    <string name="local_search_setting_on">Εμφανίζονται τα αποτελέσματα αναζήτησης για κοντινά μέρη.</string>
++    <string name="local_search_setting_off">Ανενεργό</string>
++    <string name="local_search_settings_text">"Όταν πραγματοποιείτε αναζητήσεις από μια εφαρμογή τηλεφώνου, αυτή η λειτουργία θα χρησιμοποιήσει την τοποθεσία της συσκευής σας για να εντοπίσει τα πλησιέστερα μέρη που αντιστοιχούν στον όρο αναζήτησής σας, ακόμα και αν δεν ανήκουν στις επαφές σας. &lt;br>&lt;br> Τα δεδομένα για αυτές τις λειτουργίες παρέχονται από την Google και τους δικαιοπαρόχους της. &lt;br>&lt;a href=%1$s>Μάθετε περισσότερα.&lt;/a>
++        &lt;br>&lt;br>
++        Θα πρέπει να ενεργοποιήσετε τη δυνατότητα χρήσης της τοποθεσίας του τηλεφώνου σας για τις εφαρμογές Google προκειμένου να λειτουργεί αυτό το χαρακτηριστικό.
++        &lt;br>&lt;a href=%2$s>Μάθετε περισσότερα.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Πρόγραμμα κλήσης"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Τηλέφωνο"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Τηλέφωνο"</string>
+diff --git a/res/values-en-rGB/strings.xml b/res/values-en-rGB/strings.xml
+index b8d7c81..1c4d898 100644
+--- a/res/values-en-rGB/strings.xml
++++ b/res/values-en-rGB/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Settings</string>
++    <string name="dialer_hint_find_contact_google">Search contacts &amp; nearby places</string>
++    <string name="call_settings_label">Call settings</string>
++    <string name="view_location_settings">View location settings</string>
++    <string name="enable_reverse_lookup">Enable caller ID by Google</string>
++    <string name="reverse_lookup_enabled">Caller ID by Google is enabled</string>
++    <string name="google_caller_id_setting_title">Caller ID by Google</string>
++    <string name="google_caller_id_setting__on">Show names for people and businesses not in my contacts.</string>
++    <string name="google_caller_id_setting__off">Off</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Caller
++        ID by Google&lt;/a> shows names for people and businesses not in your contacts.
++        &lt;br>&lt;br>
++        Update the discoverability of your phone number in your
++        &lt;a href=%2$s>Google account settings&lt;/a>.
++        &lt;br>&lt;br>
++        Data being used in these features is provided by Google and its licensors.
++        &lt;br>&lt;a href=%3$s>Learn more.&lt;/a>"</string>
++    <string name="local_search_directory_label">Nearby places</string>
++    <string name="local_search_setting_title">Nearby places</string>
++    <string name="local_search_setting_on">Display search results for nearby places.</string>
++    <string name="local_search_setting_off">Off</string>
++    <string name="local_search_settings_text">"When you search from the phone app, this feature will use your location to find nearby places that match your query, even if they are not in your contacts. &lt;br>&lt;br> Data for these features is provided by Google and its licensors. &lt;br>&lt;a href=%1$s>Learn more.&lt;/a>
++        &lt;br>&lt;br>
++        You must enable Google apps to use your phone’s location for this to work.
++        &lt;br>&lt;a href=%2$s>Learn more.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialler"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Phone"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Phone"</string>
+diff --git a/res/values-en-rIN/strings.xml b/res/values-en-rIN/strings.xml
+index b8d7c81..1c4d898 100644
+--- a/res/values-en-rIN/strings.xml
++++ b/res/values-en-rIN/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Settings</string>
++    <string name="dialer_hint_find_contact_google">Search contacts &amp; nearby places</string>
++    <string name="call_settings_label">Call settings</string>
++    <string name="view_location_settings">View location settings</string>
++    <string name="enable_reverse_lookup">Enable caller ID by Google</string>
++    <string name="reverse_lookup_enabled">Caller ID by Google is enabled</string>
++    <string name="google_caller_id_setting_title">Caller ID by Google</string>
++    <string name="google_caller_id_setting__on">Show names for people and businesses not in my contacts.</string>
++    <string name="google_caller_id_setting__off">Off</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Caller
++        ID by Google&lt;/a> shows names for people and businesses not in your contacts.
++        &lt;br>&lt;br>
++        Update the discoverability of your phone number in your
++        &lt;a href=%2$s>Google account settings&lt;/a>.
++        &lt;br>&lt;br>
++        Data being used in these features is provided by Google and its licensors.
++        &lt;br>&lt;a href=%3$s>Learn more.&lt;/a>"</string>
++    <string name="local_search_directory_label">Nearby places</string>
++    <string name="local_search_setting_title">Nearby places</string>
++    <string name="local_search_setting_on">Display search results for nearby places.</string>
++    <string name="local_search_setting_off">Off</string>
++    <string name="local_search_settings_text">"When you search from the phone app, this feature will use your location to find nearby places that match your query, even if they are not in your contacts. &lt;br>&lt;br> Data for these features is provided by Google and its licensors. &lt;br>&lt;a href=%1$s>Learn more.&lt;/a>
++        &lt;br>&lt;br>
++        You must enable Google apps to use your phone’s location for this to work.
++        &lt;br>&lt;a href=%2$s>Learn more.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialler"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Phone"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Phone"</string>
+diff --git a/res/values-es-rUS/strings.xml b/res/values-es-rUS/strings.xml
+index cc5620b..b0fa2b7 100644
+--- a/res/values-es-rUS/strings.xml
++++ b/res/values-es-rUS/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Configuración</string>
++    <string name="dialer_hint_find_contact_google">Buscar contacto/lugar cercano</string>
++    <string name="call_settings_label">Configuración de llamadas</string>
++    <string name="view_location_settings">Ver configuración de ubicación</string>
++    <string name="enable_reverse_lookup">Habilitar ID llamada de Google</string>
++    <string name="reverse_lookup_enabled">El ID de llamada de Google está habilitado.</string>
++    <string name="google_caller_id_setting_title">Identificador de llamada de Google</string>
++    <string name="google_caller_id_setting__on">Mostrar nombres de personas y empresas que no sean contactos</string>
++    <string name="google_caller_id_setting__off">No</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>El identificador de llamada
++        de Google&lt;/a> muestra nombres de personas y empresas que no están en tu lista de contactos.
++        &lt;br>&lt;br>
++        Actualiza la visibilidad de tu número de teléfono en la
++        &lt;a href=%2$s>configuración de la cuenta de Google&lt;/a>.
++        &lt;br>&lt;br>
++               Google y sus proveedores de licencias proporcionan los datos para estas funciones.
++        &lt;br>&lt;a href=%3$s>Más información&lt;/a>"</string>
++    <string name="local_search_directory_label">Lugares cercanos</string>
++    <string name="local_search_setting_title">Lugares cercanos</string>
++    <string name="local_search_setting_on">Muestra resultados de búsqueda de lugares cercanos.</string>
++    <string name="local_search_setting_off">No</string>
++    <string name="local_search_settings_text">"Cuando realices búsquedas desde la aplicación del teléfono, esta función utilizará tu ubicación a fin de encontrar lugares cercanos que coincidan con la consulta (aunque no estén en tus contactos). &lt;br>&lt;br> Google y sus proveedores de licencias proporcionan los datos para estas funciones. &lt;br>&lt;a href=%1$s>Más información&lt;/a>
++        &lt;br>&lt;br>
++        Debes habilitar el uso de la ubicación de tu teléfono en las aplicaciones de Google para que esto funcione.
++        &lt;br>&lt;a href=%2$s>Más información&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Teléfono"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Teléfono"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Teléfono"</string>
+diff --git a/res/values-es/strings.xml b/res/values-es/strings.xml
+index b2adb2f..58ce8ab 100644
+--- a/res/values-es/strings.xml
++++ b/res/values-es/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Ajustes</string>
++    <string name="dialer_hint_find_contact_google">Busca contactos y sitios cerca</string>
++    <string name="call_settings_label">Ajustes de llamada</string>
++    <string name="view_location_settings">Ver ajustes de ubicación</string>
++    <string name="enable_reverse_lookup">Habilitar ID llamada de Google</string>
++    <string name="reverse_lookup_enabled">El ID de llamada de Google está habilitado</string>
++    <string name="google_caller_id_setting_title">ID de llamada de Google</string>
++    <string name="google_caller_id_setting__on">Mostrar nombres de personas y empresas que no sean contactos</string>
++    <string name="google_caller_id_setting__off">No</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>El ID de llamada
++        de Google&lt;/a> muestra los nombres de las personas y las empresas que no están en tu lista de contactos.
++        &lt;br>&lt;br>
++        Actualiza la visibilidad de tu número de teléfono en los
++        &lt;a href=%2$s>ajustes de tu cuenta de Google&lt;/a>.
++        &lt;br>&lt;br>
++        Google y sus proveedores de licencias son los encargados de proporcionar los datos que se utilizan en estas funciones.
++        &lt;br>&lt;a href=%3$s>Más información&lt;/a>"</string>
++    <string name="local_search_directory_label">Sitios cercanos</string>
++    <string name="local_search_setting_title">Sitios cercanos</string>
++    <string name="local_search_setting_on">Mostrar resultados de búsqueda de sitios cercanos</string>
++    <string name="local_search_setting_off">No</string>
++    <string name="local_search_settings_text">"Al hacer búsquedas en el teléfono, esta función utilizará tu ubicación para encontrar sitios cercanos que coincidan con tu consulta, aunque la información no esté en tu lista de contactos. &lt;br>&lt;br> Google y sus proveedores de licencias son los encargados de proporcionar los datos que se utilizan en estas funciones. &lt;br>&lt;a href=%1$s>Más información&lt;/a>
++        &lt;br>&lt;br>
++        Debes permitir que las aplicaciones de Google utilicen la ubicación del teléfono para que este servicio funcione correctamente.
++        &lt;br>&lt;a href=%2$s>Más información&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Marcador"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Teléfono"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Teléfono"</string>
+diff --git a/res/values-et-rEE/strings.xml b/res/values-et-rEE/strings.xml
+index 8a37626..45994ce 100644
+--- a/res/values-et-rEE/strings.xml
++++ b/res/values-et-rEE/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Seaded</string>
++    <string name="dialer_hint_find_contact_google">Kontaktide ja kohtade otsing</string>
++    <string name="call_settings_label">Kõneseaded</string>
++    <string name="view_location_settings">Kuva asukohaseaded</string>
++    <string name="enable_reverse_lookup">"Google'i helistaja ID lubamine"</string>
++    <string name="reverse_lookup_enabled">"Google'i helistaja ID on lubatud"</string>
++    <string name="google_caller_id_setting_title">"Helistaja ID Google'ilt"</string>
++    <string name="google_caller_id_setting__on">Kuva inimeste ja ettevõtete nimed, kes pole kontaktides.</string>
++    <string name="google_caller_id_setting__off">Väljas</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google'i helistaja
++        ID&lt;/a> kuvab teie kontaktidesse mittekuuluvate inimeste ja ettevõtete nimesid.
++        &lt;br>&lt;br>
++        Värskendage oma telefoninumbri leitavust
++        &lt;a href=%2$s>Google'i konto seadetes&lt;/a>.
++        &lt;br>&lt;br>
++        Funktsioonides kasutatavaid andmeid edastavad Google ja Google'i litsentsiandjad.
++        &lt;br>&lt;a href=%3$s>Lisateave.&lt;/a>"</string>
++    <string name="local_search_directory_label">Lähedalasuvad kohad</string>
++    <string name="local_search_setting_title">Lähedalasuvad kohad</string>
++    <string name="local_search_setting_on">Lähedalasuvate kohtade otsingutulemuste kuvamine.</string>
++    <string name="local_search_setting_off">Väljas</string>
++    <string name="local_search_settings_text">"Kui teete telefonirakenduses otsinguid, kasutab see funktsioon seadme asukohta teie otsinguterminile vastavate lähedalasuvate kohtade otsimiseks, isegi kui need pole teie kontaktide hulgas. &lt;br>&lt;br> Funktsioonides kasutatavaid andmeid pakuvad Google ja Google'i litsentsiandjad.  &lt;br>&lt;a href=%1$s>Lisateave.&lt;/a>
++        &lt;br>&lt;br>
++        Selle funktsiooni kasutamiseks peate lubama Google'i rakendustel kasutada oma telefoni asukohta.
++        &lt;br>&lt;a href=%2$s>Lisateave.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-et/strings.xml b/res/values-et/strings.xml
+index 60c967b..d89b691 100644
+--- a/res/values-et/strings.xml
++++ b/res/values-et/strings.xml
+@@ -17,6 +17,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_hint_find_contact_google">Sisestage nimi või telefoninumber</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-fa/strings.xml b/res/values-fa/strings.xml
+index ab95711..e462ee9 100644
+--- a/res/values-fa/strings.xml
++++ b/res/values-fa/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">تنظیمات</string>
++    <string name="dialer_hint_find_contact_google">جستجوی مخاطبین و مکان‌های نزدیک</string>
++    <string name="call_settings_label">تنظیمات تماس</string>
++    <string name="view_location_settings">نمایش تنظیمات موقعیت مکانی</string>
++    <string name="enable_reverse_lookup">‏فعال کردن ID تماس‌گیرنده Google</string>
++    <string name="reverse_lookup_enabled">‏شناسه تماس‌گیرنده Google فعال شده است</string>
++    <string name="google_caller_id_setting_title">‏شناسه تماس گیرنده Google</string>
++    <string name="google_caller_id_setting__on">نمایش نام افراد و کسب و کارهایی که در مخاطبین من نیستند.</string>
++    <string name="google_caller_id_setting__off">خاموش</string>
++    <string name="google_caller_id_settings_text">"‏&lt;a href=%1$s>شناسه
++       تماس گیرنده توسط Google‏&lt;/a> نام افراد و کسب و کارهایی که در مخاطبین شما نیستند را نشان می‌دهد.
++        &lt;br>&lt;br>
++        قابل شناسایی بودن شماره تلفنتان را در 
++        &lt;a href=%2$s>تنظیمات حساب Google‏&lt;/a> خود به‌روزرسانی کنید.
++        &lt;br>&lt;br>
++        داده‌های استفاده شده در این قابلیت‌ها توسط Google و اعطاکنندگان مجوز آن ارائه می‌شود.
++        &lt;br>&lt;a href=%3$s>بیشتر بدانید.&lt;/a>"</string>
++    <string name="local_search_directory_label">مکان‌های نزدیک</string>
++    <string name="local_search_setting_title">مکان‌های نزدیک</string>
++    <string name="local_search_setting_on">نتایج جستجو برای مکان‌های نزدیک نشان داده می‌شود.</string>
++    <string name="local_search_setting_off">خاموش</string>
++    <string name="local_search_settings_text">"‏هنگامی که از برنامه تلفن جستجو می‌کنید، این قابلیت از موقعیت مکانی‌تان برای یافتن مکان‌های نزدیک منطبق بر عبارت جستجوی شما استفاده می‌کند، حتی اگر در مخاطبین شما نباشند. &lt;br>&lt;br> داده‌های مورد استفاده در این قابلیت‌ها توسط Google و مجوزدهنده‌های آن ارائه می‌شوند. &lt;br>&lt;a href=%1$s>بیشتر بدانید.&lt;/a>
++‏‏       &lt;br>&lt;br>
++‏               برای اینکه این قابلیت کار کند، باید برنامه‌های Google را فعال کنید تا از موقعیت مکانی تلفنتان استفاده کنند.
++       ‏&lt;br>&lt;a href=%2$sبیشتر بدانید.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"شماره‌گیر"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"تلفن"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"تلفن"</string>
+diff --git a/res/values-fi/strings.xml b/res/values-fi/strings.xml
+index 5454be6..32dda84 100644
+--- a/res/values-fi/strings.xml
++++ b/res/values-fi/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Asetukset</string>
++    <string name="dialer_hint_find_contact_google">Hae yhteystietoja ja paikkoja</string>
++    <string name="call_settings_label">Puheluasetukset</string>
++    <string name="view_location_settings">Näytä sijaintiasetukset</string>
++    <string name="enable_reverse_lookup">Käytä Googlen soittajan tunn.</string>
++    <string name="reverse_lookup_enabled">Googlen soittajan tunnus on käytössä</string>
++    <string name="google_caller_id_setting_title">Soittajan tunnus Googlelta</string>
++    <string name="google_caller_id_setting__on">Näytä yhteystietojen ulkopuolisten henkilöiden ja yritysten nimet.</string>
++    <string name="google_caller_id_setting__off">Ei käyt.</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Googlen
++        Soittajan tunnus&lt;/a> -toiminto näyttää niiden ihmisten ja yritysten nimet, jotka eivät ole yhteystiedoissasi.
++        &lt;br>&lt;br>
++        Päivitä oman puhelinnumerosi löydettävyys
++        &lt;a href=%2$s>Google-tilin asetuksissa&lt;/a>.
++        &lt;br>&lt;br>
++        Näissä toiminnoissa käytettävien tietojen toimittajia ovat Google ja sen käyttöoikeuksien myöntäjät.
++        &lt;br>&lt;a href=%3$s>Lisätietoja.&lt;/a>"</string>
++    <string name="local_search_directory_label">Lähellä olevat paikat</string>
++    <string name="local_search_setting_title">Lähellä olevat paikat</string>
++    <string name="local_search_setting_on">Näytetään lähellä olevien paikkojen hakutulokset.</string>
++    <string name="local_search_setting_off">Ei käyt.</string>
++    <string name="local_search_settings_text">"Kun teet hakuja puhelimen sovelluksella, tämä ominaisuus etsii laitteen sijaintitiedon perusteella lähellä olevia paikkoja, jotka vastaavat hakutermiäsi. Tuloksia näytetään myös yhteystietojen ulkopuolelta.&lt;br>&lt;br> Näiden ominaisuuksien käyttämät tiedot toimittaa Google ja sen käyttöoikeuksien myöntäjät. &lt;br>&lt;a href=%1$s>Lisätietoja.&lt;/a>
++        &lt;br>&lt;br>
++              Sinun täytyy antaa Googlen sovelluksille lupa käyttää puhelimen sijaintia, jotta ominaisuus toimii.
++        &lt;br>&lt;a href=%2$s>Lisätietoja.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Puhelin"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Puhelin"</string>
+diff --git a/res/values-fr-rCA/strings.xml b/res/values-fr-rCA/strings.xml
+index ae100e7..b76dc36 100644
+--- a/res/values-fr-rCA/strings.xml
++++ b/res/values-fr-rCA/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Paramètres</string>
++    <string name="dialer_hint_find_contact_google">Rech. contacts/adresses à prox.</string>
++    <string name="call_settings_label">"Paramètres d'appel"</string>
++    <string name="view_location_settings">Afficher param. localisation</string>
++    <string name="enable_reverse_lookup">Activer ident. appelant Google</string>
++    <string name="reverse_lookup_enabled">"L'aff. du numéro de l'appelant Google est activé"</string>
++    <string name="google_caller_id_setting_title">"Affichage de l'appelant Google"</string>
++    <string name="google_caller_id_setting__on">Afficher noms des pers. et entreprises pas dans les contacts</string>
++    <string name="google_caller_id_setting__off">Désactivé</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>L'affichage
++ de l'appelant par Google&lt;/a> affiche les noms des personnes et des entreprises ne figurant pas dans vos contacts.
++        &lt;br>&lt;br>
++        Mettez à jour les paramètres qui rendent votre numéro de téléphone détectable dans les 
++&lt;a href=%2$s>paramètres de votre compte Google&lt;/a>.
++        &lt;br>&lt;br>
++        Les données utilisées par ces fonctionnalités sont fournies par Google et ses concédants.
++        &lt;br>&lt;a href=%3$s>En savoir plus&lt;/a>"</string>
++    <string name="local_search_directory_label">Lieux à proximité</string>
++    <string name="local_search_setting_title">Lieux à proximité</string>
++    <string name="local_search_setting_on">"Affichez les résultats de recherche d'adresses à proximité."</string>
++    <string name="local_search_setting_off">Désactivé</string>
++    <string name="local_search_settings_text">"Lorsque vous effectuez des recherches à partir de l'application Téléphone, cette fonctionnalité utilise la position de votre appareil pour trouver des adresses à proximité qui correspondent à votre requête de recherche, même si elles ne figurent pas dans vos contacts. &lt;br>&lt;br> Les données de ces fonctionnalités sont fournies par Google et ses concédants. &lt;br>&lt;a href=%1$s>En savoir plus&lt;/a>
++        &lt;br>&lt;br>
++        Vous devez autoriser les applications Google à utiliser la position de votre téléphone pour que cela fonctionne.
++        &lt;br>&lt;a href=%2$s>En savoir plus&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Appeler"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Téléphone"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Téléphone"</string>
+diff --git a/res/values-fr/strings.xml b/res/values-fr/strings.xml
+index f3dd323..16a7c3d 100644
+--- a/res/values-fr/strings.xml
++++ b/res/values-fr/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Paramètres</string>
++    <string name="dialer_hint_find_contact_google">Rech. contacts/adresses à prox.</string>
++    <string name="call_settings_label">"Paramètres d'appel"</string>
++    <string name="view_location_settings">Afficher param. localisation</string>
++    <string name="enable_reverse_lookup">Activer numéro appelant Google</string>
++    <string name="reverse_lookup_enabled">"L'affichage du n° de l'appelant Google est activé."</string>
++    <string name="google_caller_id_setting_title">Identification appelant via Google</string>
++    <string name="google_caller_id_setting__on">Afficher les noms des personnes et entreprises ne figurant pas dans mes contacts</string>
++    <string name="google_caller_id_setting__off">Désactivé</string>
++    <string name="google_caller_id_settings_text">"La &lt;a href=%1$s>fonctionnalité Google
++        d'identification de l'appelant&lt;/a> permet d'afficher sur votre appareil les noms des personnes et des entreprises ne figurant pas dans vos contacts.
++        &lt;br>&lt;br>
++        Indiquez si vous souhaitez que votre numéro de téléphone soit détectable dans les
++        &lt;a href=%2$s>paramètres de votre compte Google&lt;/a>.
++        &lt;br>&lt;br>
++        Les données utilisées par ces fonctionnalités sont fournies par Google et ses concédants.
++        &lt;br>&lt;a href=%3$s>En savoir plus&lt;/a>"</string>
++    <string name="local_search_directory_label">Adresses à proximité</string>
++    <string name="local_search_setting_title">Adresses à proximité</string>
++    <string name="local_search_setting_on">Afficher les adresses à proximité correspondant à mes recherches</string>
++    <string name="local_search_setting_off">Désactivé</string>
++    <string name="local_search_settings_text">"Lorsque vous effectuez des recherches à partir de l'application Téléphone, cette fonctionnalité utilise la position de votre appareil pour trouver des adresses à proximité qui correspondent à votre requête de recherche, même si elles ne figurent pas dans vos contacts. &lt;br>&lt;br> Les données de ces fonctionnalités sont fournies par Google et ses concédants. &lt;br>&lt;a href=%1$s>En savoir plus&lt;/a>
++        &lt;br>&lt;br>
++        Vous devez autoriser les applications Google à utiliser la position de votre téléphone pour que cela fonctionne.
++        &lt;br>&lt;a href=%2$s>En savoir plus&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Appeler"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Téléphone"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Tél."</string>
+diff --git a/res/values-hi/strings.xml b/res/values-hi/strings.xml
+index 00e87fa..db67d1b 100644
+--- a/res/values-hi/strings.xml
++++ b/res/values-hi/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">सेटिंग</string>
++    <string name="dialer_hint_find_contact_google">संपर्क और आस-पास के स्थल खोजें</string>
++    <string name="call_settings_label">कॉल सेटिंग</string>
++    <string name="view_location_settings">स्थान सेटिंग देखें</string>
++    <string name="enable_reverse_lookup">Google द्वारा कॉलर ID सक्षम करें</string>
++    <string name="reverse_lookup_enabled">Google द्वारा कॉलर ID सक्षम है</string>
++    <string name="google_caller_id_setting_title">Google द्वारा कॉलर आईडी</string>
++    <string name="google_caller_id_setting__on">उन व्यक्ति व व्यवसाय के नाम दिखाएं जो मेरे संपर्कों में नहीं हैं.</string>
++    <string name="google_caller_id_setting__off">बंद</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google
++        का कॉलर आईडी&lt;/a> उन लोगों तथा व्यवसायों के नाम दिखाता है जो आपके संपर्कों में नहीं हैं.
++        &lt;br>&lt;br>
++        अपने फ़ोन नंबर के खोजे जाने की योग्यता को अपनी
++        &lt;a href=%2$s>Google खाता सेटिंग&lt;/a>में अपडेट करें.
++        &lt;br>&lt;br>
++        इन सुविधाओं में उपयोग किया जा रहा डेटा Google और उसके लाइसेंसदाताओं द्वारा प्रदान किया गया है.
++        &lt;br>&lt;a href=%3$s>और जानें.&lt;/a>"</string>
++    <string name="local_search_directory_label">आस-पास के स्थल</string>
++    <string name="local_search_setting_title">आस-पास के स्थल</string>
++    <string name="local_search_setting_on">आस-पास के स्थल के लिए खोज परिणाम दिखाएं.</string>
++    <string name="local_search_setting_off">बंद</string>
++    <string name="local_search_settings_text">"जब आप फ़ोन एप्लिकेशन से खोज करते हैं, तो यह सुविधा आपके स्थान का उपयोग आपकी क्वेरी से मिलान करने वाले आस-पास के स्थल ढूंढने के लिए करेगी, भले ही वे आपके संपर्कों में नहीं हैं. &lt;br>&lt;br> इन सुविधाओं में उपयोग किया जाने वाला डेटा Google और उसके लाइसेंसकर्ताओं द्वारा उपलब्ध कराया जाता है. &lt;br>&lt;a href=%1$s>और जानें.&lt;/a>
++ &lt;br>&lt;br>
++ यह कार्य करे इसके लिए आपको Google एप्लिकेशन को अपने फ़ोन के स्थान का उपयोग करने हेतु सक्षम करना होगा.
++ &lt;br>&lt;a href=%2$s>और जानें.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"डायलर"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"फ़ोन"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"फ़ोन"</string>
+diff --git a/res/values-hr/strings.xml b/res/values-hr/strings.xml
+index 0215959..47f96c3 100644
+--- a/res/values-hr/strings.xml
++++ b/res/values-hr/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Postavke</string>
++    <string name="dialer_hint_find_contact_google">Kontakti i mjesta u blizini</string>
++    <string name="call_settings_label">Postavke poziva</string>
++    <string name="view_location_settings">Prikaz postavki lokacije</string>
++    <string name="enable_reverse_lookup">Omogući Googleov ID pozivatelja</string>
++    <string name="reverse_lookup_enabled">Googleov ID pozivatelja omogućen je</string>
++    <string name="google_caller_id_setting_title">ID pozivatelja od Googlea</string>
++    <string name="google_caller_id_setting__on">Prikaži imena osoba i tvrtki koje nisu u mojim kontaktima.</string>
++    <string name="google_caller_id_setting__off">Isključeno</string>
++    <string name="google_caller_id_settings_text">"&lt;aGoogleov ID href=%1$s>pozivatelja
++&lt;/a> prikazuje imena osoba i tvrtki koja nisu u vašim kontaktima.
++        &lt;br>&lt;br>
++        Ažurirajte vidljivost svojeg telefonskog broja u
++        &lt;a href=%2$s>postavkama svojeg Google računa&lt;/a>.
++        &lt;br>&lt;br>
++        Podatke koji se upotrebljavaju u tim značajkama pružaju Google i njegovi davatelji licence.
++        &lt;br>&lt;a href=%3$s>Saznajte više.&lt;/a>"</string>
++    <string name="local_search_directory_label">Mjesta u blizini</string>
++    <string name="local_search_setting_title">Mjesta u blizini</string>
++    <string name="local_search_setting_on">Prikazivanje rezultata pretraživanja za mjesta u blizini.</string>
++    <string name="local_search_setting_off">Isključeno</string>
++    <string name="local_search_settings_text">"Kada pretražujete s aplikacije telefona, ta će značajka upotrijebiti vašu lokaciju kako bi pronašla mjesta u blizini koja se podudaraju s vašim upitom, čak i ako ta mjesta nisu u vašim kontaktima. &lt;br>&lt;br> Podatke koji se upotrebljavaju u tim značajkama pružaju Google i njegovi davatelji licence. &lt;br>&lt;a href=%1$s>Saznajte više.&lt;/a>
++        &lt;br>&lt;br>
++        Morate dopustiti Googleovim aplikacijama da upotrebljavaju lokaciju vašeg telefona kako bi to funkcioniralo.
++        &lt;br>&lt;a href=%2$s>Saznajte više.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Biranje"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-hu/strings.xml b/res/values-hu/strings.xml
+index d67cd4e..57b67a9 100644
+--- a/res/values-hu/strings.xml
++++ b/res/values-hu/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Beállítások</string>
++    <string name="dialer_hint_find_contact_google">Ismerősök és helyek keresése</string>
++    <string name="call_settings_label">Hívásbeállítások</string>
++    <string name="view_location_settings">Helybeállítások megtekintése</string>
++    <string name="enable_reverse_lookup">Google-azonosítás engedélyezése</string>
++    <string name="reverse_lookup_enabled">A Google általi hívóazonosító engedélyezve</string>
++    <string name="google_caller_id_setting_title">Google általi hívásazonosítás</string>
++    <string name="google_caller_id_setting__on">A névjegyekben nem szereplő emberek/cégek nevének mutatása</string>
++    <string name="google_caller_id_setting__off">Ki</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>A Google
++        általi hívásazonosítás&lt;/a> megjeleníti a névjegyekben nem szereplő személyek és cégek nevét.
++        &lt;br>&lt;br>
++        Frissítse telefonszáma felfedezhetőségét 
++        &lt;a href=%2$s>Google-fiókjának beállításaiban&lt;/a>.
++        &lt;br>&lt;br>
++        Az ezen funkciókban használt adatokat a Google és licencadói szolgáltatják.
++        &lt;br>&lt;a href=%3$s>További információ&lt;/a>"</string>
++    <string name="local_search_directory_label">Közeli helyek</string>
++    <string name="local_search_setting_title">Közeli helyek</string>
++    <string name="local_search_setting_on">A közeli helyek találatainak megjelenítése.</string>
++    <string name="local_search_setting_off">Ki</string>
++    <string name="local_search_settings_text">"Amikor a telefonos alkalmazásban végez keresést, ez a funkció a helyadatokat használja, hogy a keresésnek megfelelő közeli helyeket találjon, még akkor is, ha azok nem szerepelnek a névjegyek között. &lt;br>&lt;br> Az ezen funkcióknál használt adatokat a Google és licencadói szolgáltatják. &lt;br>&lt;a href=%1$s>További információ&lt;/a>
++        &lt;br>&lt;br>
++        Ehhez engedélyeznie kell a Google-alkalmazások számára a telefon helyadatainak használatát.
++        &lt;br>&lt;a href=%2$s>További információ&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Tárcsázó"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-hy-rAM/strings.xml b/res/values-hy-rAM/strings.xml
+index 2a6e5e2..e14c2b2 100644
+--- a/res/values-hy-rAM/strings.xml
++++ b/res/values-hy-rAM/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Կարգավորումներ</string>
++    <string name="dialer_hint_find_contact_google">Որոնել կոնտակտներ, մոտակա վայրեր</string>
++    <string name="call_settings_label">Զանգի կարգավորումները</string>
++    <string name="view_location_settings">Դիտել տեղադրության կարգավորումները</string>
++    <string name="enable_reverse_lookup">Միացնել զանգողի ID-ն Google-ով</string>
++    <string name="reverse_lookup_enabled">Զանգողի ID-ն Google-ի կողմից ակտիվացված է</string>
++    <string name="google_caller_id_setting_title">Զանգողի ID՝ Google-ից</string>
++    <string name="google_caller_id_setting__on">Ցույց տալ մարդկանց և ընկերությունների անունները, որոնք իմ կոնտակտներում չեն:</string>
++    <string name="google_caller_id_setting__off">Անջատված է</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Զանգողի
++        ID-ն Google-ի կողմից&lt;/a> ցույց է տալիս ձեր կոնտակտներից դուրս մարդկանց և ընկերություններին:
++        &lt;br>&lt;br>
++        Թարմացրեք ձեր հեռախոսահամարի հայտնաբերելիությունը ձեր
++        &lt;a href=%2$s>Google հաշվի կարգավորումներում&lt;/a>:
++        &lt;br>&lt;br>
++        Այս գործառույթներում օգտագործվող տվյալները տրամադրված են Google-ի և նրա հավաստագրվածների կողմից:
++        &lt;br>&lt;a href=%3$s>Իմացեք ավելին:&lt;/a>"</string>
++    <string name="local_search_directory_label">Մոտակա վայրեր</string>
++    <string name="local_search_setting_title">Մոտակա վայրեր</string>
++    <string name="local_search_setting_on">Ցուցադրել մոտակա վայրերի որոնման արդյունքները:</string>
++    <string name="local_search_setting_off">Անջատված է</string>
++    <string name="local_search_settings_text">"Հեռախոսի ծրագրով որոնելիս այս գործառույթը կօգտագործի ձեր տեղադրությունը՝ ձեր որոնմանը համապատասխան մոտական վայրերը գտնելու համար, նույնիսկ եթե դրանք ձեր կոնտակտներում չկան: &lt;br>&lt;br> Այս գործառույթների տվյալները տրամադրվում են Google-ի և նրա արտոնագրվածների կողմից: &lt;br>&lt;a href=%1$s>Իմացեք ավելին:&lt;/a>
++        &lt;br>&lt;br>
++        Հեռախոսի տեղադրության գործառույթն օգտագործելու համար պետք է միացնեք Google Apps-ը:
++        &lt;br>&lt;a href=%2$s>Իմացեք ավելին:&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Համարհավաքիչ"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Հեռախոս"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Հեռախոս"</string>
+diff --git a/res/values-hy/strings.xml b/res/values-hy/strings.xml
+index c52b96f..ba7abf6 100644
+--- a/res/values-hy/strings.xml
++++ b/res/values-hy/strings.xml
+@@ -17,6 +17,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_hint_find_contact_google">Գրեք անունը կամ հեռախոսը</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Համարհավաքիչ"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Հեռախոս"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Հեռախոս"</string>
+diff --git a/res/values-in/strings.xml b/res/values-in/strings.xml
+index 0db2d04..2b18969 100644
+--- a/res/values-in/strings.xml
++++ b/res/values-in/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Setelan</string>
++    <string name="dialer_hint_find_contact_google">Cari kontak &amp; tempat terdekat</string>
++    <string name="call_settings_label">Setelan telepon</string>
++    <string name="view_location_settings">Lihat setelan lokasi</string>
++    <string name="enable_reverse_lookup">ID no. penelepon Google aktif</string>
++    <string name="reverse_lookup_enabled">ID nomor penelepon oleh Google diaktifkan</string>
++    <string name="google_caller_id_setting_title">ID Nomor penelepon menurut Google</string>
++    <string name="google_caller_id_setting__on">Tampilkan nama orang &amp; bisnis yang tidak ada di kontak saya.</string>
++    <string name="google_caller_id_setting__off">Nonaktif</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>ID
++        Pemanggil oleh Google&lt;/a> menampilkan nama orang dan bisnis yang tidak ada dalam kontak Anda.
++        &lt;br>&lt;br>
++        Perbarui kemampuan nomor telepon Anda untuk ditemukan di
++        &lt;a href=%2$s>setelan akun Google&lt;/a>.
++        &lt;br>&lt;br>
++        Data yang digunakan dalam fitur ini disediakan oleh Google dan para pemberi lisensinya.
++        &lt;br>&lt;a href=%3$s>Pelajari lebih lanjut.&lt;/a>"</string>
++    <string name="local_search_directory_label">Tempat terdekat</string>
++    <string name="local_search_setting_title">Tempat terdekat</string>
++    <string name="local_search_setting_on">Menampilkan hasil penelusuran untuk tempat terdekat.</string>
++    <string name="local_search_setting_off">Nonaktif</string>
++    <string name="local_search_settings_text">"Saat mencari dari aplikasi ponsel, fitur ini akan menggunakan lokasi Anda untuk menemukan tempat terdekat yang cocok, meskipun tempat tersebut tidak ada di kontak. &lt;br>&lt;br> Data yang digunakan dalam fitur ini disediakan oleh Google dan pemegang lisensinya. &lt;br>&lt;a href=%1$s>Pelajari lebih lanjut.&lt;/a>
++        &lt;br>&lt;br>
++        Anda harus mengizinkan aplikasi Google untuk menggunakan lokasi ponsel Anda agar fitur ini aktif.
++        &lt;br>&lt;a href=%2$s>Pelajari lebih lanjut.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Aplikasi Telepon"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telepon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telepon"</string>
+diff --git a/res/values-it/strings.xml b/res/values-it/strings.xml
+index 7ec52eb..92edc4a 100644
+--- a/res/values-it/strings.xml
++++ b/res/values-it/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Impostazioni</string>
++    <string name="dialer_hint_find_contact_google">Cerca contatti e luoghi vicinanze</string>
++    <string name="call_settings_label">Impostazioni chiamate</string>
++    <string name="view_location_settings">Visualizza impostazioni posizione</string>
++    <string name="enable_reverse_lookup">Attiva ID chiamante di Google</string>
++    <string name="reverse_lookup_enabled">ID chiamante di Google attivo</string>
++    <string name="google_caller_id_setting_title">ID chiamante di Google</string>
++    <string name="google_caller_id_setting__on">Mostra nomi di persone e attività non presenti nei contatti.</string>
++    <string name="google_caller_id_setting__off">OFF</string>
++    <string name="google_caller_id_settings_text">"L'ID&lt;a href=%1$s>chiamante
++ di Google&lt;/a> consente di visualizzare i nomi di persone e aziende che non fanno parte dei tuoi contatti.
++ &lt;br>&lt;br>
++ Aggiorna la rilevabilità del tuo numero di telefono nelle
++ &lt;a href=%2$s>impostazioni del tuo account Google&lt;/a>.
++ &lt;br>&lt;br>
++ I dati utilizzati in queste funzionalità vengono forniti da Google e dai relativi concessori di licenze.
++ &lt;br>&lt;a href=%3$s>Ulteriori informazioni.&lt;/a>"</string>
++    <string name="local_search_directory_label">Luoghi nelle vicinanze</string>
++    <string name="local_search_setting_title">Luoghi nelle vicinanze</string>
++    <string name="local_search_setting_on">Visualizzazione di risultati di ricerca per luoghi nelle vicinanze.</string>
++    <string name="local_search_setting_off">OFF</string>
++    <string name="local_search_settings_text">"Quando esegui ricerche con l'app del telefono, questa funzione utilizza la tua posizione per trovare attività commerciali nelle vicinanze corrispondenti alla tua query, anche se non sono presenti nei tuoi contatti. &lt;br>&lt;br> I dati utilizzati in queste funzioni sono forniti da Google e dai suoi concessori di licenza. &lt;br>&lt;a href=%1$s>Ulteriori informazioni.&lt;/a>
++        &lt;br>&lt;br>
++        Affinché la ricerca funzioni, devi consentire alle app Google di utilizzare la posizione del telefono.
++        &lt;br>&lt;a href=%2$s>Ulteriori informazioni.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefono"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefono"</string>
+diff --git a/res/values-iw/strings.xml b/res/values-iw/strings.xml
+index 5a8df3a..34a8455 100644
+--- a/res/values-iw/strings.xml
++++ b/res/values-iw/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">הגדרות</string>
++    <string name="dialer_hint_find_contact_google">חפש אנשי קשר ומקומות קרובים</string>
++    <string name="call_settings_label">הגדרות שיחה</string>
++    <string name="view_location_settings">הצג את הגדרות המיקום</string>
++    <string name="enable_reverse_lookup">‏הפעל זיהוי מתקשר של Google</string>
++    <string name="reverse_lookup_enabled">"‏שירות 'זיהוי מתקשר' של Google מופעל"</string>
++    <string name="google_caller_id_setting_title">‏זיהוי מתקשר של Google</string>
++    <string name="google_caller_id_setting__on">הצג שמות עבור אנשים ועסקים שאינם באנשי הקשר שלי.</string>
++    <string name="google_caller_id_setting__off">כבוי</string>
++    <string name="google_caller_id_settings_text">"‏&lt;a href=%1$s>זיהוי
++        מתקשר של Google&lt;/a> מציג שמות עבור אנשים ועסקים שאינם באנשי הקשר שלך.
++        &lt;br>&lt;br>
++        עדכן את יכולת הגילוי של מספר הטלפון שלך
++        &lt;a href=%2$s>בהגדרות חשבון Google&lt;/a>.
++        &lt;br>&lt;br>
++        נתונים שבהם נעשה שימוש בתכונות האלה מסופקים על ידי Google ומעניקי הרישיון שלה.
++        &lt;br>&lt;a href=%3$s>למידע נוסף.&lt;/a>"</string>
++    <string name="local_search_directory_label">מקומות קרובים</string>
++    <string name="local_search_setting_title">מקומות קרובים</string>
++    <string name="local_search_setting_on">הצג תוצאות חיפוש עבור מקומות קרובים.</string>
++    <string name="local_search_setting_off">כבוי</string>
++    <string name="local_search_settings_text">"‏כשאתה מבצע חיפושים מאפליקציית הטלפון, התכונה הזו תשתמש במיקום שלך על מנת למצוא מקומות קרובים התואמים למונח החיפוש, גם אם הם לא מופיעים באנשי הקשר שלך. &lt;br>&lt;br> נתונים שבהם נעשה שימוש בתכונות האלה מסופקים על ידי Google ומעניקי הרישיון שלה. &lt;br>&lt;a href=%1$s>למידע נוסף.&lt;/a>
++        &lt;br>&lt;br>
++        עליך לאפשר לאפליקציות של Google להשתמש במיקום של הטלפון על מנת שהתכונה הזו תפעל.
++        &lt;br>&lt;a href=%2$s>למידע נוסף.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"חייגן"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"טלפון"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"טלפון"</string>
+diff --git a/res/values-ja/strings.xml b/res/values-ja/strings.xml
+index c6b0aca..2be4c62 100644
+--- a/res/values-ja/strings.xml
++++ b/res/values-ja/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">設定</string>
++    <string name="dialer_hint_find_contact_google">連絡先と周辺のスポットを検索</string>
++    <string name="call_settings_label">通話設定</string>
++    <string name="view_location_settings">位置情報設定を表示</string>
++    <string name="enable_reverse_lookup">Google発信者番号を有効にする</string>
++    <string name="reverse_lookup_enabled">Googleによる発信者番号が有効です</string>
++    <string name="google_caller_id_setting_title">Google発信者番号</string>
++    <string name="google_caller_id_setting__on">Myコンタクトにないユーザーやビジネスの名前を表示します。</string>
++    <string name="google_caller_id_setting__off">OFF</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google
++        発信者番号&lt;/a>により連絡先にないユーザー名や会社名が表示されます。
++        &lt;br>&lt;br>
++        &lt;a href=%2$s>Googleアカウント設定&lt;/a>で電話番号の
++        検出の許可を更新してください。
++        &lt;br>&lt;br>
++        この機能で使用されているデータはGoogleとそのおよびそのライセンサーが提供します。
++        &lt;br>&lt;a href=%3$s>詳細&lt;/a>"</string>
++    <string name="local_search_directory_label">周辺のスポット</string>
++    <string name="local_search_setting_title">周辺のスポット</string>
++    <string name="local_search_setting_on">周辺のスポットの検索結果を表示できます。</string>
++    <string name="local_search_setting_off">OFF</string>
++    <string name="local_search_settings_text">"携帯端末アプリから検索すると、この機能は現在地を使用して検索キーワードと一致する周辺のスポットを見つけます（連絡先にないスポットも含む）。&lt;br>&lt;br> この機能のデータはGoogleおよびそのライセンサーが提供します。&lt;br>&lt;a href=%1$s>詳細&lt;/a>
++        &lt;br>&lt;br>
++        この機能を使用するには、Googleアプリで携帯端末の現在地の使用を有効にする必要があります。
++        &lt;br>&lt;a href=%2$s>詳細&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"電話"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"電話"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"電話"</string>
+diff --git a/res/values-ka-rGE/strings.xml b/res/values-ka-rGE/strings.xml
+index d42e470..0266bca 100644
+--- a/res/values-ka-rGE/strings.xml
++++ b/res/values-ka-rGE/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">პარამეტრები</string>
++    <string name="dialer_hint_find_contact_google">კონტაქტების &amp; ახლომდ.ადგ. ძიება</string>
++    <string name="call_settings_label">ზარის პარამეტრები</string>
++    <string name="view_location_settings">მდებარეობის პარამეტრების ნახვა</string>
++    <string name="enable_reverse_lookup">Google-ის მიერ მრეკავის ამოცნობის ჩართვა</string>
++    <string name="reverse_lookup_enabled">Google-ის მიერ მრეკავის ამომცნობი ჩართულია</string>
++    <string name="google_caller_id_setting_title">Google-ის მიერ მრეკავის ამოცნობა</string>
++    <string name="google_caller_id_setting__on">იმ ხალხისა და კომპანიების სახელების ჩვენება, რომლებიც ჩემს კონტაქტებში არ არის.</string>
++    <string name="google_caller_id_setting__off">გამორთული</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>მრეკავის
++        ID Google&lt;/a>-ისგან  აჩვენებს იმ ადამიანებისა და ბიზნესების სახელებს, რომლებიც კონტაქტებში არ გყავთ. 
++        &lt;br>&lt;br>
++        განაახლეთ თქვენი ნომრის აღმოჩენადობა თქვენი
++        &lt;a href=%2$s>Google-ის ანგარიშის პარამეტრებში&lt;/a>.
++        &lt;br>&lt;br>
++        ამ ფუნქციებში გამოყენებული მონაცემები უზრუნველყოფილია Google-ის და მისი ლიცენზორების მიერ.
++        &lt;br>&lt;a href=%3$s>შეიტყვეთ მეტი.&lt;/a>"</string>
++    <string name="local_search_directory_label">ახლომდებარე ადგილები</string>
++    <string name="local_search_setting_title">ახლომდებარე ადგილები</string>
++    <string name="local_search_setting_on">ახლომდებარე ადგილების ძიების შედეგების ჩვენება.</string>
++    <string name="local_search_setting_off">გამორთული</string>
++    <string name="local_search_settings_text">"ტელეფონის აპიდან ძიების განხორციელებისას, ეს ფუნქცია გამოიყენებს თქვენს მდებარეობას თქვენი ძიების შესაბამისი ახლომდებარე ადგილების მისასადაგებლად, მაშინაც კი, თუ ისინი თქვენს კონტაქტებში არ იმყოფება. &lt;br>&lt;br> ამ ფუნქციების მონაცემები მოწოდებულია Google-ის და მისი ლიცენზიარების მიერ. &lt;br>&lt;a href=%1$s>შეიტყვეთ მეტი.&lt;/a>
++        &lt;br>&lt;br>
++        ამ ფუნქციისათვის აუცილებელია ნება მისცეთ Google-ის აპებს გამოიყენოს თქვენი ტელეფონის მდებარეობა.
++        &lt;br>&lt;a href=%2$s>შეიტყვეთ მეტი.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"დარეკვა"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"ტელეფონი"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"ტელეფონი"</string>
+diff --git a/res/values-ka/strings.xml b/res/values-ka/strings.xml
+index 4d6f74e..70c1774 100644
+--- a/res/values-ka/strings.xml
++++ b/res/values-ka/strings.xml
+@@ -17,6 +17,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_hint_find_contact_google">შეიყვანეთ სახელი, ან ტელეფონი</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"დარეკვა"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"ტელეფონი"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"ტელეფონი"</string>
+diff --git a/res/values-km-rKH/strings.xml b/res/values-km-rKH/strings.xml
+index e0f890f..4ed62d1 100644
+--- a/res/values-km-rKH/strings.xml
++++ b/res/values-km-rKH/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">ការ​កំណត់</string>
++    <string name="dialer_hint_find_contact_google">ស្វែងរក​ទំនាក់ទំនង &amp; កន្លែង​នៅ​ក្បែរ</string>
++    <string name="call_settings_label">កំណត់​ការ​ហៅ</string>
++    <string name="view_location_settings">មើល​ការ​កំណត់​ទីតាំង</string>
++    <string name="enable_reverse_lookup">បើក​លេខ​សម្គាល់​អ្នក​ហៅ​ដោយ Google</string>
++    <string name="reverse_lookup_enabled">លេខ​សម្គាល់​អ្នក​ហៅ​តាម Google ត្រូវ​បាន​បើក</string>
++    <string name="google_caller_id_setting_title">លេខ​សម្គាល់​អ្នក​ហៅ​តាម Google</string>
++    <string name="google_caller_id_setting__on">បង្ហាញ​ឈ្មោះ​​​មនុស្ស​ និង​ធុរកិច្ច​ដែល​មិន​​នៅ​ក្នុង​ទំនាក់​ទំនង​របស់​ខ្ញុំ​។</string>
++    <string name="google_caller_id_setting__off">បិទ</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>លេខ​សម្គាល់​អ្នក​ហៅ
++        តាម Google&lt;/a> បង្ហាញ​ឈ្មោះ​សម្រាប់​មនុស្ស និង​ធុរកិច្ច​មិន​នៅ​ក្នុង​ទំនាក់ទំនង​របស់​អ្នក។
++        &lt;br>&lt;br>
++        ធ្វើ​បច្ចុប្បន្នភាព​​​ការ​រក​ឃើញ​លេខ​ទូរស័ព្ទ​របស់​អ្នក​ក្នុង
++        &lt;a href=%2$s>ការ​កំណត់​គណនី Google ​&lt;/a>របស់​អ្នក។
++        &lt;br>&lt;br>
++        ទិន្នន័យ​កំពុង​ត្រូវ​បាន​ប្រើប្រាស់​ក្នុង​លក្ខណៈ​ទាំង​នេះ​ដែល​ត្រូវ​បាន​ផ្ដល់​ដោយ Google និង​អ្នកមាន​អាជ្ញាប័ណ្ណ។
++        &lt;br>&lt;a href=%3$s>ស្វែងយល់​បន្ថែម។&lt;/a>"</string>
++    <string name="local_search_directory_label">កន្លែង​​ក្បែរ​ៗ</string>
++    <string name="local_search_setting_title">កន្លែង​​ក្បែរ​ៗ</string>
++    <string name="local_search_setting_on">បង្ហាញ​លទ្ធផល​ស្វែងរក​សម្រាប់​កន្លែង​នៅ​ក្បែរ​​។</string>
++    <string name="local_search_setting_off">បិទ</string>
++    <string name="local_search_settings_text">"នៅ​ពេល​អ្នក​​ស្វែងរក​ពី​កម្មវិធី​ទូរស័ព្ទ លក្ខណៈ​នេះ​នឹង​ប្រើ​ទីតាំង​របស់​អ្នក​ ដើម្បី​រក​កន្លែង​នៅ​ក្បែរ ដែល​ត្រូវ​គ្នា​នឹង​សំណួរ​របស់​អ្នក សូម្បីតែ​​ពួកវា​មិន​នៅ​ក្នុង​ទំនាក់ទំនង​របស់​អ្នក​ក៏​ដោយ។ &lt;br>&lt;br> ទិន្នន័យ​កំពុង​ត្រូវ​បាន​ប្រើ​ក្នុង​លក្ខណៈ​ទាំង​នេះ​ដែល​ត្រូវ​បាន​ផ្ដល់​ដោយ Google និង​អ្នក​មាន​អាជ្ញាប័ណ្ណ។ &lt;br>&lt;a href=%1$s>ស្វែងយល់​បន្ថែម។&lt;/a>
++        &lt;br>&lt;br>
++        អ្នក​ត្រូវ​តែ​បើក​កម្មវិធី Google ដើម្បី​ប្រើ​ទីតាំង​ទូរស័ព្ទ​របស់​អ្នក​សម្រាប់​ឲ្យ​វា​ដំណើរការ។
++        &lt;br>&lt;a href=%2$s>ស្វែងយល់​បន្ថែម។&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"អ្នក​ហៅ"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"ទូរស័ព្ទ"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"ទូរស័ព្ទ"</string>
+diff --git a/res/values-km/strings.xml b/res/values-km/strings.xml
+index e5a9cd4..0fea40f 100644
+--- a/res/values-km/strings.xml
++++ b/res/values-km/strings.xml
+@@ -17,6 +17,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_hint_find_contact_google">សូម​បញ្ចូល​ឈ្មោះ ឬ​ទូរស័ព្ទ</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"អ្នក​ហៅ"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"ទូរស័ព្ទ"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"ទូរស័ព្ទ"</string>
+diff --git a/res/values-ko/strings.xml b/res/values-ko/strings.xml
+index eed6a3b..c2f4e9c 100644
+--- a/res/values-ko/strings.xml
++++ b/res/values-ko/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">설정</string>
++    <string name="dialer_hint_find_contact_google">주소록 및 주변 장소 검색</string>
++    <string name="call_settings_label">통화 설정</string>
++    <string name="view_location_settings">위치 설정 보기</string>
++    <string name="enable_reverse_lookup">Google 발신번호 사용</string>
++    <string name="reverse_lookup_enabled">Google 발신번호 표시가 사용 설정되었습니다.</string>
++    <string name="google_caller_id_setting_title">Google 발신번호 표시</string>
++    <string name="google_caller_id_setting__on">내 주소록에 없는 사용자 및 업체 이름을 표시합니다.</string>
++    <string name="google_caller_id_setting__off">사용 중지</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google
++        발신번호 표시&lt;/a>는 내 주소록에 없는 사람 및 업체 이름을 표시합니다.
++        &lt;br>&lt;br>
++        &lt;a href=%2$s>Google 계정 설정&lt;/a>에서
++       내 전화번호의 검색 허용 여부를 변경하세요.
++        &lt;br>&lt;br>
++        이 기능에 사용되는 데이터는 Google 및 라이선스 제공자가 제공합니다.
++        &lt;br>&lt;a href=%3$s>자세히 알아보기&lt;/a>"</string>
++    <string name="local_search_directory_label">근처 장소</string>
++    <string name="local_search_setting_title">근처 장소</string>
++    <string name="local_search_setting_on">주변 장소에 대한 검색결과를 표시합니다.</string>
++    <string name="local_search_setting_off">사용 중지</string>
++    <string name="local_search_settings_text">"이 기능은 휴대전화 앱에서 검색할 때 기기의 위치를 사용하여 해당 장소가 주소록에 없더라도 검색어와 일치하는 주변 장소를 찾습니다. &lt;br>&lt;br> 이 기능에 사용되는 데이터는 Google 및 Google의 라이선스 제공자가 제공합니다. &lt;br>&lt;a href=%1$s>자세히 알아보기&lt;/a>
++        &lt;br>&lt;br>
++        이 기능을 사용하려면 Google 앱에서 휴대전화의 위치 정보를 사용하도록 설정해야 합니다.
++        &lt;br>&lt;a href=%2$s>자세히 알아보기&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"다이얼러"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"휴대전화"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"휴대전화"</string>
+diff --git a/res/values-lo-rLA/strings.xml b/res/values-lo-rLA/strings.xml
+index 41e6525..178188d 100644
+--- a/res/values-lo-rLA/strings.xml
++++ b/res/values-lo-rLA/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">ການຕັ້ງຄ່າ</string>
++    <string name="dialer_hint_find_contact_google">ຊອກຫາລາຍຊື່ຜູ່ຕິດຕໍ່ ແລະສະຖານທີ່ໃກ້ຄຽງ</string>
++    <string name="call_settings_label">ການຕັ້ງຄ່າການໂທ</string>
++    <string name="view_location_settings">ເບິ່ງການຕັ້ງຄ່າສະຖານທີ່</string>
++    <string name="enable_reverse_lookup">ເປີດໃຊ້ງານ caller ID ໂດຍ Google</string>
++    <string name="reverse_lookup_enabled">Caller ID ໂດຍ Google ຖືກເປີດນຳໃຊ້ແລ້ວ</string>
++    <string name="google_caller_id_setting_title">Caller ID ໂດຍ Google</string>
++    <string name="google_caller_id_setting__on">ສະແດງຊື່ຂອງຄົນ ແລະທຸລະກິດທີ່ບໍ່ມີໃນລາຍຊື່ຜູ່ຕິດຕໍ່ຂອງຂ້ອຍ.</string>
++    <string name="google_caller_id_setting__off">ປິດ</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Caller
++        ID ໂດຍ Google&lt;/a> ສະແດງຊື່ຂອງຄົນ ແລະທຸລະກິດທີ່ບໍ່ມີຢູ່ໃນລາຍຊື່ຜູ່ຕິດຕໍ່ຂອງທ່ານ.
++        &lt;br>&lt;br>
++        ອັບເດດການເບິ່ງເຫັນຂອງໝາຍເລກໂທລະສັບຂອງທ່ານໄດ້ໃນ
++        &lt;a href=%2$s>ການຕັ້ງຄ່າບັນຊີ Google&lt;/a>.
++        &lt;br>&lt;br>
++        ຂໍ້ມູນທີ່ໃຊ້ໃນຄຸນສົມບັດເຫຼົ່ານີ້ ແມ່ນມອບໃຫ້ໂດຍ Google ແລະຜູ່ຖືລິຂະສິດຂອງມັນ.
++        &lt;br>&lt;a href=%3$s>ສຶກສາເພີ່ມເຕີມ.&lt;/a>"</string>
++    <string name="local_search_directory_label">ສະຖານທີ່ໃກ້ຄຽງ</string>
++    <string name="local_search_setting_title">ສະຖານທີ່ໃກ້ຄຽງ</string>
++    <string name="local_search_setting_on">ສະແດງຜົນການຊອກຫາສະຖານທີ່ໃກ້ຄຽງ.</string>
++    <string name="local_search_setting_off">ປິດ</string>
++    <string name="local_search_settings_text">"ເມື່ອທ່ານເຮັດການຊອກຫາຈາກແອັບຯໃນໂທລະສັບ, ຄຸນນະສົມບັດນີ້ຈະໃຊ້ທີ່ຕັ້ງຂອງທ່ານ ໃນການຊອກຫາສະຖານທີ່ໃກ້ຄຽງ ທີ່ກົງກັບຄຳໃນການຊອກຫາຂອງທ່ານ, ເຖິງແມ່ນວ່າພວກມັນຈະບໍ່ຢູ່ໃນລາຍຊື່ຜູ້ຕິດຕໍ່ຂອງທ່ານກໍ່ຕາມ. &lt;br>&lt;br> ຂໍ້ມູນທີ່ຖືກໃຊ້ໂດຍຄຸນນະສົມບັດນີ້ແມ່ນຖືກສະໜອງໃຫ້ໂດຍ Google ແລະ ຜູ້ອະນຸມັດສິດຂອງພວກມັນ. &lt;br>&lt;a href=%1$s>ສຶກສາເພີ່ມເຕີມ.&lt;/a>
++        &lt;br>&lt;br>
++        ທ່ານຕ້ອງເປີດໃຫ້ Google apps ສາມາດນຳໃຊ້ບໍລິການສະຖານທີ່ ຈຶ່ງຈະສາມາດນຳໃຊ້ຄຸນນະສົມບັດນີ້ໄດ້.
++        &lt;br>&lt;a href=%2$s>ສຶກສາເພີ່ມເຕີມ.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"ແປ້ນໂທລະສັບ"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"ໂທລະສັບ"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"ໂທລະສັບ"</string>
+diff --git a/res/values-lo/strings.xml b/res/values-lo/strings.xml
+index a9310f7..96cfa9c 100644
+--- a/res/values-lo/strings.xml
++++ b/res/values-lo/strings.xml
+@@ -17,6 +17,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_hint_find_contact_google">ພິມ​ຊື່ ​ຫຼື​ເບີໂທລະ​ສັບ</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"ແປ້ນໂທລະສັບ"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"ໂທລະສັບ"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"ໂທລະສັບ"</string>
+diff --git a/res/values-lt/strings.xml b/res/values-lt/strings.xml
+index f934435..5886710 100644
+--- a/res/values-lt/strings.xml
++++ b/res/values-lt/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Nustatymai</string>
++    <string name="dialer_hint_find_contact_google">Iešk. kont. ir vietų netoliese</string>
++    <string name="call_settings_label">Skambučių nustatymai</string>
++    <string name="view_location_settings">Peržiūrėti vietovės nustatymus</string>
++    <string name="enable_reverse_lookup">Įgal. „Google“ skambintojo ID</string>
++    <string name="reverse_lookup_enabled">„Google“ skambintojo ID įgalintas</string>
++    <string name="google_caller_id_setting_title">„Google“ skambintojo ID</string>
++    <string name="google_caller_id_setting__on">Rodyti žm. ir įm., kurių nėra kontaktuose, vardus ir pavad.</string>
++    <string name="google_caller_id_setting__off">Išjungta</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Skambintojo
++        ID sistemoje „Google“&lt;/a> rodo žmonių ir įmonių, kurių nėra jūsų kontaktuose, vardus ir pavadinimus.
++        &lt;br>&lt;br>
++       Atnaujinkite savo telefono numerio aptinkamumo nustatymą
++        &lt;a href=%2$s>„Google“ paskyros nustatymuose&lt;/a>.
++        &lt;br>&lt;br>
++        Šiose funkcijose naudojami duomenys teikiami „Google“ ir jos patentų išdavėjų.
++        &lt;br>&lt;a href=%3$s>Sužinokite daugiau.&lt;/a>"</string>
++    <string name="local_search_directory_label">Netoliese esančios vietos</string>
++    <string name="local_search_setting_title">Netoliese esančios vietos</string>
++    <string name="local_search_setting_on">Rodomi netoliese esančių vietų paieškos rezultatai.</string>
++    <string name="local_search_setting_off">Išjungta</string>
++    <string name="local_search_settings_text">"Kai ieškosite naudodami telefono programą, ši funkcija naudos jūsų vietovės duomenis, kad rastų užklausą atitinkančias netoliese esančias vietas, net jei jų nėra kontaktuose. &lt;br>&lt;br> Duomenis šioms funkcijoms teikia „Google“ ir jos licencijų išdavėjai. &lt;br>&lt;a href=%1$s>Sužinokite daugiau.&lt;/a>
++        &lt;br>&lt;br>
++        Kad tai veiktų, „Google“ programos turi būti įgalintos naudoti telefono vietovės duomenis.
++        &lt;br>&lt;a href=%2$s>Sužinokite daugiau.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Skambučiai"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefonas"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefonas"</string>
+diff --git a/res/values-lv/strings.xml b/res/values-lv/strings.xml
+index 197fcf9..ae6b32a 100644
+--- a/res/values-lv/strings.xml
++++ b/res/values-lv/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Iestatījumi</string>
++    <string name="dialer_hint_find_contact_google">Meklēt kont. un vietas blakus</string>
++    <string name="call_settings_label">Zvanu iestatījumi</string>
++    <string name="view_location_settings">Skatīt atraš. vietas iestat.</string>
++    <string name="enable_reverse_lookup">Iespējot Google zvanītāja ID</string>
++    <string name="reverse_lookup_enabled">Google zvanītāja ID ir iespējots.</string>
++    <string name="google_caller_id_setting_title">Google nodrošinātais zvanītāja ID</string>
++    <string name="google_caller_id_setting__on">Rādīt pers. vārdus/uzņ. nos., kuru nav kontaktp. sarakstā.</string>
++    <string name="google_caller_id_setting__off">Izslēgts</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google
++        zvanītāja ID&lt;/a> parāda to personu vārdus un uzņēmumu nosaukumus, kas nav jūsu kontaktpersonu sarakstā.
++        &lt;br>&lt;br>
++        Atjauniniet sava tālruņa numura noteikšanas iestatījumu sava
++        &lt;a href=%2$s>Google konta iestatījumos&lt;/a>.
++        &lt;br>&lt;br>
++        Šajās funkcijās izmantotos datus nodrošina uzņēmums Google un tā licences devēji.
++        &lt;br>&lt;a href=%3$s>Uzziniet vairāk&lt;/a>."</string>
++    <string name="local_search_directory_label">Tuvumā esošās vietas</string>
++    <string name="local_search_setting_title">Tuvumā esošās vietas</string>
++    <string name="local_search_setting_on">Tiek rādīti meklēšanas rezultāti par vietām blakus.</string>
++    <string name="local_search_setting_off">Izslēgti</string>
++    <string name="local_search_settings_text">"Meklējot tālruņa lietotnē, šai funkcijai tiks izmantota informācija par jūsu atrašanās vietu, lai atrastu vaicājumam atbilstošas vietas blakus, pat ja to nav jūsu kontaktpersonu sarakstā. &lt;br>&lt;br> Datus šīm funkcijām nodrošina uzņēmums Google un tā licenču devēji. &lt;br>&lt;a href=%1$s>Uzziniet vairāk.&lt;/a>.
++        &lt;br>&lt;br>
++        Lai šī funkcija darbotos, jums ir jāiespējo Google lietotņu piekļuve informācijai par jūsu atrašanās vietu.
++        &lt;br>&lt;a href=%2$s>Uzziniet vairāk.&lt;/a>."</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Tālrunis"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Tālrunis"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Zvanīt"</string>
+diff --git a/res/values-mn-rMN/strings.xml b/res/values-mn-rMN/strings.xml
+index 18144a4..421790a 100644
+--- a/res/values-mn-rMN/strings.xml
++++ b/res/values-mn-rMN/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Тохиргоо</string>
++    <string name="dialer_hint_find_contact_google">Харилцагчид &amp; ойролцоо газруудыг хайх</string>
++    <string name="call_settings_label">Дуудлагын тохиргоо</string>
++    <string name="view_location_settings">Байршлын тохиргоог харах</string>
++    <string name="enable_reverse_lookup">Google дуудлага хийгчийн ID-г идэвхжүүлэх</string>
++    <string name="reverse_lookup_enabled">Залгагчийн ID-г Google-с харуулахыг идэвхжүүлсэн</string>
++    <string name="google_caller_id_setting_title">Залгагчийн ID-г Google-с</string>
++    <string name="google_caller_id_setting__on">Миний харилцагчид дотор байхгүй хүмүүс, байгууллагуудын нэрсийг харуулах.</string>
++    <string name="google_caller_id_setting__off">Идэвхгүй</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Залгагчийн
++        ID by Google&lt;/a> нь таны харилцагчид дотор байхгүй хүмүүс болон байгууллагуудын нэрсийг харуулна.
++        &lt;br>&lt;br>
++        Өөрийн утасны дугаарыг харуулах эсэхийг өөрийн
++        &lt;a href=%2$s>Google акаунт дотроос шинэчлээрэй&lt;/a>.
++        &lt;br>&lt;br>
++        Энэ функцад ашиглагдаж байгаа датаг Google болон түүний лиценз эзэмшигчид нийлүүлсэн.
++        &lt;br>&lt;a href=%3$s>Дэлгэрэнгүй үзэх.&lt;/a>"</string>
++    <string name="local_search_directory_label">Ойролцоо газрууд</string>
++    <string name="local_search_setting_title">Ойролцоо газрууд</string>
++    <string name="local_search_setting_on">Ойролцоох газруудын хайлтын илэрцийг харуулах.</string>
++    <string name="local_search_setting_off">Идэвхгүй</string>
++    <string name="local_search_settings_text">"Таныг өөрийн утасны апп-аас хайлт хийх үед энэ функц таны төхөөрөмжийн байршлыг ашиглан таны хайлтад таарах ойролцоох газруудыг олохыг хичээх болно. &lt;br>&lt;br> Эдгээр функцуудад зориулсан датаг Google болон үүний лиценз эзэмшигчид нийлүүлнэ. &lt;br>&lt;a href=%1$s>Дэлгэрэнгүй үзэх.&lt;/a>
++        &lt;br>&lt;br>
++        Та үүнийг ажиллуулахын тулд Google апп-уудад өөрийн утасны байршлыг ашиглахыг зөвшөөрөх шаардлагатай.
++        &lt;br>&lt;a href=%2$s>Дэлгэрэнгүй үзэх.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Залгагч"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Утас"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Утас"</string>
+diff --git a/res/values-mn/strings.xml b/res/values-mn/strings.xml
+index 8294eaa..6d4810a 100644
+--- a/res/values-mn/strings.xml
++++ b/res/values-mn/strings.xml
+@@ -17,6 +17,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_hint_find_contact_google">Нэр эсхүл дугаарыг бичнэ үү</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Залгагч"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Утас"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Утас"</string>
+diff --git a/res/values-ms-rMY/strings.xml b/res/values-ms-rMY/strings.xml
+index 20ee265..44a03bb 100644
+--- a/res/values-ms-rMY/strings.xml
++++ b/res/values-ms-rMY/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Tetapan</string>
++    <string name="dialer_hint_find_contact_google">Cari kenalan &amp; tempat</string>
++    <string name="call_settings_label">Tetapan panggilan</string>
++    <string name="view_location_settings">Lihat tetapan lokasi</string>
++    <string name="enable_reverse_lookup">Dayakan ID pemanggil</string>
++    <string name="reverse_lookup_enabled">ID Pemanggil oleh Google didayakan</string>
++    <string name="google_caller_id_setting_title">ID pemanggil oleh Google</string>
++    <string name="google_caller_id_setting__on">Tunjukkan nama orang atau perniagaan yg tiada dalam kenalan.</string>
++    <string name="google_caller_id_setting__off">Mati</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>ID
++        Pemanggil oleh Google&lt;/a> menunjukkan nama orang dan perniagaan yang tiada dalam senarai kenalan anda.
++        &lt;br>&lt;br>
++        Kemas kini kebolehtemuan nombor telefon anda dalam
++        &lt;a href=%2$s>Tetapan akaun Google anda&lt;/a>.
++        &lt;br>&lt;br>
++        Data yang digunakan dalam ciri ini disediakan oleh Google dan pemberi lesen.
++        &lt;br>&lt;a href=%3$s>Ketahui lebih lanjut.&lt;/a>"</string>
++    <string name="local_search_directory_label">Tempat berdekatan</string>
++    <string name="local_search_setting_title">Tempat berdekatan</string>
++    <string name="local_search_setting_on">Paparkan hasil carian untuk tempat berdekatan.</string>
++    <string name="local_search_setting_off">Mati</string>
++    <string name="local_search_settings_text">"Apabila anda melakukan carian dari apl telefon, ciri ini akan menggunakan lokasi anda untuk mencari tempat berdekatan yang sepadan dengan pertanyaan anda, meskipun tiada dalam kenalan anda. &lt;br>&lt;br> Data yang digunakan dalam ciri ini disediakan oleh Google dan pemberi lesen. &lt;br>&lt;a href=%1$s>Ketahui lebih lanjut.&lt;/a>
++        &lt;br>&lt;br>
++        Anda mesti mendayakan apl Google untuk menggunakan lokasi telefon anda agar ciri ini berfungsi.
++        &lt;br>&lt;a href=%2$s>Ketahui lebih lanjut.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Pendail"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-ms/strings.xml b/res/values-ms/strings.xml
+index a7d42cb..1118094 100644
+--- a/res/values-ms/strings.xml
++++ b/res/values-ms/strings.xml
+@@ -17,6 +17,9 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_hint_find_contact_google">Taipkan nama atau telefon</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Pendail"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-nb/strings.xml b/res/values-nb/strings.xml
+index cdd18ec..a1a4a01 100644
+--- a/res/values-nb/strings.xml
++++ b/res/values-nb/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Innstillinger</string>
++    <string name="dialer_hint_find_contact_google">Søk i kontakter/lokale steder</string>
++    <string name="call_settings_label">Samtaleinnstillinger</string>
++    <string name="view_location_settings">Se posisjonsinnstillingene</string>
++    <string name="enable_reverse_lookup">Aktivér anrops-ID fra Google</string>
++    <string name="reverse_lookup_enabled">Oppringer-ID fra Google er aktivert</string>
++    <string name="google_caller_id_setting_title">Anrops-ID fra Google</string>
++    <string name="google_caller_id_setting__on">Vis navn på personer og bedrifter som ikke er lagt til i kontaktene mine.</string>
++    <string name="google_caller_id_setting__off">Av</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Anrops-ID
++        fra Google&lt;/a> viser deg navnene til personer og bedrifter som ikke er lagt til i kontaktlisten din.
++        &lt;br>&lt;br>
++        Oppdater synligheten for telefonnummeret ditt i
++        &lt;a href=%2$s>innstillingene for Google-kontoen&lt;/a>.
++        &lt;br>&lt;br>
++        Data som brukes i disse tjenestene leveres av Google og deres lisensgivere.
++        &lt;br>&lt;a href=%3$s>Finn ut mer.&lt;/a>"</string>
++    <string name="local_search_directory_label">Steder i nærheten</string>
++    <string name="local_search_setting_title">Steder i nærheten</string>
++    <string name="local_search_setting_on">Vis søkeresultater for nærliggende steder.</string>
++    <string name="local_search_setting_off">Av</string>
++    <string name="local_search_settings_text">"Når du søker fra telefonappen din, henter denne funksjonen posisjonen din og bruker den til å finne de nærmeste stedene som passer med søkeordet ditt, selv om de ikke er i kontaktlisten din. &lt;br>&lt;br> Dataene for disse funksjonene leveres av Google og deres lisensgivere. &lt;br>&lt;a href=%1$s>Finn ut mer.&lt;/a>
++        &lt;br>&lt;br>
++        Du må tillate Google-apper å bruke telefonens posisjon for at dette skal fungere.
++        &lt;br>&lt;a href=%2$s>Finn ut mer.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Oppringer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-nl/strings.xml b/res/values-nl/strings.xml
+index c8c6bb9..00987b7 100644
+--- a/res/values-nl/strings.xml
++++ b/res/values-nl/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Instellingen</string>
++    <string name="dialer_hint_find_contact_google">Contacten en plaatsen in de buurt</string>
++    <string name="call_settings_label">Oproepinstellingen</string>
++    <string name="view_location_settings">Locatie-instellingen weergeven</string>
++    <string name="enable_reverse_lookup">Google-beller-ID inschakelen</string>
++    <string name="reverse_lookup_enabled">Beller-ID van Google is ingeschakeld</string>
++    <string name="google_caller_id_setting_title">Beller-ID van Google</string>
++    <string name="google_caller_id_setting__on">Namen weergeven voor niet-contacten (mensen en bedrijven).</string>
++    <string name="google_caller_id_setting__off">Uit</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Beller-
++        ID van Google&lt;/a> geeft namen weer van mensen en bedrijven die niet in uw contacten staan.
++        &lt;br>&lt;br>
++        Verbeter de vindbaarheid van uw telefoonnummer in uw
++        &lt;a href=%2$s>Google-accountinstellingen&lt;/a>.
++        &lt;br>&lt;br>
++        De gegevens die in deze functies worden gebruikt, worden geleverd door Google en zijn licentiegevers.
++        &lt;br>&lt;a href=%3$s>Meer informatie.&lt;/a>"</string>
++    <string name="local_search_directory_label">Plaatsen in de buurt</string>
++    <string name="local_search_setting_title">Plaatsen in de buurt</string>
++    <string name="local_search_setting_on">Zoekresultaten voor plaatsen in de buurt weergeven.</string>
++    <string name="local_search_setting_off">Uit</string>
++    <string name="local_search_settings_text">"Wanneer u zoekopdrachten uitvoert via de telefoon-app, gebruikt deze functie uw locatie om plaatsen in de buurt te vinden die overeenkomen met uw zoekopdracht, zelfs als deze niet in uw contactenlijst staan. &lt;br>&lt;br> Gegevens voor deze functies worden geleverd door Google en zijn vergunninggevers. &lt;br>&lt;a href=%1$s>Meer informatie.&lt;/a>
++        &lt;br>&lt;br>
++        Voor deze functies moet u Google-apps toestemming geven de locatie van uw telefoon te gebruiken.
++        &lt;br>&lt;a href=%2$s>Meer informatie.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefoon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefoon"</string>
+diff --git a/res/values-pl/strings.xml b/res/values-pl/strings.xml
+index 07ccb56..3df8e2d 100644
+--- a/res/values-pl/strings.xml
++++ b/res/values-pl/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Ustawienia</string>
++    <string name="dialer_hint_find_contact_google">Wyszukaj kontakty i miejsca w pobliżu</string>
++    <string name="call_settings_label">Ustawienia połączeń</string>
++    <string name="view_location_settings">Wyświetl ustawienia lokalizacji</string>
++    <string name="enable_reverse_lookup">Włącz nazwę rozmówcy od Google</string>
++    <string name="reverse_lookup_enabled">Nazwa rozmówcy od Google jest włączona</string>
++    <string name="google_caller_id_setting_title">Nazwa rozmówcy od Google</string>
++    <string name="google_caller_id_setting__on">Pokazuj nazwiska osób i nazwy firm spoza listy kontaktów.</string>
++    <string name="google_caller_id_setting__off">Wyłączona</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Nazwa
++        rozmówcy od Google&lt;/a> wyświetla nazwiska osób i nazwy firm spoza listy kontaktów.
++        &lt;br>&lt;br>
++        Zwiększ możliwość wykrycia Twojego numeru telefonu 
++        &lt;a href=%2$s>w ustawieniach konta Google&lt;/a>.
++        &lt;br>&lt;br>
++        Dane wykorzystywane w tych funkcjach dostarcza firma Google i jej licencjodawcy.
++        &lt;br>&lt;a href=%3$s>Więcej informacji.&lt;/a>"</string>
++    <string name="local_search_directory_label">Miejsca w pobliżu</string>
++    <string name="local_search_setting_title">Miejsca w pobliżu</string>
++    <string name="local_search_setting_on">Wyświetl wyniki wyszukiwania miejsc w pobliżu.</string>
++    <string name="local_search_setting_off">Wyłączone</string>
++    <string name="local_search_settings_text">"Podczas wyszukiwania w aplikacji na telefonie funkcja użyje Twojej lokalizacji, by znaleźć pobliskie miejsca pasujące do zapytania, nawet jeśli nie masz ich w kontaktach. &lt;br>&lt;br> Dane wykorzystywane przez te funkcje są dostarczane przez firmę Google i jej licencjodawców. &lt;br>&lt;a href=%1$s>Więcej informacji.&lt;/a>
++        &lt;br>&lt;br>
++        Aby funkcja działała, musisz zezwolić aplikacjom Google na dostęp do lokalizacji telefonu.
++        &lt;br>&lt;a href=%2$s>Więcej informacji.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Telefon"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-pt-rPT/strings.xml b/res/values-pt-rPT/strings.xml
+index fa7ae19..e578275 100644
+--- a/res/values-pt-rPT/strings.xml
++++ b/res/values-pt-rPT/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Definições</string>
++    <string name="dialer_hint_find_contact_google">Pesq. contactos e locais próx.</string>
++    <string name="call_settings_label">Definições de chamadas</string>
++    <string name="view_location_settings">Ver definições da localização</string>
++    <string name="enable_reverse_lookup">Ativar identif. de cham. pelo Google</string>
++    <string name="reverse_lookup_enabled">O ID da chamada da Google está ativado</string>
++    <string name="google_caller_id_setting_title">Identificação de chamadas pelo Google</string>
++    <string name="google_caller_id_setting__on">Mostr. nomes de pessoas e empr. que não estão nos contactos.</string>
++    <string name="google_caller_id_setting__off">Desativado</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>A identificação
++        de chamadas pelo Google&lt;/a> mostra os nomes de pessoas e empresas que não se encontram nos seus contactos.
++        &lt;br>&lt;br>
++        Atualize a deteção do seu número de telefone nas suas
++        &lt;a href=%2$s>definições da Conta Google&lt;/a>.
++        &lt;br>&lt;br>
++        Os dados a serem utilizados nestas funcionalidades são fornecidos pela Google e pelos seus licenciadores.
++        &lt;br>&lt;a href=%3$s>Saiba mais.&lt;/a>"</string>
++    <string name="local_search_directory_label">Locais próximos</string>
++    <string name="local_search_setting_title">Locais próximos</string>
++    <string name="local_search_setting_on">Mostrar resultados da pesquisa para locais próximos.</string>
++    <string name="local_search_setting_off">Desativado</string>
++    <string name="local_search_settings_text">"Quando pesquisa na aplicação Telefone, esta funcionalidade utilizará a sua localização para encontrar locais nas redondezas que correspondam à sua consulta, mesmo que não estejam nos seus contactos. &lt;br>&lt;br> Os dados utilizados nestas funcionalidades são fornecidos pela Google e respetivos licenciadores. &lt;br>&lt;a href=%1$s>Saiba mais.&lt;/a>
++        &lt;br>&lt;br>
++        Para que a funcionalidade funcione, tem de permitir que as aplicações da Google utilizem a localização do seu telemóvel.
++        &lt;br>&lt;a href=%2$s>Saiba mais.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Telefone"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefone"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefone"</string>
+diff --git a/res/values-pt/strings.xml b/res/values-pt/strings.xml
+index a2d0fea..35c4e8e 100644
+--- a/res/values-pt/strings.xml
++++ b/res/values-pt/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Configurações</string>
++    <string name="dialer_hint_find_contact_google">Pesq. contatos e lugares próx.</string>
++    <string name="call_settings_label">Configurações de chamada</string>
++    <string name="view_location_settings">Ver config. de localização</string>
++    <string name="enable_reverse_lookup">Ativar ident. cham. do Google</string>
++    <string name="reverse_lookup_enabled">A identificação de chamadas do Google está ativada</string>
++    <string name="google_caller_id_setting_title">Identificação de chamadas do Google</string>
++    <string name="google_caller_id_setting__on">Mostrar pessoas e empresas que não estão em meus contatos</string>
++    <string name="google_caller_id_setting__off">Desativado</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>A identificação
++        de chamadas do Google&lt;/a> mostra nomes de pessoas e empresas que não estão em seus contatos.
++        &lt;br>&lt;br>
++        Atualize a detecção do dispositivo para seu número de telefone nas
++        &lt;a href=%2$s>configurações de sua Conta do Google&lt;/a>.
++        &lt;br>&lt;br>
++        Os dados utilizados por estes recursos são fornecidos pelo Google e seus licenciantes.
++        &lt;br>&lt;a href=%3$s>Saiba mais.&lt;/a>"</string>
++    <string name="local_search_directory_label">Lugares próximos</string>
++    <string name="local_search_setting_title">Lugares próximos</string>
++    <string name="local_search_setting_on">Mostrar resultados de pesquisa para lugares próximos.</string>
++    <string name="local_search_setting_off">Desativado</string>
++    <string name="local_search_settings_text">"Quando você pesquisa usando o aplicativo do telefone, este recurso usa seu local para encontrar Lugares próximos que correspondam à consulta, mesmo que eles não estejam em seus contatos. &lt;br>&lt;br> Os dados usados por esses recursos são fornecidos pelo Google e seus licenciantes. &lt;br>&lt;a href=%1$s>Saiba mais.&lt;/a>
++        &lt;br>&lt;br>
++        É preciso que você permita que os aplicativos do Google usem o local de seu telefone para que o recurso funcione.
++        &lt;br>&lt;a href=%2$s>Saiba mais.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Discador"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefone"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefone"</string>
+diff --git a/res/values-ro/strings.xml b/res/values-ro/strings.xml
+index 53cc3ab..9a6fbbb 100644
+--- a/res/values-ro/strings.xml
++++ b/res/values-ro/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Setări</string>
++    <string name="dialer_hint_find_contact_google">Căut. pers. și loc. în aprop.</string>
++    <string name="call_settings_label">Setări pentru apeluri</string>
++    <string name="view_location_settings">Afișați setările locației</string>
++    <string name="enable_reverse_lookup">Activați ID apelant (Google)</string>
++    <string name="reverse_lookup_enabled">Funcția ID apelant de la Google este activată</string>
++    <string name="google_caller_id_setting_title">Serviciul ID apelant de la Google</string>
++    <string name="google_caller_id_setting__on">Afișați numele apelanților care nu sunt în agendă.</string>
++    <string name="google_caller_id_setting__off">Dezactivat</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>ID apelant
++        de la Google&lt;/a> afișează numele persoanelor și companiilor care nu se află în agendă.
++        &lt;br>&lt;br>
++        Actualizați vizibilitatea numărului dvs. de telefon în
++        &lt;a href=%2$s>setările contului Google&lt;/a>.
++        &lt;br>&lt;br>
++        Datele pentru aceste funcții sunt oferite de Google și de furnizorii săi de licențe.
++        &lt;br>&lt;a href=%3$s>Aflați mai multe.&lt;/a>"</string>
++    <string name="local_search_directory_label">Locații din apropiere</string>
++    <string name="local_search_setting_title">Locații din apropiere</string>
++    <string name="local_search_setting_on">Afișați rezultatele căutării pentru locațiile din apropiere.</string>
++    <string name="local_search_setting_off">Dezactivat</string>
++    <string name="local_search_settings_text">"Când căutați din aplicația telefonului, această funcție va detecta locația dvs. și o va utiliza pentru a găsi locațiile din apropiere care corespund termenului dvs. de căutare, chiar dacă acestea nu sunt în agendă. &lt;br>&lt;br> Datele pentru aceste funcții sunt oferite de Google și furnizorii săi de licență. &lt;br>&lt;a href=%1$s&amp;gtAflați mai multe.&lt;/a>
++        &lt;br>&lt;br>
++        Pentru această funcție, trebuie să activați utilizarea locației telefonului dvs. de către aplicațiile Google.
++        &lt;br>&lt;a href=%2$s>Aflați mai multe.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Telefon"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-ru/strings.xml b/res/values-ru/strings.xml
+index d38ed0b..b75b945 100644
+--- a/res/values-ru/strings.xml
++++ b/res/values-ru/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Настройки</string>
++    <string name="dialer_hint_find_contact_google">Поиск контактов и мест рядом</string>
++    <string name="call_settings_label">Настройки вызовов</string>
++    <string name="view_location_settings">Настройки геоданных</string>
++    <string name="enable_reverse_lookup">Включить АОН Google</string>
++    <string name="reverse_lookup_enabled">АОН (Google) включен</string>
++    <string name="google_caller_id_setting_title">АОН (Google)</string>
++    <string name="google_caller_id_setting__on">Показывать имена и названия, не входящие в список контактов</string>
++    <string name="google_caller_id_setting__off">ВЫКЛ</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>АОН
++        от Google&lt;/a> определяет имена звонящих пользователей и названия организаций, даже если их нет в вашем списке контактов.
++        &lt;br>&lt;br>
++        Параметры видимости номера телефона можно изменить в
++        &lt;a href=%2$s>настройках аккаунта Google&lt;/a>.
++        &lt;br>&lt;br>
++        Данные, которые используются в работе этих функций, предоставлены компанией Google и ее лицензиарами.
++        &lt;br>&lt;a href=%3$s>Подробнее…&lt;/a>"</string>
++    <string name="local_search_directory_label">Места рядом</string>
++    <string name="local_search_setting_title">Места рядом</string>
++    <string name="local_search_setting_on">Показывать результаты поиска мест рядом</string>
++    <string name="local_search_setting_off">ВЫКЛ</string>
++    <string name="local_search_settings_text">"Когда вы выполняете поиск с помощью приложения на телефоне, эта функция позволяет на основании данных о вашем местоположении находить подходящие объекты неподалеку, даже если их нет в ваших контактах.&lt;br>&lt;br>Данные для этой функции предоставлены компанией Google и ее лицензиарами.&lt;br>&lt;a href=%1$s>Подробнее…&lt;/a>
++        &lt;br>&lt;br>
++        Для работы функции необходимо разрешить приложениям Google использовать геоданные.
++        &lt;br>&lt;a href=%2$s>Подробнее…&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Телефон"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Телефон"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Кнопки"</string>
+diff --git a/res/values-sk/strings.xml b/res/values-sk/strings.xml
+index 9a22313..801a6dc 100644
+--- a/res/values-sk/strings.xml
++++ b/res/values-sk/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Nastavenia</string>
++    <string name="dialer_hint_find_contact_google">Hľadať kontakty a blízke miesta</string>
++    <string name="call_settings_label">Nastavenia hovorov</string>
++    <string name="view_location_settings">Zobrazenie nastavení polohy</string>
++    <string name="enable_reverse_lookup">Povoliť ID volajúceho Google</string>
++    <string name="reverse_lookup_enabled">Identifikácia volajúceho Google je povolená</string>
++    <string name="google_caller_id_setting_title">Identifikácia volajúceho pomocou Googlu</string>
++    <string name="google_caller_id_setting__on">Zobraziť mená osôb a firiem, ktoré nie sú v kontaktoch.</string>
++    <string name="google_caller_id_setting__off">Vypnuté</string>
++    <string name="google_caller_id_settings_text">"Funkcia &lt;a href=%1$s>Identifikácia
++        volajúceho od spoločnosti Google&lt;/a> zobrazuje mená ľudí a firiem, ktoré nie sú vo vašich kontaktoch.
++        &lt;br>&lt;br>
++        Aktualizujte viditeľnosť svojho telefónneho čísla v
++        &lt;a href=%2$s>nastaveniach účtu Google &lt;/a>.
++        &lt;br>&lt;br>
++        Údaje používané v týchto funkciách sú poskytované spoločnosťou Google a jej poskytovateľmi licencií.
++        &lt;br>&lt;a href=%3$s>Prečítajte si viac informácií.&lt;/a>"</string>
++    <string name="local_search_directory_label">Miesta v blízkosti</string>
++    <string name="local_search_setting_title">Miesta v blízkosti</string>
++    <string name="local_search_setting_on">Zobrazenie výsledkov vyhľadávania pre miesta v blízkosti</string>
++    <string name="local_search_setting_off">Vypnuté</string>
++    <string name="local_search_settings_text">"Ak pri vyhľadávaní používate mobilnú aplikáciu, funkcia použije vašu polohu na vyhľadanie miest v blízkosti zodpovedajúcich dopytu, a to aj v prípade, ak sa nenachádzajú vo vašich kontaktoch.&lt;br>&lt;br> Údaje použité v týchto funkciách poskytuje spoločnosť Google a jej poskytovatelia licencií. &lt;br>&lt;a href=%1$s>Viac informácií.&lt;/a>
++        &lt;br>&lt;br>
++        Na to, aby táto funkcia fungovala, musíte v aplikáciách Google povoliť používanie polohy vášho telefónu.
++        &lt;br>&lt;a href=%2$s>Viac informácií.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Vytáčanie"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefón"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefón"</string>
+diff --git a/res/values-sl/strings.xml b/res/values-sl/strings.xml
+index 717ac9d..e2b98df 100644
+--- a/res/values-sl/strings.xml
++++ b/res/values-sl/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Nastavitve</string>
++    <string name="dialer_hint_find_contact_google">Iskanje stikov/bližnjih krajev</string>
++    <string name="call_settings_label">Klicne nastavitve</string>
++    <string name="view_location_settings">Prikaz lokacijskih nastavitev</string>
++    <string name="enable_reverse_lookup">Omogoči Googlov ID klicatelja</string>
++    <string name="reverse_lookup_enabled">Googlova storitev za ID klicatelja je omogočena</string>
++    <string name="google_caller_id_setting_title">Googlov ID klicatelja</string>
++    <string name="google_caller_id_setting__on">Prikaz imen za ljudi in podjetja, ki niso v mojih stikih.</string>
++    <string name="google_caller_id_setting__off">Izkloplj.</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Googlov
++        ID klicatelja&lt;/a> pokaže imena ljudi in podjetij, ki niso v vaših stikih.
++        &lt;br>&lt;br>
++        Posodobite vidnost svoje telefonske številke v
++        &lt;a href=%2$s>nastavitvah Google Računa&lt;/a>.
++        &lt;br>&lt;br>
++        Podatke, ki se uporabljajo v teh funkcijah, zagotavljajo Google in njegovi licencedajalci.
++        &lt;br>&lt;a href=%3$s>Več o tem.&lt;/a>"</string>
++    <string name="local_search_directory_label">Mesta v bližini</string>
++    <string name="local_search_setting_title">Mesta v bližini</string>
++    <string name="local_search_setting_on">Prikaz rezultatov iskanja za bližnje kraje.</string>
++    <string name="local_search_setting_off">Izkloplj.</string>
++    <string name="local_search_settings_text">"Pri iskanju z aplikacijo v telefonu ta funkcija na podlagi lokacijskih podatkov poskuša najti mesta v bližini, ki se ujemajo z vašim iskanjem, tudi če jih ni v vaših stikih. &lt;br>&lt;br> Podatke za te funkcije zagotavljajo Google in njegovi licencedajalci. &lt;br>&lt;a href=%1$s>Več o tem.&lt;/a>
++        &lt;br>&lt;br>
++        To deluje, če Googlovim aplikacijam omogočite uporabo lokacijskih podatkov naprave.
++        &lt;br>&lt;a href=%2$s>Več o tem.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Telefon"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-sr/strings.xml b/res/values-sr/strings.xml
+index 4362484..88a5983 100644
+--- a/res/values-sr/strings.xml
++++ b/res/values-sr/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Подешавања</string>
++    <string name="dialer_hint_find_contact_google">Претражите контакте и оближња места</string>
++    <string name="call_settings_label">Подешавања позива</string>
++    <string name="view_location_settings">Прикажи подешавања локације</string>
++    <string name="enable_reverse_lookup">Омогући Google ИД позиваоца</string>
++    <string name="reverse_lookup_enabled">Google ИД позиваоца је омогућен</string>
++    <string name="google_caller_id_setting_title">Google-ов ИД позиваоца</string>
++    <string name="google_caller_id_setting__on">Приказују се имена људи и предузећа који нису у контактима.</string>
++    <string name="google_caller_id_setting__off">Искључено</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google-ов ИД позиваоца
++        &lt;/a> приказује имена људи и називе предузећа који се не налазе у контактима.
++        &lt;br>&lt;br>
++        Ажурирајте видљивост броја телефона у
++        &lt;a href=%2$s>подешавањима Google налога&lt;/a>.
++        &lt;br>&lt;br>
++        Податке који се користе у овим функцијама пружају Google и његови издаваоци лиценци.
++        &lt;br>&lt;a href=%3$s>Сазнајте више.&lt;/a>"</string>
++    <string name="local_search_directory_label">Оближња места</string>
++    <string name="local_search_setting_title">Оближња места</string>
++    <string name="local_search_setting_on">Приказују се резултати претраге за оближња места.</string>
++    <string name="local_search_setting_off">Искључено</string>
++    <string name="local_search_settings_text">"Када претражујете из апликације за телефон, ова функција ће користити вашу локацију да би пронашла оближња места која се подударају са упитом, чак и ако нису у контактима. &lt;br>&lt;br> Податке за ове функције пружају Google и његови издаваоци лиценци. &lt;br>&lt;a href=%1$s>Сазнајте више.&lt;/a>
++        &lt;br>&lt;br>
++        Морате да омогућите Google апликацијама да користе локацију телефона да би ово функционисало.
++        &lt;br>&lt;a href=%2$s>Сазнајте више.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Телефон"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Телефон"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Телефон"</string>
+diff --git a/res/values-sv/strings.xml b/res/values-sv/strings.xml
+index 757e2b5..165df5e 100644
+--- a/res/values-sv/strings.xml
++++ b/res/values-sv/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Inställningar</string>
++    <string name="dialer_hint_find_contact_google">Sök efter kontakter och platser i närheten</string>
++    <string name="call_settings_label">Samtalsinställningar</string>
++    <string name="view_location_settings">Visa platsinställningar</string>
++    <string name="enable_reverse_lookup">Aktivera nummerpresentatör från Google</string>
++    <string name="reverse_lookup_enabled">Nummerpresentatör från Google har aktiverats</string>
++    <string name="google_caller_id_setting_title">Nummerpresentatör från Google</string>
++    <string name="google_caller_id_setting__on">Visa namn på personer/företag som inte är i kontaktlistan.</string>
++    <string name="google_caller_id_setting__off">Av</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Nummerpresentatören
++        från Google&lt;/a> visar namnen på personer och företag som inte finns i dina kontakter.
++        &lt;br>&lt;br>
++        Uppdatera synligheten för ditt telefonnummer i
++        &lt;a href=%2$s>inställningarna för ditt Google-konto&lt;/a>.
++        &lt;br>&lt;br>
++        Uppgifterna som används i dessa funktioner tillhandahålls av Google och Googles licensgivare.
++        &lt;br>&lt;a href=%3$s>Läs mer.&lt;/a>"</string>
++    <string name="local_search_directory_label">Platser i närheten</string>
++    <string name="local_search_setting_title">Platser i närheten</string>
++    <string name="local_search_setting_on">Visa sökresultat för platser i närheten.</string>
++    <string name="local_search_setting_off">Av</string>
++    <string name="local_search_settings_text">"När du söker i mobilappen används enhetens plats av funktionen för att hitta ställen i närheten som matchar din fråga, även om de inte finns bland dina kontakter. &lt;br>&lt;br> Data för dessa funktioner tillhandahålls av Google och Googles licensgivare. &lt;br>&lt;a href=%1$s>Läs mer.&lt;/a>
++        &lt;br>&lt;br>
++        För att detta ska fungera måste du tillåta att appar från Google använder mobilens plats.
++        &lt;br>&lt;a href=%2$s>Läs mer.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Samtal"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-sw/strings.xml b/res/values-sw/strings.xml
+index bbe0b73..cd4bf8e 100644
+--- a/res/values-sw/strings.xml
++++ b/res/values-sw/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Mipangilio</string>
++    <string name="dialer_hint_find_contact_google">Tafuta anwani na maeneo ya karibu</string>
++    <string name="call_settings_label">Mipangilio ya simu</string>
++    <string name="view_location_settings">Tazama mipangilio ya eneo</string>
++    <string name="enable_reverse_lookup">Washa kitambulisho cha anayepiga cha Google</string>
++    <string name="reverse_lookup_enabled">Kitambulisho cha Anayepiga kutoka Google kimewashwa</string>
++    <string name="google_caller_id_setting_title">Kitambulisho cha mpigaji cha Google</string>
++    <string name="google_caller_id_setting__on">Onyesha majina ya watu na biashara ambao hawako katika anwani zangu.</string>
++    <string name="google_caller_id_setting__off">Imezimwa</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Kitambulisho cha
++        Anayepiga kilichoundwa na Google&lt;/a> kinaonyesha majina ya watu na biashara ambazo haziko katika anwani zako.
++        &lt;br>&lt;br>
++        Sasisha uwezo wa kutambulika kwa nambari yako ya simu katika
++        &lt;a href=%2$s>mipangilio ya akaunti yako ya Google&lt;/a>.
++        &lt;br>&lt;br>
++        Data inayotumiwa katika vipengee hivi inatolewa na Google na watoa leseni wake.
++        &lt;br>&lt;a href=%3$s>Pata maelezo zaidi.&lt;/a>"</string>
++    <string name="local_search_directory_label">Maeneo ya karibu</string>
++    <string name="local_search_setting_title">Maeneo ya karibu</string>
++    <string name="local_search_setting_on">Onyesha matokeo ya utafutaji wa maeneo ya karibu.</string>
++    <string name="local_search_setting_off">Imezimwa</string>
++    <string name="local_search_settings_text">"Unapotafuta kwenye programu ya simu, kipengele hiki kitatambua eneo la kifaa chako na kulitumia kupata maeneo yaliyo karibu ambayo yanalingana na hoja yako ya utafutaji, hata kama hayako katika anwani zako. &lt;br>&lt;br> Data inayotumika katika vipengele hivi inatolewa na Google na watoa leseni wake. &lt;br>&lt;a href=%1$s>Pata maelezo zaidi.&lt;/a>
++        &lt;br>&lt;br>
++        Lazima uwashe programu za Google zitumie eneo la simu yako ili hii huduma hii ifanye kazi.
++        &lt;br>&lt;a href=%2$s>Pata maelezo zaidi.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Kibonyezi"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Simu"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Simu"</string>
+diff --git a/res/values-th/strings.xml b/res/values-th/strings.xml
+index a423ab0..00d5fbb 100644
+--- a/res/values-th/strings.xml
++++ b/res/values-th/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">การตั้งค่า</string>
++    <string name="dialer_hint_find_contact_google">ค้นหาสมุดติตด่อและที่ใกล้เคียง</string>
++    <string name="call_settings_label">การตั้งค่าการโทร</string>
++    <string name="view_location_settings">ดูการตั้งค่าสถานที่</string>
++    <string name="enable_reverse_lookup">เปิดใช้หมายเลขผู้โทรจาก Google</string>
++    <string name="reverse_lookup_enabled">เปิดใช้หมายเลขผู้โทรโดย Google แล้ว</string>
++    <string name="google_caller_id_setting_title">หมายเลขผู้โทรโดย Google</string>
++    <string name="google_caller_id_setting__on">แสดงชื่อคนและธุรกิจที่ไม่ได้อยู่ในที่อยู่ติดต่อของฉัน</string>
++    <string name="google_caller_id_setting__off">ปิด</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>หมายเลข
++        ผู้โทรโดย Google&lt;/a>จะแสดงชื่อของบุคคลและธุรกิจที่ไม่ได้อยู่ในสมุดติดต่อของคุณ
++        &lt;br>&lt;br>
++        อัปเดตการค้นพบได้ของหมายเลขโทรศัพท์ของคุณใน
++        &lt;a href=%2$s>การตั้งค่าบัญชี Google&lt;/a>
++        &lt;br>&lt;br>
++        ข้อมูลที่ใช้ในคุณลักษณะนี้ได้มาจาก Google และผู้ออกใบอนุญาตของ Google
++        &lt;br>&lt;a href=%3$s>เรียนรู้เพิ่มเติม&lt;/a>"</string>
++    <string name="local_search_directory_label">สถานที่ใกล้เคียง</string>
++    <string name="local_search_setting_title">สถานที่ใกล้เคียง</string>
++    <string name="local_search_setting_on">แสดงผลการค้นหาสำหรับสถานที่ใกล้เคียง</string>
++    <string name="local_search_setting_off">ปิด</string>
++    <string name="local_search_settings_text">"เมื่อคุณค้นหาจากแอป \"โทรศัพท์\" คุณลักษณะนี้จะใช้ตำแหน่งของคุณเพื่อค้นหาสถานที่ใกล้เคียงที่ตรงกับข้อความค้นหา แม้ว่าจะไม่ได้อยู่ในสมุดติดต่อของคุณ &lt;br>&lt;br> Google และผู้อนุญาตของบริษัทเป็นผู้ให้ข้อมูลที่ใช้ในคุณลักษณะเหล่านี้ &lt;br>&lt;a href=%1$s>เรียนรู้เพิ่มเติม&lt;/a>
++        &lt;br>&lt;br>
++        คุณต้องเปิดใช้งาน Google Apps เพื่อใช้ตำแหน่งของโทรศัพท์ คุณลักษณะนี้จึงจะทำงานได้
++        &lt;br>&lt;a href=%2$s>เรียนรู้เพิ่มเติม&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"โปรแกรมโทรออก"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"โทรศัพท์"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"โทรศัพท์"</string>
+diff --git a/res/values-tl/strings.xml b/res/values-tl/strings.xml
+index 15f26ee..836e7fd 100644
+--- a/res/values-tl/strings.xml
++++ b/res/values-tl/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Mga Setting</string>
++    <string name="dialer_hint_find_contact_google">Maghanap ng contact at lugar</string>
++    <string name="call_settings_label">Mga setting ng pagtawag</string>
++    <string name="view_location_settings">Tingnan, setting ng lokasyon</string>
++    <string name="enable_reverse_lookup">Enable ang caller ID ng Google</string>
++    <string name="reverse_lookup_enabled">Ang Caller ID ng Google ay naka-enable</string>
++    <string name="google_caller_id_setting_title">Caller ID mula sa Google</string>
++    <string name="google_caller_id_setting__on">Magpakita ng pangalan ng tao, negosyong wala sa contact ko.</string>
++    <string name="google_caller_id_setting__off">Naka-off</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Ang Caller
++        ID mula sa Google&lt;/a> ay nagpapakita ng mga pangalan para sa mga tao at negosyong wala sa iyong mga contact.
++        &lt;br>&lt;br>
++        I-update ang pagiging katuklas-tuklas ng numero ng iyong telepono sa
++        &lt;a href=%2$s>mga setting ng iyong Google account&lt;/a>.
++        &lt;br>&lt;br>
++        Ang data na ginagamit sa mga feature na ito ay ibinibigay ng Google at ng mga tagapaglisensya nito.
++        &lt;br>&lt;a href=%3$s>Matuto nang higit pa.&lt;/a>"</string>
++    <string name="local_search_directory_label">Mga kalapit na lugar</string>
++    <string name="local_search_setting_title">Mga kalapit na lugar</string>
++    <string name="local_search_setting_on">Ipakita ang mga resulta ng paghahanap para sa mga kalapit na lugar.</string>
++    <string name="local_search_setting_off">Naka-off</string>
++    <string name="local_search_settings_text">"Kapag naghanap ka mula sa phone app, gagamitin ng tampok na ito ang iyong lokasyon upang maghanap ng mga kalapit na lugar na tumutugma sa iyong query, kahit na wala sa iyong mga contact ang mga ito. &lt;br>&lt;br> Ibinibigay ng Google at ng mga tagapaglisensya nito ang data para sa mga tampok na ito. &lt;br>&lt;a href=%1$s>Matuto nang higit pa.&lt;/a>
++        &lt;br>&lt;br>
++        Dapat mong i-enable ang Google apps upang magamit ang lokasyon ng iyong telepono para gumana ito.
++        &lt;br>&lt;a href=%2$s>Matuto nang higit pa.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Dialer"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telepono"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telepono"</string>
+diff --git a/res/values-tr/strings.xml b/res/values-tr/strings.xml
+index 2e863c6..ec23586 100644
+--- a/res/values-tr/strings.xml
++++ b/res/values-tr/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Ayarlar</string>
++    <string name="dialer_hint_find_contact_google">Kişilerde ve yakındaki yerlerde ara</string>
++    <string name="call_settings_label">Çağrı ayarları</string>
++    <string name="view_location_settings">Konum ayarlarını görüntüle</string>
++    <string name="enable_reverse_lookup">"Google'ın arayan kimliğini etkinleştir"</string>
++    <string name="reverse_lookup_enabled">"Google'ın sunduğu arayan kimliği özelliği etkinleştirildi"</string>
++    <string name="google_caller_id_setting_title">"Google'ın Sunduğu Arayan Kimliği Hizmeti"</string>
++    <string name="google_caller_id_setting__on">Kişilerimde olmayan kişilerin ve işletmelerin adlarını göster.</string>
++    <string name="google_caller_id_setting__off">Kapalı</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google'ın Sunduğu
++        arayan kimliği hizmeti&lt;/a> kişilerinizde kayıtlı olmayan kişilerin ve işletmelerin adlarını gösterir.
++        &lt;br>&lt;br>
++        Telefon numaranızın bulunabilirliğini
++        &lt;a href=%2$s>Google hesabı ayarlarınızda&lt;/a> güncelleyin.
++        &lt;br>&lt;br>
++        Bu özelliklerde kullanılan veriler Google ve lisans verenleri tarafından sağlanır.
++        &lt;br>&lt;a href=%3$s>Daha fazla bilgi edinin.&lt;/a>"</string>
++    <string name="local_search_directory_label">Yakındaki yerler</string>
++    <string name="local_search_setting_title">Yakındaki yerler</string>
++    <string name="local_search_setting_on">Yakınlardaki yerler için arama sonuçlarını görüntüle.</string>
++    <string name="local_search_setting_off">Kapalı</string>
++    <string name="local_search_settings_text">"Telefon uygulamasından arama yaptığınızda, bu özellik, arama sorgunuzla eşleşen yakındaki yerleri (kişileriniz arasında olmasa bile) bulmak için konum bilgilerinizi kullanır. &lt;br>&lt;br> Bu özelliklere ilişkin veriler Google ve lisans verenleri tarafından sağlanır. &lt;br>&lt;a href=%1$s>Daha fazla bilgi edinin.&lt;/a>
++        &lt;br>&lt;br>
++        Bu özelliğin kullanılabilmesi için Google uygulamalarının telefonunuzun konum bilgilerini kullanmasını etkinleştirmelisiniz.
++        &lt;br>&lt;a href=%2$s>Daha fazla bilgi edinin.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Çevirici"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Telefon"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Telefon"</string>
+diff --git a/res/values-uk/strings.xml b/res/values-uk/strings.xml
+index 3252a49..e6859ba 100644
+--- a/res/values-uk/strings.xml
++++ b/res/values-uk/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Налаштування</string>
++    <string name="dialer_hint_find_contact_google">Пошук контактів, місць поблизу</string>
++    <string name="call_settings_label">Налаштування виклику</string>
++    <string name="view_location_settings">Налаштування місцезнаходження</string>
++    <string name="enable_reverse_lookup">Увімкнути АВН від Google</string>
++    <string name="reverse_lookup_enabled">Ідентифікатор абонента від Google увімкнено</string>
++    <string name="google_caller_id_setting_title">Ідентифікатор абонента від Google</string>
++    <string name="google_caller_id_setting__on">Показувати людей і компанії, яких немає в моїх контактах.</string>
++    <string name="google_caller_id_setting__off">Вимкнено</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Ідентифікатор
++        абонента від Google&lt;/a> показує імена людей і назви компаній, яких немає у ваших контактах.
++        &lt;br>&lt;br>
++        Оновіть виявлення вашого номера телефону в
++        &lt;a href=%2$s>налаштуваннях облікового запису Google&lt;/a>.
++        &lt;br>&lt;br>
++        Дані, які використовуються в цих функціях, надаються компанією Google і її ліцензіарами.
++        &lt;br>&lt;a href=%3$s>Докладніше.&lt;/a>"</string>
++    <string name="local_search_directory_label">Місця поблизу</string>
++    <string name="local_search_setting_title">Місця поблизу</string>
++    <string name="local_search_setting_on">Показувати результати пошуку для місць поблизу.</string>
++    <string name="local_search_setting_off">Вимкнено</string>
++    <string name="local_search_settings_text">"Коли ви виконуєте пошук за допомогою програми в телефоні, ця функція використовує ваше місцезнаходження, щоб шукати місця поблизу, які відповідають вашому запиту, навіть якщо їх немає у ваших контактах. &lt;br>&lt;br> Дані для цих функцій надає компанія Google і її ліцензіари. &lt;br>&lt;a href=%1$s>Докладніше.&lt;/a>
++        &lt;br>&lt;br>
++        Для цього потрібно дозволити програмам Google використовувати місцезнаходження телефону.
++        &lt;br>&lt;a href=%2$s>Докладніше.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Телефон"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Телеф."</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Тел."</string>
+diff --git a/res/values-vi/strings.xml b/res/values-vi/strings.xml
+index 91a1e2a..3a1d838 100644
+--- a/res/values-vi/strings.xml
++++ b/res/values-vi/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Cài đặt</string>
++    <string name="dialer_hint_find_contact_google">Tìm liên hệ và địa điểm lân cận</string>
++    <string name="call_settings_label">Cài đặt cuộc gọi</string>
++    <string name="view_location_settings">Xem cài đặt vị trí</string>
++    <string name="enable_reverse_lookup">Bật ID người gọi của Google</string>
++    <string name="reverse_lookup_enabled">Đã bật ID người gọi do Google cung cấp</string>
++    <string name="google_caller_id_setting_title">ID người gọi của Google</string>
++    <string name="google_caller_id_setting__on">Hiển thị tên của người và doanh nghiệp không nằm trong danh sách liên hệ của tôi.</string>
++    <string name="google_caller_id_setting__off">Tắt</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>ID người gọi
++ của Google&lt;/a> hiển thị tên của người và doanh nghiệp không nằm trong danh sách liên hệ của bạn.
++        &lt;br>&lt;br>
++ Cập nhật khả năng phát hiện số điện thoại của bạn trong
++        &lt;a href=%2$s>cài đặt tài khoản Google&lt;/a>.
++        &lt;br>&lt;br>
++        Dữ liệu đang được sử dụng trong những tính năng này được Google và người cấp phép của Google cung cấp.
++        &lt;br>&lt;a href=%3$s>Tìm hiểu thêm.&lt;/a>"</string>
++    <string name="local_search_directory_label">Địa điểm lân cận</string>
++    <string name="local_search_setting_title">Địa điểm lân cận</string>
++    <string name="local_search_setting_on">Hiển thị kết quả tìm kiếm cho địa điểm lân cận.</string>
++    <string name="local_search_setting_off">Tắt</string>
++    <string name="local_search_settings_text">"Khi bạn tìm kiếm từ ứng dụng trên điện thoại, tính năng này sẽ sử dụng thông tin vị trí của bạn để tìm các địa điểm lân cận phù hợp với truy vấn của bạn, ngay cả khi chúng chưa có trong danh bạ của bạn. &lt;br>&lt;br> Dữ liệu đang được sử dụng trong các tính năng này do Google và các bên cấp phép của Google cung cấp. &lt;br>&lt;a href=%1$s>Tìm hiểu thêm.&lt;/a>
++        &lt;br>&lt;br>
++        Bạn phải bật ứng dụng Google để sử dụng vị trí điện thoại của bạn để tính năng này hoạt động.
++        &lt;br>&lt;a href=%2$s>Tìm hiểu thêm.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Trình quay số"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Điện thoại"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Điện thoại"</string>
+diff --git a/res/values-zh-rCN/strings.xml b/res/values-zh-rCN/strings.xml
+index bbe4eb8..18a5846 100644
+--- a/res/values-zh-rCN/strings.xml
++++ b/res/values-zh-rCN/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">设置</string>
++    <string name="dialer_hint_find_contact_google">搜索联系人和附近地点</string>
++    <string name="call_settings_label">通话设置</string>
++    <string name="view_location_settings">查看位置信息设置</string>
++    <string name="enable_reverse_lookup">启用 Google 来电显示</string>
++    <string name="reverse_lookup_enabled">已启用 Google 来电显示</string>
++    <string name="google_caller_id_setting_title">Google 来电显示</string>
++    <string name="google_caller_id_setting__on">显示不在我通讯录中的个人和企业的名称。</string>
++    <string name="google_caller_id_setting__off">关闭</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google 来电显示
++&lt;/a>可显示不在您通讯录中的个人和企业的名称。
++        &lt;br>&lt;br>
++        您可以在 
++&lt;a href=%2$s>Google 帐户设置&lt;/a>中更新自己电话号码的公开范围。
++        &lt;br>&lt;br>
++        这些功能中使用的数据由 Google 及数据许可方提供。
++        &lt;br>&lt;a href=%3$s>了解详情&lt;/a>。"</string>
++    <string name="local_search_directory_label">附近地点</string>
++    <string name="local_search_setting_title">附近地点</string>
++    <string name="local_search_setting_on">显示附近地点搜索结果。</string>
++    <string name="local_search_setting_off">关闭</string>
++    <string name="local_search_settings_text">"当您在拨号应用中搜索时，此功能将使用您的位置信息查找与您的搜索字词匹配的附近地点（即使这些地点不在您的通讯录中）。&lt;br>&lt;br>此类功能中使用的相关数据由 Google 及数据许可方提供。&lt;br>&lt;a href=%1$s>了解详情&lt;/a>。
++        &lt;br>&lt;br>
++        为了使此功能正常运行，您需要授权 Google 应用使用您手机的位置信息。
++        &lt;br>&lt;a href=%2$s>了解详情&lt;/a>。"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"拨号"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"拨号"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"拨号"</string>
+diff --git a/res/values-zh-rTW/strings.xml b/res/values-zh-rTW/strings.xml
+index 6878e55..6feede8 100644
+--- a/res/values-zh-rTW/strings.xml
++++ b/res/values-zh-rTW/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">設定</string>
++    <string name="dialer_hint_find_contact_google">搜尋聯絡人和附近地點</string>
++    <string name="call_settings_label">通話設定</string>
++    <string name="view_location_settings">查看位置設定</string>
++    <string name="enable_reverse_lookup">啟用 Google 來電顯示</string>
++    <string name="reverse_lookup_enabled">Google 來電顯示已啟用</string>
++    <string name="google_caller_id_setting_title">Google 來電顯示</string>
++    <string name="google_caller_id_setting__on">顯示不在我的聯絡人名單中的使用者和商家名稱。</string>
++    <string name="google_caller_id_setting__off">關閉</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>Google
++        來電顯示&lt;/a>會顯示不在您通訊錄中的使用者和商家名稱。
++        &lt;br>&lt;br>
++        您可以在
++        &lt;a href=%2$s>Google 帳戶設定&lt;/a>中更新電話號碼的可受偵測的程度。
++        &lt;br>&lt;br>
++        相關功能所使用的資料由 Google 和資料授權者提供。
++        &lt;br>&lt;a href=%3$s>瞭解詳情&lt;/a>"</string>
++    <string name="local_search_directory_label">附近地點</string>
++    <string name="local_search_setting_title">附近地點</string>
++    <string name="local_search_setting_on">顯示附近地點搜尋結果。</string>
++    <string name="local_search_setting_off">關閉</string>
++    <string name="local_search_settings_text">"透過手機應用程式進行搜尋時，會使用您的位置資訊來尋找附近有無相符的項目 (即使這些項目不在您的聯絡人名單中)。&lt;br>&lt;br>相關功能所使用的資料由 Google 和資料授權者提供。&lt;br>&lt;a href=%1$s>瞭解詳情&lt;/a>
++        &lt;br>&lt;br>
++        您必須允許 Google 應用程式使用手機的位置資訊，這項功能才能正常運作。
++        &lt;br>&lt;a href=%2$s>瞭解詳情&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"撥號"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"電話"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"電話"</string>
+diff --git a/res/values-zu/strings.xml b/res/values-zu/strings.xml
+index e33c0c2..e032a34 100644
+--- a/res/values-zu/strings.xml
++++ b/res/values-zu/strings.xml
+@@ -17,6 +17,33 @@
+ 
+ <resources xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Izilungiselelo</string>
++    <string name="dialer_hint_find_contact_google">Sesha oxhumana nabo nezindawo eziseduze</string>
++    <string name="call_settings_label">Izilungiselelo zekholi</string>
++    <string name="view_location_settings">Buka izilungiselelo zendawo</string>
++    <string name="enable_reverse_lookup">Nika amandla i-ID yomshayi nge-Google</string>
++    <string name="reverse_lookup_enabled">Ubunikazi bekholi nge-Google bunikwe amandla</string>
++    <string name="google_caller_id_setting_title">Ubunikazi bekholi nge-Google</string>
++    <string name="google_caller_id_setting__on">Bonisa amagama wabantu namabhizinisi angekho kwengixhumana nabo.</string>
++    <string name="google_caller_id_setting__off">Valiwe</string>
++    <string name="google_caller_id_settings_text">"&lt;a href=%1$s>I-ID
++        yomshayi nge-Google&lt;/a> ibonisa amagama wabantu namabhizinisi angekho koxhumana nabo.
++        &lt;br>&lt;br>
++        Buyekeza ukutholakala kwenombolo yakho yefoni ku-
++        &lt;a href=%2$s>kuzilungiselelo ze-akhawunti yakho ye-Google&lt;/a>.
++        &lt;br>&lt;br>
++        Idatha esetshenziswa kulezi zici inikezwa yi-Google nabalayisense bazo.
++        &lt;br>&lt;a href=%3$s>Funda kabanzi.&lt;/a>"</string>
++    <string name="local_search_directory_label">Izindawo eziseduze</string>
++    <string name="local_search_setting_title">Izindawo eziseduze</string>
++    <string name="local_search_setting_on">Bonisa imiphumela yokusesha yezindawo eziseduze.</string>
++    <string name="local_search_setting_off">Valiwe</string>
++    <string name="local_search_settings_text">"Uma usesha kusuka kuhlelo lokusebenza lefoni, lesi sici sizosebenzisa indawo yakho ukuthola izindawo eziseduze ezifana nombuzo wakho, ngisho noma zingekho koxhumana nabo. &lt;br>&lt;br> Idatha yalezi zici ihlinzekwa yi-Google nezikhungo zayo ezinikezela ngelayisense. &lt;br>&lt;a href=%1$s>Funda kabanzi.&lt;/a>
++        &lt;br>&lt;br>
++        Kumele unike amandla izinhlelo zokusebenza ze-Google ukuze usebenzise indawo yefoni yakho kulo msebenzi.
++        &lt;br>&lt;a href=%2$s>Funda kabanzi.&lt;/a>"</string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <string name="applicationLabel" msgid="8490255569343340580">"Ukudayela"</string>
+     <string name="launcherDialer" msgid="8636288196618486553">"Ifoni"</string>
+     <string name="dialerIconLabel" msgid="6500826552823403796">"Ifoni"</string>
+diff --git a/res/values/strings.xml b/res/values/strings.xml
+index 55cdea4..e8e4cd3 100644
+--- a/res/values/strings.xml
++++ b/res/values/strings.xml
+@@ -17,6 +17,23 @@
+ 
+ 
+ <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
++    <!-- Google Dialer (auto merged, do not edit) (BEGIN: do not remove) -->
++    <string name="dialer_settings_label">Settings</string>
++    <string name="dialer_hint_find_contact_google">Search contacts &amp; nearby places</string>
++    <string name="call_settings_label">Call settings</string>
++    <string name="view_location_settings">View location settings</string>
++    <string name="enable_reverse_lookup">Enable caller ID by Google</string>
++    <string name="reverse_lookup_enabled">Caller ID by Google is enabled</string>
++    <string name="google_caller_id_setting_title">Caller ID by Google</string>
++    <string name="google_caller_id_setting__on">Show names for people and businesses not in my contacts.</string>
++    <string name="google_caller_id_setting__off">Off</string>
++    <string name="google_caller_id_settings_text">&lt;a href=%1$s>Caller ID by Google&lt;/a> shows names for people and businesses not in your contacts. &lt;br>&lt;br> Update the discoverability of your phone number in your &lt;a href=%2$s>Google account settings&lt;/a>. &lt;br>&lt;br> Data being used in these features is provided by Google and its licensors. &lt;br>&lt;a href=%3$s>Learn more.&lt;/a></string>
++    <string name="local_search_directory_label">Nearby places</string>
++    <string name="local_search_setting_title">Nearby places</string>
++    <string name="local_search_setting_on">Display search results for nearby places.</string>
++    <string name="local_search_setting_off">Off</string>
++    <string name="local_search_settings_text">When you search from the phone app, this feature will use your location to find nearby places that match your query, even if they are not in your contacts. &lt;br>&lt;br> Data being used in these features is provided by Google and its licensors. &lt;br>&lt;a href=%1$s>Learn more.&lt;/a> &lt;br>&lt;br> You must enable Google apps to use your phone’s location for this to work. &lt;br>&lt;a href=%2$s>Learn more.&lt;/a></string>
++    <!-- Google Dialer (auto merged, do not edit) (END: do not remove) -->
+     <!-- Directory partition name -->
+     <string name="applicationLabel">Dialer</string>
+ 
+-- 
+1.8.5.2
+
