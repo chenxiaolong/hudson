@@ -1,7 +1,6 @@
 arch_checkdeps() {
   NEEDED=('bison'
           'ccache'
-          'curl'
           'flex'
           'gcc-multilib'
           'git'
