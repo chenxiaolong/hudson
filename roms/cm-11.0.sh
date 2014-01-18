@@ -35,6 +35,7 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${GOOGLEDIALER}/0001-Open-source-Google-Dialer.patch
   apply_patch_file_git ${GOOGLEDIALER}/0001-Auto-merge-Google-Dialer-translations.patch
   apply_patch_file_git ${GOOGLEDIALER}/0001-Re-add-LoaderCallbacks-to-CyanogenMod-dialer.patch
+  apply_patch_file_git ${GOOGLEDIALER}/0001-InCallUI-Google-Phone-Number-Service.patch
   popd
 
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
