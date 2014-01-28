@@ -1,4 +1,4 @@
-From d8b9a9b83add997802e3e659d4ce64deec723a16 Mon Sep 17 00:00:00 2001
+From ce452079de441b825a912401aad192a4a3ca89ee Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Mon, 30 Dec 2013 02:37:43 -0500
 Subject: [PATCH] Open-source Google Dialer
@@ -137,10 +137,10 @@ index 899d589..ba6b1b9 100644
  # Use the following include to make our test apk.
  include $(call all-makefiles-under,$(LOCAL_PATH))
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index c1fbcd7..75e96c3 100644
+index e011d80..236c743 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -51,6 +51,10 @@
+@@ -52,6 +52,10 @@
       presses home. -->
      <uses-permission android:name="android.permission.STOP_APP_SWITCHES" />
  
@@ -151,7 +151,7 @@ index c1fbcd7..75e96c3 100644
      <application
          android:name="DialerApplication"
          android:label="@string/applicationLabel"
-@@ -65,14 +69,14 @@
+@@ -66,14 +70,14 @@
          <!-- The entrance point for Phone UI.
               stateAlwaysHidden is set to suppress keyboard show up on
               dialpad screen. -->
@@ -168,7 +168,7 @@ index c1fbcd7..75e96c3 100644
              android:windowSoftInputMode="stateAlwaysHidden|adjustNothing">
              <intent-filter>
                  <action android:name="android.intent.action.DIAL" />
-@@ -167,6 +171,11 @@
+@@ -168,6 +172,11 @@
              </intent-filter>
          </activity>
  
@@ -180,7 +180,7 @@ index c1fbcd7..75e96c3 100644
          <activity android:name="com.android.contacts.common.test.FragmentTestActivity">
              <intent-filter>
                  <category android:name="android.intent.category.TEST"/>
-@@ -175,19 +184,19 @@
+@@ -176,19 +185,19 @@
  
          <!-- Backwards compatibility: "Phone" from Gingerbread and earlier -->
          <activity-alias android:name="DialtactsActivity"
@@ -203,7 +203,7 @@ index c1fbcd7..75e96c3 100644
              android:exported="true"
          />
  
-@@ -242,7 +251,7 @@
+@@ -243,7 +252,7 @@
          <!-- end vCard related -->
  
          <receiver android:name=".calllog.CallLogReceiver"
@@ -212,7 +212,7 @@ index c1fbcd7..75e96c3 100644
              <intent-filter>
                  <action android:name="android.intent.action.NEW_VOICEMAIL" />
                  <data
-@@ -304,5 +313,15 @@
+@@ -305,5 +314,15 @@
              </intent-filter>
          </receiver>
  
@@ -685,13 +685,13 @@ index 0000000..42e0010
 +
 +</LinearLayout>
 diff --git a/res/values/colors.xml b/res/values/colors.xml
-index d405f3d..3e17757 100644
+index cce084e..ed80c39 100644
 --- a/res/values/colors.xml
 +++ b/res/values/colors.xml
-@@ -76,4 +76,10 @@
-     <color name="call_stats_outgoing">#99cc00</color>
-     <color name="call_stats_missed">#eb1313</color>
-     <color name="call_stats_bar_background">#88888888</color>
+@@ -96,4 +96,10 @@
+     <color name="call_log_voicemail_status_text_color">#888888</color>
+     <color name="call_log_voicemail_status_action_text_color">#33b5e5</color>
+     <color name="dialtacts_frame_color">#33999999</color>
 +
 +    <!-- Text color for google dialer settings -->
 +    <color name="google_settings_text_color">#ff555555</color>
@@ -4996,5 +4996,5 @@ index 0000000..77e0dcb
 +    }
 +}
 -- 
-1.8.5.2
+1.8.5.3
 
