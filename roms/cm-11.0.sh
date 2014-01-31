@@ -2,6 +2,7 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'packages/providers/ContactsProvider/'
     'packages/apps/Dialer/'
+    'packages/apps/ContactsCommon/'
     'packages/apps/InCallUI/'
     'packages/services/Telephony/'
     'frameworks/base/'
@@ -32,6 +33,10 @@ apply_patches_cm-11.0() {
   popd
 
   pushd packages/apps/Dialer/
+  popd
+
+  pushd packages/apps/ContactsCommon/
+  apply_patch_file_git ${DIALERLOOKUP}/0001-ContactsCommon-Add-extended-directory-for-forward-nu.patch
   popd
 
   pushd packages/apps/InCallUI/

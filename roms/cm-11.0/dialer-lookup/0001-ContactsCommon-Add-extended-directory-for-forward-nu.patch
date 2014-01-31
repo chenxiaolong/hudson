@@ -1,0 +1,80 @@
+From 6f7f5da3697c52942b8df1b1470d653c1f0d9cf0 Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Fri, 31 Jan 2014 13:32:29 -0500
+Subject: [PATCH] ContactsCommon: Add extended directory for forward number
+ lookups
+
+Change-Id: I7e1e792db178264eeda9e4d7e4f98a80c765bfbb
+---
+ .../DialerExtendedPhoneDirectoriesManager.java     | 59 ++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+ create mode 100644 src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
+
+diff --git a/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java b/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
+new file mode 100644
+index 0000000..53ad9b1
+--- /dev/null
++++ b/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
+@@ -0,0 +1,59 @@
++/*
++ * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.contacts.common.extensions;
++
++import com.android.contacts.common.extensions.ExtendedPhoneDirectoriesManager;
++import com.android.contacts.common.list.DirectoryPartition;
++import com.android.dialer.lookup.DialerProvider;
++import com.android.dialer.lookup.LookupSettings;
++
++import android.content.Context;
++import android.preference.PreferenceManager;
++import android.util.Log;
++
++import java.util.ArrayList;
++import java.util.List;
++
++public class DialerExtendedPhoneDirectoriesManager
++        implements ExtendedPhoneDirectoriesManager {
++    public static final String TAG =
++            DialerExtendedPhoneDirectoriesManager.class.getSimpleName();
++
++    /**
++     * Return a list of extended directories to add. May return null if no directories are to be
++     * added.
++     */
++    @Override
++    public List<DirectoryPartition> getExtendedDirectories(Context context) {
++        ArrayList<DirectoryPartition> list = new ArrayList<DirectoryPartition>();
++
++        if (LookupSettings.isForwardLookupEnabled(context)) {
++            DirectoryPartition dp = new DirectoryPartition(false, true);
++            dp.setContentUri(DialerProvider.NEARBY_PLACES_URI.toString());
++            dp.setLabel(context.getString(R.string.nearby_places));
++            dp.setPriorityDirectory(false);
++            dp.setPhotoSupported(true);
++            dp.setDisplayNumber(false);
++            dp.setResultLimit(3);
++            list.add(dp);
++        } else {
++            Log.i(TAG, "Forward lookup is disabled");
++        }
++
++        return list;
++    }
++}
+-- 
+1.8.5.3
+
