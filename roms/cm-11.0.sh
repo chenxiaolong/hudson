@@ -38,6 +38,7 @@ apply_patches_cm-11.0() {
 
   pushd frameworks/base/
   apply_patch_file_git ${DIALERLOOKUP}/0001-AccountManagerService-Allow-com.android.dialer-to-ac.patch
+  apply_patch_file_git ${DIALERLOOKUP}/0001-Frameworks-Add-settings-keys-for-forward-and-reverse.patch
   popd
 
 #  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
