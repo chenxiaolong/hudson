@@ -1,4 +1,4 @@
-From 40e90ac4daf8fdf865954640ea11e22589871ef9 Mon Sep 17 00:00:00 2001
+From 5b18ce9c7e6360277db981fd32bd6cbbbcce1902 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 16:00:39 -0500
 Subject: [PATCH] InCallUI: Add phone number service
@@ -12,7 +12,7 @@ Change-Id: If95f5529e868110006e1196040a0595a33059ac8
 
 diff --git a/src/com/android/incallui/service/PhoneNumberServiceImpl.java b/src/com/android/incallui/service/PhoneNumberServiceImpl.java
 new file mode 100644
-index 0000000..d393c2a
+index 0000000..bf8d8d6
 --- /dev/null
 +++ b/src/com/android/incallui/service/PhoneNumberServiceImpl.java
 @@ -0,0 +1,459 @@
@@ -69,7 +69,7 @@ index 0000000..d393c2a
 +    private static final String TAG = "PhoneNumberServiceImpl";
 +
 +    // Debug mode disables caching so lookups are performed every time
-+    private static final String DEBUG = false;
++    private static final boolean DEBUG = false;
 +
 +    private static final CachedNumberLookupServiceImpl mCachedNumberLookupService =
 +            new CachedNumberLookupServiceImpl();
