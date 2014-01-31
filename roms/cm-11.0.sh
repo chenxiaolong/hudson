@@ -3,6 +3,7 @@ reset_dirs_cm-11.0() {
     'packages/providers/ContactsProvider/'
     'packages/apps/Dialer/'
     'packages/apps/InCallUI/'
+    'packages/services/Telephony/'
     'frameworks/base/'
   )
 
@@ -34,6 +35,10 @@ apply_patches_cm-11.0() {
   popd
 
   pushd packages/apps/InCallUI/
+  popd
+
+  pushd packages/services/Telephony/
+  apply_patch_file_git ${DIALERLOOKUP}/0001-Telephony-Add-settings-for-forward-and-reverse-numbe.patch
   popd
 
   pushd frameworks/base/

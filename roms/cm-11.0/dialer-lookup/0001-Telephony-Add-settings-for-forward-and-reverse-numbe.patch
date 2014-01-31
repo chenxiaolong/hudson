@@ -1,0 +1,275 @@
+From 4ef4117c7a624c42aaae339a3df0d43e96a70bfe Mon Sep 17 00:00:00 2001
+From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+Date: Fri, 31 Jan 2014 13:27:50 -0500
+Subject: [PATCH] Telephony: Add settings for forward and reverse number lookup
+
+Change-Id: I96d5b4a455095b40cf25ee39f5cba9fe16e11832
+---
+ res/values/array.xml                           |  20 +++++
+ res/values/cm_strings.xml                      |  10 +++
+ res/xml/call_feature_setting.xml               |  39 +++++++++
+ src/com/android/phone/CallFeaturesSetting.java | 108 +++++++++++++++++++++++++
+ 4 files changed, 177 insertions(+)
+
+diff --git a/res/values/array.xml b/res/values/array.xml
+index 245c09b..a78acf0 100644
+--- a/res/values/array.xml
++++ b/res/values/array.xml
+@@ -49,4 +49,24 @@
+         <item>@string/sip_always_send_keepalive</item>
+     </string-array>
+ 
++    <string-array translatable="false" name="forward_lookup_providers">
++        <item>Google</item>
++        <item>OpenStreetMap</item>
++    </string-array>
++
++    <string-array translatable="true" name="forward_lookup_provider_names">
++        <item>Google</item>
++        <item>OpenStreetMap</item>
++    </string-array>
++
++    <string-array translatable="false" name="reverse_lookup_providers">
++        <item>Google</item>
++        <item>OpenCnam</item>
++    </string-array>
++
++    <string-array translatable="true" name="reverse_lookup_provider_names">
++        <item>Google (Businesses)</item>
++        <item>OpenCnam (US-only)</item>
++    </string-array>
++
+ </resources>
+diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
+index bad9646..f671dbd 100644
+--- a/res/values/cm_strings.xml
++++ b/res/values/cm_strings.xml
+@@ -84,4 +84,14 @@
+     <!-- Noise suppression -->
+     <string name="noise_suppression_title">Noise suppression</string>
+     <string name="noise_suppression_summary">Enable noise suppression for calls</string>
++
++    <!-- Number lookup -->
++    <string name="number_lookup">Phone number lookup</string>
++    <string name="enable_forward_lookup_title">Enable forward lookup</string>
++    <string name="enable_forward_lookup_summary">Show nearby places when searching in the dialer</string>
++    <string name="enable_reverse_lookup_title">Enable reverse lookup</string>
++    <string name="enable_reverse_lookup_summary">Look up information about the person or place for unknown numbers on incoming calls</string>
++    <string name="choose_lookup_providers">Choose lookup providers</string>
++    <string name="choose_forward_lookup_provider_title">Choose forward lookup provider</string>
++    <string name="choose_reverse_lookup_provider_title">Choose reverse lookup provider</string>
+ </resources>
+diff --git a/res/xml/call_feature_setting.xml b/res/xml/call_feature_setting.xml
+index 7913365..f336213 100644
+--- a/res/xml/call_feature_setting.xml
++++ b/res/xml/call_feature_setting.xml
+@@ -63,6 +63,45 @@
+   </PreferenceCategory>
+ 
+   <PreferenceCategory
++      android:title="@string/number_lookup">
++
++      <SwitchPreference
++          android:key="switch_enable_forward_lookup"
++          android:title="@string/enable_forward_lookup_title"
++          android:summary="@string/enable_forward_lookup_summary"
++          android:defaultValue="false"
++          android:persistent="false" />
++
++      <SwitchPreference
++          android:key="switch_enable_reverse_lookup"
++          android:title="@string/enable_reverse_lookup_title"
++          android:summary="@string/enable_reverse_lookup_summary"
++          android:defaultValue="false"
++          android:persistent="false" />
++
++      <PreferenceScreen
++          android:title="@string/choose_lookup_providers"
++          android:persistent="false">
++
++          <ListPreference
++              android:key="button_choose_forward_lookup_provider"
++              android:title="@string/choose_forward_lookup_provider_title"
++              android:entries="@array/forward_lookup_provider_names"
++              android:entryValues="@array/forward_lookup_providers"
++              android:persistent="false" />
++
++          <ListPreference
++              android:key="button_choose_reverse_lookup_provider"
++              android:title="@string/choose_reverse_lookup_provider_title"
++              android:entries="@array/reverse_lookup_provider_names"
++              android:entryValues="@array/reverse_lookup_providers"
++              android:persistent="false" />
++
++      </PreferenceScreen>
++
++  </PreferenceCategory>
++
++  <PreferenceCategory
+       android:key="button_misc_category_key"
+       android:title="@string/other_settings"
+       android:persistent="false" />
+diff --git a/src/com/android/phone/CallFeaturesSetting.java b/src/com/android/phone/CallFeaturesSetting.java
+index 7a07618..ea2e9d8 100644
+--- a/src/com/android/phone/CallFeaturesSetting.java
++++ b/src/com/android/phone/CallFeaturesSetting.java
+@@ -50,6 +50,7 @@ import android.preference.PreferenceActivity;
+ import android.preference.PreferenceGroup;
+ import android.preference.PreferenceManager;
+ import android.preference.PreferenceScreen;
++import android.preference.SwitchPreference;
+ import android.provider.ContactsContract.CommonDataKinds;
+ import android.provider.MediaStore;
+ import android.provider.Settings;
+@@ -199,6 +200,11 @@ public class CallFeaturesSetting extends PreferenceActivity
+     private static final String SIP_SETTINGS_CATEGORY_KEY =
+             "sip_settings_category_key";
+ 
++    private static final String SWITCH_ENABLE_FORWARD_LOOKUP = "switch_enable_forward_lookup";
++    private static final String SWITCH_ENABLE_REVERSE_LOOKUP = "switch_enable_reverse_lookup";
++    private static final String BUTTON_CHOOSE_FORWARD_LOOKUP_PROVIDER = "button_choose_forward_lookup_provider";
++    private static final String BUTTON_CHOOSE_REVERSE_LOOKUP_PROVIDER = "button_choose_reverse_lookup_provider";
++
+     private Intent mContactListIntent;
+ 
+     /** Event for Async voicemail change call */
+@@ -289,6 +295,10 @@ public class CallFeaturesSetting extends PreferenceActivity
+     private CheckBoxPreference mVoicemailNotificationVibrate;
+     private SipSharedPreferences mSipSharedPreferences;
+     private PreferenceScreen mButtonBlacklist;
++    private SwitchPreference mEnableForwardLookup;
++    private SwitchPreference mEnableReverseLookup;
++    private ListPreference mChooseForwardLookupProvider;
++    private ListPreference mChooseReverseLookupProvider;
+ 
+     private class VoiceMailProvider {
+         public VoiceMailProvider(String name, Intent intent) {
+@@ -617,6 +627,12 @@ public class CallFeaturesSetting extends PreferenceActivity
+             }
+         } else if (preference == mButtonSipCallOptions) {
+             handleSipCallOptionsChange(objValue);
++        } else if (preference == mEnableForwardLookup
++                || preference == mEnableReverseLookup) {
++            saveLookupProviderSwitches(preference, (Boolean) objValue);
++        } else if (preference == mChooseForwardLookupProvider
++                || preference == mChooseReverseLookupProvider) {
++            saveLookupProviders(preference, (String) objValue);
+         }
+         // always let the preference setting proceed.
+         return true;
+@@ -1659,6 +1675,26 @@ public class CallFeaturesSetting extends PreferenceActivity
+             }
+         }
+ 
++        mEnableForwardLookup = (SwitchPreference)
++                findPreference(SWITCH_ENABLE_FORWARD_LOOKUP);
++        mEnableReverseLookup = (SwitchPreference)
++                findPreference(SWITCH_ENABLE_REVERSE_LOOKUP);
++
++        mEnableForwardLookup.setOnPreferenceChangeListener(this);
++        mEnableReverseLookup.setOnPreferenceChangeListener(this);
++
++        restoreLookupProviderSwitches();
++
++        mChooseForwardLookupProvider = (ListPreference)
++                findPreference(BUTTON_CHOOSE_FORWARD_LOOKUP_PROVIDER);
++        mChooseReverseLookupProvider = (ListPreference)
++                findPreference(BUTTON_CHOOSE_REVERSE_LOOKUP_PROVIDER);
++
++        mChooseForwardLookupProvider.setOnPreferenceChangeListener(this);
++        mChooseReverseLookupProvider.setOnPreferenceChangeListener(this);
++
++        restoreLookupProviders();
++
+         // create intent to bring up contact list
+         mContactListIntent = new Intent(Intent.ACTION_GET_CONTENT);
+         mContactListIntent.setType(android.provider.Contacts.Phones.CONTENT_ITEM_TYPE);
+@@ -1861,6 +1897,9 @@ public class CallFeaturesSetting extends PreferenceActivity
+ 
+         lookupRingtoneName();
+         updateBlacklistSummary();
++
++        restoreLookupProviderSwitches();
++        restoreLookupProviders();
+     }
+ 
+     private void updateBlacklistSummary() {
+@@ -2013,6 +2052,75 @@ public class CallFeaturesSetting extends PreferenceActivity
+         }
+     }
+ 
++    private void saveLookupProviderSwitches(Preference pref, Boolean newValue) {
++        if (DBG) log("saveLookupProviderSwitches()");
++
++        if (pref == mEnableForwardLookup) {
++            Settings.System.putInt(getContentResolver(),
++                    Settings.System.ENABLE_FORWARD_LOOKUP,
++                    newValue ? 1 : 0);
++        } else if (pref == mEnableReverseLookup) {
++            Settings.System.putInt(getContentResolver(),
++                    Settings.System.ENABLE_REVERSE_LOOKUP,
++                    newValue ? 1 : 0);
++        }
++    }
++
++    private void restoreLookupProviderSwitches() {
++        if (DBG) log("restoreLookupProviderSwitches()");
++
++        mEnableForwardLookup.setChecked(Settings.System.getInt(
++                getContentResolver(),
++                Settings.System.ENABLE_FORWARD_LOOKUP, 1) != 0 ? true : false);
++        mEnableReverseLookup.setChecked(Settings.System.getInt(
++                getContentResolver(),
++                Settings.System.ENABLE_REVERSE_LOOKUP, 1) != 0 ? true : false);
++    }
++
++    private void restoreLookupProviders() {
++        if (DBG) log("restoreLookupProviders()");
++
++        String fProvider = Settings.System.getString(
++                getContentResolver(),
++                Settings.System.FORWARD_LOOKUP_PROVIDER);
++
++        if (fProvider == null) {
++            mChooseForwardLookupProvider.setValueIndex(0);
++            saveLookupProviders(mChooseForwardLookupProvider,
++                    (String) mChooseForwardLookupProvider.getEntryValues()[0]);
++        } else {
++            mChooseForwardLookupProvider.setValue(fProvider);
++        }
++
++        String rProvider = Settings.System.getString(
++                getContentResolver(),
++                Settings.System.REVERSE_LOOKUP_PROVIDER);
++
++        if (rProvider == null) {
++            mChooseReverseLookupProvider.setValueIndex(0);
++            saveLookupProviders(mChooseReverseLookupProvider,
++                    (String) mChooseReverseLookupProvider.getEntryValues()[0]);
++        } else {
++            mChooseReverseLookupProvider.setValue(rProvider);
++        }
++    }
++
++    private void saveLookupProviders(Preference pref, String newValue) {
++        if (DBG) log("saveLookupProviders()");
++
++        if (pref == mChooseForwardLookupProvider) {
++            Settings.System.putString(
++                    getContentResolver(),
++                    Settings.System.FORWARD_LOOKUP_PROVIDER,
++                    newValue);
++        } else if (pref == mChooseReverseLookupProvider) {
++            Settings.System.putString(
++                    getContentResolver(),
++                    Settings.System.REVERSE_LOOKUP_PROVIDER,
++                    newValue);
++        }
++    }
++
+     /**
+      * Enumerates existing VM providers and puts their data into the list and populates
+      * the preference list objects with their names.
+-- 
+1.8.5.3
+
