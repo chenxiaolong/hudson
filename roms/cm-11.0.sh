@@ -3,6 +3,7 @@ reset_dirs_cm-11.0() {
     'packages/providers/ContactsProvider/'
     'packages/apps/Dialer/'
     'packages/apps/InCallUI/'
+    'frameworks/base/'
   )
 
   # Directories that should be reset for one more build
@@ -23,6 +24,7 @@ reset_dirs_cm-11.0() {
 apply_patches_cm-11.0() {
   PATCHES=${WORKSPACE}/hudson/roms/${REPO_BRANCH}
   FACEBOOKSYNC=${PATCHES}/facebook-sync
+  DIALERLOOKUP=${PATCHES}/dialer-lookup
 
   pushd packages/providers/ContactsProvider/
   apply_patch_file_git ${FACEBOOKSYNC}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch
@@ -32,6 +34,10 @@ apply_patches_cm-11.0() {
   popd
 
   pushd packages/apps/InCallUI/
+  popd
+
+  pushd frameworks/base/
+  apply_patch_file_git ${DIALERLOOKUP}/0001-AccountManagerService-Allow-com.android.dialer-to-ac.patch
   popd
 
 #  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
