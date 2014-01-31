@@ -40,6 +40,7 @@ apply_patches_cm-11.0() {
   popd
 
   pushd packages/apps/InCallUI/
+  apply_patch_file_git ${DIALERLOOKUP}/0001-InCallUI-Add-phone-number-service.patch
   popd
 
   pushd packages/services/Telephony/
