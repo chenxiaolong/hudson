@@ -1,4 +1,4 @@
-From 6f7f5da3697c52942b8df1b1470d653c1f0d9cf0 Mon Sep 17 00:00:00 2001
+From a051be507440d3ccb0210817cced1d8e906be3fb Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 13:32:29 -0500
 Subject: [PATCH] ContactsCommon: Add extended directory for forward number
@@ -12,7 +12,7 @@ Change-Id: I7e1e792db178264eeda9e4d7e4f98a80c765bfbb
 
 diff --git a/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java b/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
 new file mode 100644
-index 0000000..53ad9b1
+index 0000000..e4e48b9
 --- /dev/null
 +++ b/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
 @@ -0,0 +1,59 @@
@@ -61,7 +61,7 @@ index 0000000..53ad9b1
 +
 +        if (LookupSettings.isForwardLookupEnabled(context)) {
 +            DirectoryPartition dp = new DirectoryPartition(false, true);
-+            dp.setContentUri(DialerProvider.NEARBY_PLACES_URI.toString());
++            dp.setContentUri(DialerProvider.FORWARD_LOOKUP_URI.toString());
 +            dp.setLabel(context.getString(R.string.nearby_places));
 +            dp.setPriorityDirectory(false);
 +            dp.setPhotoSupported(true);
