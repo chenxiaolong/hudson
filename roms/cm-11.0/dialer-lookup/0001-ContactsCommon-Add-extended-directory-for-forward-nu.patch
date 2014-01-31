@@ -1,4 +1,4 @@
-From a051be507440d3ccb0210817cced1d8e906be3fb Mon Sep 17 00:00:00 2001
+From d0a57fd0b19360d843f0f31583bc3785f1a3a475 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 13:32:29 -0500
 Subject: [PATCH] ContactsCommon: Add extended directory for forward number
@@ -6,16 +6,16 @@ Subject: [PATCH] ContactsCommon: Add extended directory for forward number
 
 Change-Id: I7e1e792db178264eeda9e4d7e4f98a80c765bfbb
 ---
- .../DialerExtendedPhoneDirectoriesManager.java     | 59 ++++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ .../DialerExtendedPhoneDirectoriesManager.java     | 61 ++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
  create mode 100644 src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
 
 diff --git a/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java b/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
 new file mode 100644
-index 0000000..e4e48b9
+index 0000000..a10854d
 --- /dev/null
 +++ b/src/com/android/contacts/common/extensions/DialerExtendedPhoneDirectoriesManager.java
-@@ -0,0 +1,59 @@
+@@ -0,0 +1,61 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -33,6 +33,8 @@ index 0000000..e4e48b9
 + */
 +
 +package com.android.contacts.common.extensions;
++
++import com.android.dialer.R;
 +
 +import com.android.contacts.common.extensions.ExtendedPhoneDirectoriesManager;
 +import com.android.contacts.common.list.DirectoryPartition;
