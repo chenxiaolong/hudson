@@ -33,6 +33,7 @@ apply_patches_cm-11.0() {
   popd
 
   pushd packages/apps/Dialer/
+  apply_patch_file_git ${DIALERLOOKUP}/0001-Dialer-Add-support-for-forward-and-reverse-lookups.patch
   popd
 
   pushd packages/apps/ContactsCommon/
