@@ -2,7 +2,6 @@ reset_dirs_cm-11.0() {
   RESET_DIRS=(
     'packages/providers/ContactsProvider/'
     'packages/apps/Dialer/'
-    'packages/apps/ContactsCommon/'
     'packages/apps/InCallUI/'
     'packages/services/Telephony/'
     'frameworks/base/'
@@ -10,6 +9,7 @@ reset_dirs_cm-11.0() {
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=(
+    'packages/apps/ContactsCommon/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
@@ -34,10 +34,6 @@ apply_patches_cm-11.0() {
 
   pushd packages/apps/Dialer/
   apply_patch_file_git ${DIALERLOOKUP}/0001-Dialer-Add-support-for-forward-and-reverse-lookups.patch
-  popd
-
-  pushd packages/apps/ContactsCommon/
-  apply_patch_file_git ${DIALERLOOKUP}/0001-ContactsCommon-Add-extended-directory-for-forward-nu.patch
   popd
 
   pushd packages/apps/InCallUI/

@@ -1,4 +1,4 @@
-From 072b47583381985ce6703cbc37d314f31f8b2673 Mon Sep 17 00:00:00 2001
+From 67ce0ab01c3cc4cd8a7c520c09fb20f760a9fca5 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -16,6 +16,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../ic_places_picture_holo_light.png               | Bin 0 -> 636 bytes
  res/values/strings.xml                             |   3 +
  .../dialer/database/DialerDatabaseHelper.java      |  99 +++-
+ .../DialerExtendedPhoneDirectoriesManager.java     |  58 +++
  src/com/android/dialer/lookup/DialerProvider.java  | 531 ++++++++++++++++++++
  src/com/android/dialer/lookup/ForwardLookup.java   | 118 +++++
  src/com/android/dialer/lookup/LookupSettings.java  |  83 ++++
@@ -32,7 +33,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../openstreetmap/OpenStreetMapForwardLookup.java  | 177 +++++++
  .../service/CachedNumberLookupServiceImpl.java     | 324 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 27 files changed, 4390 insertions(+), 4 deletions(-)
+ 28 files changed, 4448 insertions(+), 4 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -40,6 +41,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  create mode 100644 res/drawable-xhdpi/ic_places_picture_holo_light.png
  create mode 100644 res/drawable-xxhdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-xxhdpi/ic_places_picture_holo_light.png
+ create mode 100644 src/com/android/dialer/lookup/DialerExtendedPhoneDirectoriesManager.java
  create mode 100644 src/com/android/dialer/lookup/DialerProvider.java
  create mode 100644 src/com/android/dialer/lookup/ForwardLookup.java
  create mode 100644 src/com/android/dialer/lookup/LookupSettings.java
@@ -90,13 +92,13 @@ index e011d80..5eb446a 100644
  </manifest>
 diff --git a/assets/contacts_extensions.properties b/assets/contacts_extensions.properties
 new file mode 100644
-index 0000000..9d33f1f
+index 0000000..ade11c4
 --- /dev/null
 +++ b/assets/contacts_extensions.properties
 @@ -0,0 +1 @@
-+extendedPhoneDirectories=com.android.contacts.common.extensions.DialerExtendedPhoneDirectoriesManager
++extendedPhoneDirectories=com.android.dialer.lookup.DialerExtendedPhoneDirectoriesManager
 diff --git a/proguard.flags b/proguard.flags
-index 40ef035..58b55f1 100644
+index 40ef035..fa3712b 100644
 --- a/proguard.flags
 +++ b/proguard.flags
 @@ -12,4 +12,9 @@
@@ -104,7 +106,7 @@ index 40ef035..58b55f1 100644
  }
  
 +# Keep DialerExtendedPhoneDirectoriesManager for assets/contacts_extensions.properties
-+-keep class com.android.contacts.common.extensions.DialerExtendedPhoneDirectoriesManager extends * {
++-keep class com.android.dialer.lookup.DialerExtendedPhoneDirectoriesManager extends * {
 +  *;
 +}
 +
@@ -411,6 +413,70 @@ index b9e4b9a..ef6b221 100644
 +                CachedContactsColumns.SOURCE_TYPE + "=?", mArgs1);
 +    }
  }
+diff --git a/src/com/android/dialer/lookup/DialerExtendedPhoneDirectoriesManager.java b/src/com/android/dialer/lookup/DialerExtendedPhoneDirectoriesManager.java
+new file mode 100644
+index 0000000..dee2a2b
+--- /dev/null
++++ b/src/com/android/dialer/lookup/DialerExtendedPhoneDirectoriesManager.java
+@@ -0,0 +1,58 @@
++/*
++ * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.dialer.lookup;
++
++import com.android.dialer.R;
++
++import com.android.contacts.common.extensions.ExtendedPhoneDirectoriesManager;
++import com.android.contacts.common.list.DirectoryPartition;
++
++import android.content.Context;
++import android.util.Log;
++
++import java.util.ArrayList;
++import java.util.List;
++
++public class DialerExtendedPhoneDirectoriesManager
++        implements ExtendedPhoneDirectoriesManager {
++    public static final String TAG =
++            DialerExtendedPhoneDirectoriesManager.class.getSimpleName();
++
++    /**
++     * Return a list of extended directories to add. May return null if no directories are to be
++     * added.
++     */
++    @Override
++    public List<DirectoryPartition> getExtendedDirectories(Context context) {
++        ArrayList<DirectoryPartition> list = new ArrayList<DirectoryPartition>();
++
++        if (LookupSettings.isForwardLookupEnabled(context)) {
++            DirectoryPartition dp = new DirectoryPartition(false, true);
++            dp.setContentUri(DialerProvider.FORWARD_LOOKUP_URI.toString());
++            dp.setLabel(context.getString(R.string.nearby_places));
++            dp.setPriorityDirectory(false);
++            dp.setPhotoSupported(true);
++            dp.setDisplayNumber(false);
++            dp.setResultLimit(3);
++            list.add(dp);
++        } else {
++            Log.i(TAG, "Forward lookup is disabled");
++        }
++
++        return list;
++    }
++}
 diff --git a/src/com/android/dialer/lookup/DialerProvider.java b/src/com/android/dialer/lookup/DialerProvider.java
 new file mode 100644
 index 0000000..119f711
