@@ -1,21 +1,21 @@
-From 4ef4117c7a624c42aaae339a3df0d43e96a70bfe Mon Sep 17 00:00:00 2001
+From be89d9c8d211f832776ed3e165d76948d9cf2980 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 13:27:50 -0500
 Subject: [PATCH] Telephony: Add settings for forward and reverse number lookup
 
 Change-Id: I96d5b4a455095b40cf25ee39f5cba9fe16e11832
 ---
- res/values/array.xml                           |  20 +++++
+ res/values/array.xml                           |  22 +++++
  res/values/cm_strings.xml                      |  10 +++
  res/xml/call_feature_setting.xml               |  39 +++++++++
  src/com/android/phone/CallFeaturesSetting.java | 108 +++++++++++++++++++++++++
- 4 files changed, 177 insertions(+)
+ 4 files changed, 179 insertions(+)
 
 diff --git a/res/values/array.xml b/res/values/array.xml
-index 245c09b..a78acf0 100644
+index 245c09b..5fea7c8 100644
 --- a/res/values/array.xml
 +++ b/res/values/array.xml
-@@ -49,4 +49,24 @@
+@@ -49,4 +49,26 @@
          <item>@string/sip_always_send_keepalive</item>
      </string-array>
  
@@ -32,11 +32,13 @@ index 245c09b..a78acf0 100644
 +    <string-array translatable="false" name="reverse_lookup_providers">
 +        <item>Google</item>
 +        <item>OpenCnam</item>
++        <item>WhitePages</item>
 +    </string-array>
 +
 +    <string-array translatable="true" name="reverse_lookup_provider_names">
 +        <item>Google (Businesses)</item>
 +        <item>OpenCnam (US-only)</item>
++        <item>WhitePages (US-only)</item>
 +    </string-array>
 +
  </resources>
