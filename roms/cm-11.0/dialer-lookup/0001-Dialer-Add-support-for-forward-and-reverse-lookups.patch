@@ -1,4 +1,4 @@
-From 875f3457d8df006ab6e9b96a0f57d4f301d1d647 Mon Sep 17 00:00:00 2001
+From 4dc3777c40458b2f9adad5a58e6431f3a5893665 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -19,10 +19,10 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../DialerExtendedPhoneDirectoriesManager.java     |  58 +++
  src/com/android/dialer/lookup/DialerProvider.java  | 531 ++++++++++++++++++++
  src/com/android/dialer/lookup/ForwardLookup.java   | 118 +++++
- src/com/android/dialer/lookup/LookupSettings.java  |  84 ++++
+ src/com/android/dialer/lookup/LookupSettings.java  |  85 ++++
  .../dialer/lookup/PhoneNumberCacheContract.java    |  45 ++
  .../dialer/lookup/PhoneNumberCacheProvider.java    | 467 +++++++++++++++++
- src/com/android/dialer/lookup/ReverseLookup.java   | 407 +++++++++++++++
+ src/com/android/dialer/lookup/ReverseLookup.java   | 413 ++++++++++++++++
  .../android/dialer/lookup/google/GoogleAuth.java   | 223 +++++++++
  .../dialer/lookup/google/GoogleForwardLookup.java  | 314 ++++++++++++
  .../lookup/google/GoogleLookupJsonParser.java      | 550 +++++++++++++++++++++
@@ -33,9 +33,11 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../openstreetmap/OpenStreetMapForwardLookup.java  | 177 +++++++
  .../dialer/lookup/whitepages/WhitePagesApi.java    | 219 ++++++++
  .../lookup/whitepages/WhitePagesReverseLookup.java | 100 ++++
+ .../dialer/lookup/zabasearch/ZabaSearchApi.java    | 163 ++++++
+ .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
  .../service/CachedNumberLookupServiceImpl.java     | 324 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 30 files changed, 4774 insertions(+), 4 deletions(-)
+ 32 files changed, 5044 insertions(+), 4 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -60,6 +62,8 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  create mode 100644 src/com/android/dialer/lookup/openstreetmap/OpenStreetMapForwardLookup.java
  create mode 100644 src/com/android/dialer/lookup/whitepages/WhitePagesApi.java
  create mode 100644 src/com/android/dialer/lookup/whitepages/WhitePagesReverseLookup.java
+ create mode 100644 src/com/android/dialer/lookup/zabasearch/ZabaSearchApi.java
+ create mode 100644 src/com/android/dialer/lookup/zabasearch/ZabaSearchReverseLookup.java
  create mode 100644 src/com/android/dialer/service/CachedNumberLookupServiceImpl.java
 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
@@ -1144,10 +1148,10 @@ index 0000000..7041ff2
 +}
 diff --git a/src/com/android/dialer/lookup/LookupSettings.java b/src/com/android/dialer/lookup/LookupSettings.java
 new file mode 100644
-index 0000000..840738a
+index 0000000..9e8e1c2
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/LookupSettings.java
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,85 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -1180,6 +1184,7 @@ index 0000000..840738a
 +    public static final String RLP_GOOGLE = "Google";
 +    public static final String RLP_OPENCNAM = "OpenCnam";
 +    public static final String RLP_WHITEPAGES = "WhitePages";
++    public static final String RLP_ZABASEARCH = "ZabaSearch";
 +
 +    private LookupSettings() {
 +    }
@@ -1758,10 +1763,10 @@ index 0000000..37493e3
 +}
 diff --git a/src/com/android/dialer/lookup/ReverseLookup.java b/src/com/android/dialer/lookup/ReverseLookup.java
 new file mode 100644
-index 0000000..cc76265
+index 0000000..4de1401
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/ReverseLookup.java
-@@ -0,0 +1,407 @@
+@@ -0,0 +1,413 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -1784,6 +1789,7 @@ index 0000000..cc76265
 +import com.android.dialer.lookup.google.GoogleReverseLookup;
 +import com.android.dialer.lookup.opencnam.OpenCnamReverseLookup;
 +import com.android.dialer.lookup.whitepages.WhitePagesReverseLookup;
++import com.android.dialer.lookup.zabasearch.ZabaSearchReverseLookup;
 +import com.android.incallui.service.PhoneNumberServiceImpl.PhoneNumberInfoImpl;
 +
 +import android.content.ContentResolver;
@@ -1821,6 +1827,8 @@ index 0000000..cc76265
 +                INSTANCE = new OpenCnamReverseLookup(context);
 +            } else if (provider.equals(LookupSettings.RLP_WHITEPAGES)) {
 +                INSTANCE = new WhitePagesReverseLookup(context);
++            } else if (provider.equals(LookupSettings.RLP_ZABASEARCH)) {
++                INSTANCE = new ZabaSearchReverseLookup(context);
 +            }
 +        }
 +
@@ -1836,6 +1844,9 @@ index 0000000..cc76265
 +            return true;
 +        } else if (provider.equals(LookupSettings.RLP_WHITEPAGES)
 +                && INSTANCE instanceof WhitePagesReverseLookup) {
++            return true;
++        } else if (provider.equals(LookupSettings.RLP_ZABASEARCH)
++                && INSTANCE instanceof ZabaSearchReverseLookup) {
 +            return true;
 +        } else {
 +            return false;
@@ -4811,6 +4822,281 @@ index 0000000..fb05bdb
 +
 +        try {
 +            info = wpa.getContactInfo();
++        } catch (IOException e) {
++            return null;
++        }
++
++        if (info.name == null) {
++            return null;
++        }
++
++        ContactBuilder builder = new ContactBuilder(
++                normalizedNumber, formattedNumber);
++
++        ContactBuilder.Name n = new ContactBuilder.Name();
++        n.displayName = info.name;
++        builder.setName(n);
++
++        ContactBuilder.PhoneNumber pn = new ContactBuilder.PhoneNumber();
++        pn.number = info.formattedNumber;
++        pn.type = Phone.TYPE_MAIN;
++        builder.addPhoneNumber(pn);
++
++        if (info.address != null) {
++            ContactBuilder.Address a = new ContactBuilder.Address();
++            a.formattedAddress = info.address;
++            a.type = StructuredPostal.TYPE_HOME;
++            builder.addAddress(a);
++        }
++
++        ContactBuilder.WebsiteUrl w = new ContactBuilder.WebsiteUrl();
++        w.url = info.website;
++        w.type = Website.TYPE_PROFILE;
++        builder.addWebsite(w);
++
++        return Pair.create(builder.build(), null);
++    }
++}
+diff --git a/src/com/android/dialer/lookup/zabasearch/ZabaSearchApi.java b/src/com/android/dialer/lookup/zabasearch/ZabaSearchApi.java
+new file mode 100644
+index 0000000..385e2d0
+--- /dev/null
++++ b/src/com/android/dialer/lookup/zabasearch/ZabaSearchApi.java
+@@ -0,0 +1,163 @@
++/*
++ * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.dialer.lookup.zabasearch;
++
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
++import org.apache.http.HttpResponse;
++import org.apache.http.client.HttpClient;
++import org.apache.http.client.methods.HttpGet;
++import org.apache.http.impl.client.DefaultHttpClient;
++
++public class ZabaSearchApi {
++    private static final String TAG = ZabaSearchApi.class.getSimpleName();
++
++    private static final String LOOKUP_URL = "http://www.zabasearch.com/phone/";
++
++    private String mNumber = null;
++    public String mOutput = null;
++    private ContactInfo mInfo = null;
++
++    public ZabaSearchApi(String number) {
++        mNumber = number;
++    }
++
++    private void fetchPage() throws IOException {
++        mOutput = httpGet(LOOKUP_URL + mNumber);
++    }
++
++    private String httpGet(String url) throws IOException {
++        HttpClient client = new DefaultHttpClient();
++        HttpGet get = new HttpGet(url);
++
++        HttpResponse response = client.execute(get);
++
++        ByteArrayOutputStream out = new ByteArrayOutputStream();
++        response.getEntity().writeTo(out);
++
++        return new String(out.toByteArray());
++    }
++
++    private void buildContactInfo() {
++        Matcher m;
++
++        // Name
++        Pattern regexName = Pattern.compile(
++                "itemprop=\"?name\"?>([^<]+)<", Pattern.DOTALL);
++        String name = null;
++
++        m = regexName.matcher(mOutput);
++        if (m.find()) {
++            name = m.group(1).trim();
++        }
++
++        // Formatted phone number
++        Pattern regexPhoneNumber = Pattern.compile(
++                "itemprop=\"?telephone\"?>([^<]+)<", Pattern.DOTALL);
++        String phoneNumber = null;
++
++        m = regexPhoneNumber.matcher(mOutput);
++        if (m.find()) {
++            phoneNumber = m.group(1).trim();
++        }
++
++        // Address
++        Pattern regexStreet = Pattern.compile(
++                "itemprop=\"?streetAddress\"?>([^<]+?)(&nbsp;)*<", Pattern.DOTALL);
++        Pattern regexCity = Pattern.compile(
++                "itemprop=\"?addressLocality\"?>([^<]+)<", Pattern.DOTALL);
++        Pattern regexState = Pattern.compile(
++                "itemprop=\"?addressRegion\"?>([^<]+)<", Pattern.DOTALL);
++        Pattern regexZip = Pattern.compile(
++                "itemprop=\"?postalCode\"?>([^<]+)<", Pattern.DOTALL);
++
++        String addressStreet = null;
++        String addressCity = null;
++        String addressState = null;
++        String addressZip = null;
++
++        m = regexStreet.matcher(mOutput);
++        if (m.find()) {
++            addressStreet = m.group(1).trim();
++        }
++
++        m = regexCity.matcher(mOutput);
++        if (m.find()) {
++            addressCity = m.group(1).trim();
++        }
++
++        m = regexState.matcher(mOutput);
++        if (m.find()) {
++            addressState = m.group(1).trim();
++        }
++
++        m = regexZip.matcher(mOutput);
++        if (m.find()) {
++            addressZip = m.group(1).trim();
++        }
++
++        StringBuilder sb = new StringBuilder();
++
++        if (addressStreet != null && addressStreet.length() != 0) {
++            sb.append(addressStreet);
++        }
++        if (addressCity != null && addressCity.length() != 0) {
++            sb.append(", ");
++            sb.append(addressCity);
++        }
++        if (addressState != null && addressState.length() != 0) {
++            sb.append(", ");
++            sb.append(addressState);
++        }
++        if (addressZip != null && addressZip.length() != 0) {
++            sb.append(", ");
++            sb.append(addressZip);
++        }
++
++        String address = sb.toString();
++        if (address.length() == 0) {
++            address = null;
++        }
++
++        ContactInfo info = new ContactInfo();
++        info.name = name;
++        info.address = address;
++        info.formattedNumber = mNumber;
++        info.website = LOOKUP_URL + info.formattedNumber;
++        mInfo = info;
++    }
++
++    public ContactInfo getContactInfo() throws IOException {
++        if (mInfo == null) {
++            fetchPage();
++
++            buildContactInfo();
++        }
++
++        return mInfo;
++    }
++
++    public static class ContactInfo {
++        String name;
++        String address;
++        String formattedNumber;
++        String website;
++    }
++}
+diff --git a/src/com/android/dialer/lookup/zabasearch/ZabaSearchReverseLookup.java b/src/com/android/dialer/lookup/zabasearch/ZabaSearchReverseLookup.java
+new file mode 100644
+index 0000000..5312a31
+--- /dev/null
++++ b/src/com/android/dialer/lookup/zabasearch/ZabaSearchReverseLookup.java
+@@ -0,0 +1,100 @@
++/*
++ * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.dialer.lookup.zabasearch;
++
++import com.android.dialer.lookup.ReverseLookup;
++import com.android.incallui.service.PhoneNumberServiceImpl.PhoneNumberInfoImpl;
++
++import android.content.Context;
++import android.util.Pair;
++
++import android.provider.ContactsContract.CommonDataKinds.Phone;
++import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
++import android.provider.ContactsContract.CommonDataKinds.Website;
++
++import java.io.IOException;
++
++public class ZabaSearchReverseLookup extends ReverseLookup {
++    private static final String TAG =
++            ZabaSearchReverseLookup.class.getSimpleName();
++
++    public ZabaSearchReverseLookup(Context context) {
++    }
++
++    /**
++     * Lookup image
++     *
++     * @param context The application context
++     * @param url The image URL
++     * @param data Extra data (a authentication token, perhaps)
++     */
++    public byte[] lookupImage(Context context, String url, Object data) {
++        return null;
++    }
++
++    /**
++     * Perform phone number lookup.
++     *
++     * @param context The application context
++     * @param normalizedNumber The normalized phone number
++     * @param formattedNumber The formatted phone number
++     * @param isIncoming Whether the call is incoming or outgoing
++     * @return The phone number info object
++     */
++    public Pair<PhoneNumberInfoImpl, Object> lookupNumber(
++            Context context, String normalizedNumber, String formattedNumber,
++            boolean isIncoming) {
++        ZabaSearchApi zsa = new ZabaSearchApi(normalizedNumber);
++        ZabaSearchApi.ContactInfo info = null;
++
++        try {
++            info = zsa.getContactInfo();
 +        } catch (IOException e) {
 +            return null;
 +        }
