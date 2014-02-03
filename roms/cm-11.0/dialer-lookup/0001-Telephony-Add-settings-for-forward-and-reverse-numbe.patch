@@ -1,21 +1,21 @@
-From b40742f65d695e8a9653f7d95854960bf509b800 Mon Sep 17 00:00:00 2001
+From 55f4282bce891ec8cfd63b96c2f1e6983d314612 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 13:27:50 -0500
 Subject: [PATCH] Telephony: Add settings for forward and reverse number lookup
 
 Change-Id: I96d5b4a455095b40cf25ee39f5cba9fe16e11832
 ---
- res/values/array.xml                           |  24 ++++++
+ res/values/array.xml                           |  26 ++++++
  res/values/cm_strings.xml                      |  10 +++
  res/xml/call_feature_setting.xml               |  39 +++++++++
  src/com/android/phone/CallFeaturesSetting.java | 108 +++++++++++++++++++++++++
- 4 files changed, 181 insertions(+)
+ 4 files changed, 183 insertions(+)
 
 diff --git a/res/values/array.xml b/res/values/array.xml
-index 245c09b..504c434 100644
+index 245c09b..f334858 100644
 --- a/res/values/array.xml
 +++ b/res/values/array.xml
-@@ -49,4 +49,28 @@
+@@ -49,4 +49,30 @@
          <item>@string/sip_always_send_keepalive</item>
      </string-array>
  
@@ -33,6 +33,7 @@ index 245c09b..504c434 100644
 +        <item>Google</item>
 +        <item>OpenCnam</item>
 +        <item>WhitePages</item>
++        <item>YellowPages</item>
 +        <item>ZabaSearch</item>
 +    </string-array>
 +
@@ -40,6 +41,7 @@ index 245c09b..504c434 100644
 +        <item>Google (Businesses)</item>
 +        <item>OpenCnam (US)</item>
 +        <item>WhitePages (US)</item>
++        <item>YellowPages (US)</item>
 +        <item>ZabaSearch (US)</item>
 +    </string-array>
 +

@@ -1,4 +1,4 @@
-From 4dc3777c40458b2f9adad5a58e6431f3a5893665 Mon Sep 17 00:00:00 2001
+From dc53d0496c4bc365b10351764c61121ad973e4b4 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -19,10 +19,10 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../DialerExtendedPhoneDirectoriesManager.java     |  58 +++
  src/com/android/dialer/lookup/DialerProvider.java  | 531 ++++++++++++++++++++
  src/com/android/dialer/lookup/ForwardLookup.java   | 118 +++++
- src/com/android/dialer/lookup/LookupSettings.java  |  85 ++++
+ src/com/android/dialer/lookup/LookupSettings.java  |  86 ++++
  .../dialer/lookup/PhoneNumberCacheContract.java    |  45 ++
  .../dialer/lookup/PhoneNumberCacheProvider.java    | 467 +++++++++++++++++
- src/com/android/dialer/lookup/ReverseLookup.java   | 413 ++++++++++++++++
+ src/com/android/dialer/lookup/ReverseLookup.java   | 419 ++++++++++++++++
  .../android/dialer/lookup/google/GoogleAuth.java   | 223 +++++++++
  .../dialer/lookup/google/GoogleForwardLookup.java  | 314 ++++++++++++
  .../lookup/google/GoogleLookupJsonParser.java      | 550 +++++++++++++++++++++
@@ -33,11 +33,13 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../openstreetmap/OpenStreetMapForwardLookup.java  | 177 +++++++
  .../dialer/lookup/whitepages/WhitePagesApi.java    | 219 ++++++++
  .../lookup/whitepages/WhitePagesReverseLookup.java | 100 ++++
+ .../dialer/lookup/yellowpages/YellowPagesApi.java  | 231 +++++++++
+ .../yellowpages/YellowPagesReverseLookup.java      | 139 ++++++
  .../dialer/lookup/zabasearch/ZabaSearchApi.java    | 163 ++++++
  .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
  .../service/CachedNumberLookupServiceImpl.java     | 324 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 32 files changed, 5044 insertions(+), 4 deletions(-)
+ 34 files changed, 5421 insertions(+), 4 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -62,6 +64,8 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  create mode 100644 src/com/android/dialer/lookup/openstreetmap/OpenStreetMapForwardLookup.java
  create mode 100644 src/com/android/dialer/lookup/whitepages/WhitePagesApi.java
  create mode 100644 src/com/android/dialer/lookup/whitepages/WhitePagesReverseLookup.java
+ create mode 100644 src/com/android/dialer/lookup/yellowpages/YellowPagesApi.java
+ create mode 100644 src/com/android/dialer/lookup/yellowpages/YellowPagesReverseLookup.java
  create mode 100644 src/com/android/dialer/lookup/zabasearch/ZabaSearchApi.java
  create mode 100644 src/com/android/dialer/lookup/zabasearch/ZabaSearchReverseLookup.java
  create mode 100644 src/com/android/dialer/service/CachedNumberLookupServiceImpl.java
@@ -1148,10 +1152,10 @@ index 0000000..7041ff2
 +}
 diff --git a/src/com/android/dialer/lookup/LookupSettings.java b/src/com/android/dialer/lookup/LookupSettings.java
 new file mode 100644
-index 0000000..9e8e1c2
+index 0000000..33d953f
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/LookupSettings.java
-@@ -0,0 +1,85 @@
+@@ -0,0 +1,86 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -1184,6 +1188,7 @@ index 0000000..9e8e1c2
 +    public static final String RLP_GOOGLE = "Google";
 +    public static final String RLP_OPENCNAM = "OpenCnam";
 +    public static final String RLP_WHITEPAGES = "WhitePages";
++    public static final String RLP_YELLOWPAGES = "YellowPages";
 +    public static final String RLP_ZABASEARCH = "ZabaSearch";
 +
 +    private LookupSettings() {
@@ -1763,10 +1768,10 @@ index 0000000..37493e3
 +}
 diff --git a/src/com/android/dialer/lookup/ReverseLookup.java b/src/com/android/dialer/lookup/ReverseLookup.java
 new file mode 100644
-index 0000000..4de1401
+index 0000000..04fe00a
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/ReverseLookup.java
-@@ -0,0 +1,413 @@
+@@ -0,0 +1,419 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -1789,6 +1794,7 @@ index 0000000..4de1401
 +import com.android.dialer.lookup.google.GoogleReverseLookup;
 +import com.android.dialer.lookup.opencnam.OpenCnamReverseLookup;
 +import com.android.dialer.lookup.whitepages.WhitePagesReverseLookup;
++import com.android.dialer.lookup.yellowpages.YellowPagesReverseLookup;
 +import com.android.dialer.lookup.zabasearch.ZabaSearchReverseLookup;
 +import com.android.incallui.service.PhoneNumberServiceImpl.PhoneNumberInfoImpl;
 +
@@ -1827,6 +1833,8 @@ index 0000000..4de1401
 +                INSTANCE = new OpenCnamReverseLookup(context);
 +            } else if (provider.equals(LookupSettings.RLP_WHITEPAGES)) {
 +                INSTANCE = new WhitePagesReverseLookup(context);
++            } else if (provider.equals(LookupSettings.RLP_YELLOWPAGES)) {
++                INSTANCE = new YellowPagesReverseLookup(context);
 +            } else if (provider.equals(LookupSettings.RLP_ZABASEARCH)) {
 +                INSTANCE = new ZabaSearchReverseLookup(context);
 +            }
@@ -1844,6 +1852,9 @@ index 0000000..4de1401
 +            return true;
 +        } else if (provider.equals(LookupSettings.RLP_WHITEPAGES)
 +                && INSTANCE instanceof WhitePagesReverseLookup) {
++            return true;
++        } else if (provider.equals(LookupSettings.RLP_YELLOWPAGES)
++                && INSTANCE instanceof YellowPagesReverseLookup) {
 +            return true;
 +        } else if (provider.equals(LookupSettings.RLP_ZABASEARCH)
 +                && INSTANCE instanceof ZabaSearchReverseLookup) {
@@ -4853,6 +4864,388 @@ index 0000000..fb05bdb
 +        w.url = info.website;
 +        w.type = Website.TYPE_PROFILE;
 +        builder.addWebsite(w);
++
++        return Pair.create(builder.build(), null);
++    }
++}
+diff --git a/src/com/android/dialer/lookup/yellowpages/YellowPagesApi.java b/src/com/android/dialer/lookup/yellowpages/YellowPagesApi.java
+new file mode 100644
+index 0000000..e39793a
+--- /dev/null
++++ b/src/com/android/dialer/lookup/yellowpages/YellowPagesApi.java
+@@ -0,0 +1,231 @@
++/*
++ * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.dialer.lookup.yellowpages;
++
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++import java.net.MalformedURLException;
++import java.net.URL;
++import java.util.regex.Matcher;
++import java.util.regex.Pattern;
++
++import org.apache.http.Header;
++import org.apache.http.HttpResponse;
++import org.apache.http.HttpStatus;
++import org.apache.http.client.HttpClient;
++import org.apache.http.client.methods.HttpGet;
++import org.apache.http.impl.client.DefaultHttpClient;
++
++public class YellowPagesApi {
++    private static final String TAG = YellowPagesApi.class.getSimpleName();
++
++    private static final String LOOKUP_URL = "http://www.yellowpages.com/phone?phone_search_terms=";
++
++    private String mNumber = null;
++    public String mOutput = null;
++    private ContactInfo mInfo = null;
++
++    public YellowPagesApi(String number) {
++        mNumber = number;
++    }
++
++    private void fetchPage() throws IOException {
++        mOutput = httpGet(LOOKUP_URL + mNumber);
++    }
++
++    private String httpGet(String url) throws IOException {
++        HttpClient client = new DefaultHttpClient();
++        HttpGet get = new HttpGet(url);
++
++        HttpResponse response = client.execute(get);
++        int status = response.getStatusLine().getStatusCode();
++
++        // Android's org.apache.http doesn't have the RedirectStrategy class
++        if (status == HttpStatus.SC_MOVED_PERMANENTLY
++                || status == HttpStatus.SC_MOVED_TEMPORARILY) {
++            Header[] headers = response.getHeaders("Location");
++
++            if (headers != null && headers.length != 0) {
++                String newUrl = headers[headers.length - 1].getValue();
++                return httpGet(newUrl);
++            } else {
++                return null;
++            }
++        }
++
++        ByteArrayOutputStream out = new ByteArrayOutputStream();
++        response.getEntity().writeTo(out);
++
++        return new String(out.toByteArray());
++    }
++
++    private String getPhotoUrl(String website) throws IOException {
++        String output = httpGet(website);
++
++        Matcher m;
++
++        Pattern regexGallery = Pattern.compile(
++                "href=\"([^\"]+gallery\\?lid=[^\"]+)\"", Pattern.DOTALL);
++
++        String galleryUrl = null;
++
++        m = regexGallery.matcher(output);
++        if (m.find()) {
++            galleryUrl = "http://www.yellowpages.com" + m.group(1).trim();
++        }
++
++        if (galleryUrl == null) {
++            return null;
++        }
++
++        // Get first image
++
++        output = httpGet(galleryUrl);
++
++        Pattern regexPhoto = Pattern.compile(
++                "\"type\":\"image\",\"src\":\"([^\"]+)\"", Pattern.DOTALL);
++
++        String photoUrl = null;
++
++        m = regexPhoto.matcher(output);
++        if (m.find()) {
++            photoUrl = m.group(1).trim();
++        }
++
++        return photoUrl;
++    }
++
++    private void buildContactInfo() throws IOException {
++        Matcher m;
++
++        // Name
++        Pattern regexNameAndWebsite = Pattern.compile(
++                "<a href=\"([^>]+?)\"[^>]+?class=\"url[^>]+?>([^<]+)</a>",
++                Pattern.DOTALL);
++        String name = null;
++        String website = null;
++
++        m = regexNameAndWebsite.matcher(mOutput);
++        if (m.find()) {
++            website = m.group(1).trim();
++            name = m.group(2).trim();
++        }
++
++        // Formatted phone number
++        Pattern regexPhoneNumber = Pattern.compile(
++                "business-phone.*?>\n*([^\n<]+)\n*<", Pattern.DOTALL);
++        String phoneNumber = null;
++
++        m = regexPhoneNumber.matcher(mOutput);
++        if (m.find()) {
++            phoneNumber = m.group(1).trim();
++        }
++
++        // Address
++        Pattern regexAddressStreet = Pattern.compile(
++                "street-address.*?>\n*([^\n<]+)\n*<", Pattern.DOTALL);
++        Pattern regexAddressCity = Pattern.compile(
++                "locality.*?>\n*([^\n<]+)\n*<", Pattern.DOTALL);
++        Pattern regexAddressState = Pattern.compile(
++                "region.*?>\n*([^\n<]+)\n*<", Pattern.DOTALL);
++        Pattern regexAddressZip = Pattern.compile(
++                "postal-code.*?>\n*([^\n<]+)\n*<", Pattern.DOTALL);
++
++        String addressStreet = null;
++        String addressCity = null;
++        String addressState = null;
++        String addressZip = null;
++
++        m = regexAddressStreet.matcher(mOutput);
++        if (m.find()) {
++            addressStreet = m.group(1).trim();
++            if (addressStreet.endsWith(",")) {
++                addressStreet = addressStreet.substring(0,
++                        addressStreet.length() - 1);
++            }
++        }
++
++        m = regexAddressCity.matcher(mOutput);
++        if (m.find()) {
++            addressCity = m.group(1).trim();
++        }
++
++        m = regexAddressState.matcher(mOutput);
++        if (m.find()) {
++            addressState = m.group(1).trim();
++        }
++
++        m = regexAddressZip.matcher(mOutput);
++        if (m.find()) {
++            addressZip = m.group(1).trim();
++        }
++
++        StringBuilder sb = new StringBuilder();
++
++        if (addressStreet != null && addressStreet.length() != 0) {
++            sb.append(addressStreet);
++        }
++        if (addressCity != null && addressCity.length() != 0) {
++            sb.append(", ");
++            sb.append(addressCity);
++        }
++        if (addressState != null && addressState.length() != 0) {
++            sb.append(", ");
++            sb.append(addressState);
++        }
++        if (addressZip != null && addressZip.length() != 0) {
++            sb.append(", ");
++            sb.append(addressZip);
++        }
++
++        String address = sb.toString();
++        if (address.length() == 0) {
++            address = null;
++        }
++
++        String photoUrl = null;
++        if (website != null) {
++            photoUrl = getPhotoUrl(website);
++        }
++
++        ContactInfo info = new ContactInfo();
++        info.name = name;
++        info.address = address;
++        info.formattedNumber = phoneNumber != null ? phoneNumber : mNumber;
++        info.website = website;
++        info.photoUrl = photoUrl;
++        mInfo = info;
++    }
++
++    public ContactInfo getContactInfo() throws IOException {
++        if (mInfo == null) {
++            fetchPage();
++
++            buildContactInfo();
++        }
++
++        return mInfo;
++    }
++
++    public static class ContactInfo {
++        String name;
++        String address;
++        String formattedNumber;
++        String website;
++        String photoUrl;
++    }
++}
+diff --git a/src/com/android/dialer/lookup/yellowpages/YellowPagesReverseLookup.java b/src/com/android/dialer/lookup/yellowpages/YellowPagesReverseLookup.java
+new file mode 100644
+index 0000000..dbd9499
+--- /dev/null
++++ b/src/com/android/dialer/lookup/yellowpages/YellowPagesReverseLookup.java
+@@ -0,0 +1,139 @@
++/*
++ * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.dialer.lookup.yellowpages;
++
++import com.android.dialer.lookup.ReverseLookup;
++import com.android.incallui.service.PhoneNumberServiceImpl.PhoneNumberInfoImpl;
++
++import android.content.Context;
++import android.util.Log;
++import android.util.Pair;
++
++import android.provider.ContactsContract.CommonDataKinds.Phone;
++import android.provider.ContactsContract.CommonDataKinds.StructuredPostal;
++import android.provider.ContactsContract.CommonDataKinds.Website;
++
++import org.apache.http.HttpResponse;
++import org.apache.http.HttpStatus;
++import org.apache.http.client.HttpClient;
++import org.apache.http.client.methods.HttpGet;
++import org.apache.http.impl.client.DefaultHttpClient;
++
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++
++public class YellowPagesReverseLookup extends ReverseLookup {
++    private static final String TAG =
++            YellowPagesReverseLookup.class.getSimpleName();
++
++    public YellowPagesReverseLookup(Context context) {
++    }
++
++    /**
++     * Lookup image
++     *
++     * @param context The application context
++     * @param url The image URL
++     * @param data Extra data (a authentication token, perhaps)
++     */
++    public byte[] lookupImage(Context context, String url, Object data) {
++        if (url == null) {
++            throw new NullPointerException("URL is null");
++        }
++
++        Log.e(TAG, "Fetching " + url);
++
++        HttpClient client = new DefaultHttpClient();
++        HttpGet request = new HttpGet(url);
++
++        try {
++            HttpResponse response = client.execute(request);
++
++            int responseCode = response.getStatusLine().getStatusCode();
++
++            ByteArrayOutputStream out = new ByteArrayOutputStream();
++            response.getEntity().writeTo(out);
++            byte[] responseBytes = out.toByteArray();
++
++            if (responseCode == HttpStatus.SC_OK) {
++                return responseBytes;
++            }
++        } catch (IOException e) {
++            Log.e(TAG, "Failed to retrieve image", e);
++        }
++
++        return null;
++    }
++
++    /**
++     * Perform phone number lookup.
++     *
++     * @param context The application context
++     * @param normalizedNumber The normalized phone number
++     * @param formattedNumber The formatted phone number
++     * @param isIncoming Whether the call is incoming or outgoing
++     * @return The phone number info object
++     */
++    public Pair<PhoneNumberInfoImpl, Object> lookupNumber(
++            Context context, String normalizedNumber, String formattedNumber,
++            boolean isIncoming) {
++        YellowPagesApi ypa = new YellowPagesApi(normalizedNumber);
++        YellowPagesApi.ContactInfo info = null;
++
++        try {
++            info = ypa.getContactInfo();
++        } catch (IOException e) {
++            return null;
++        }
++
++        if (info.name == null) {
++            return null;
++        }
++
++        ContactBuilder builder = new ContactBuilder(
++                normalizedNumber, formattedNumber);
++
++        ContactBuilder.Name n = new ContactBuilder.Name();
++        n.displayName = info.name;
++        builder.setName(n);
++
++        ContactBuilder.PhoneNumber pn = new ContactBuilder.PhoneNumber();
++        pn.number = info.formattedNumber;
++        pn.type = Phone.TYPE_MAIN;
++        builder.addPhoneNumber(pn);
++
++        if (info.address != null) {
++            ContactBuilder.Address a = new ContactBuilder.Address();
++            a.formattedAddress = info.address;
++            a.type = StructuredPostal.TYPE_HOME;
++            builder.addAddress(a);
++        }
++
++        ContactBuilder.WebsiteUrl w = new ContactBuilder.WebsiteUrl();
++        w.url = info.website;
++        w.type = Website.TYPE_PROFILE;
++        builder.addWebsite(w);
++
++        if (info.photoUrl != null) {
++            builder.setPhotoUri(info.photoUrl);
++        } else {
++            builder.setPhotoUri(ContactBuilder.PHOTO_URI_BUSINESS);
++        }
 +
 +        return Pair.create(builder.build(), null);
 +    }
