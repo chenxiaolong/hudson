@@ -1,4 +1,4 @@
-From 5b18ce9c7e6360277db981fd32bd6cbbbcce1902 Mon Sep 17 00:00:00 2001
+From 6573b3a23c76e4cde8bacfbc629f8b1dfec019a5 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 16:00:39 -0500
 Subject: [PATCH] InCallUI: Add phone number service
@@ -12,7 +12,7 @@ Change-Id: If95f5529e868110006e1196040a0595a33059ac8
 
 diff --git a/src/com/android/incallui/service/PhoneNumberServiceImpl.java b/src/com/android/incallui/service/PhoneNumberServiceImpl.java
 new file mode 100644
-index 0000000..bf8d8d6
+index 0000000..ec14b59
 --- /dev/null
 +++ b/src/com/android/incallui/service/PhoneNumberServiceImpl.java
 @@ -0,0 +1,459 @@
@@ -208,12 +208,12 @@ index 0000000..bf8d8d6
 +                PhoneNumberInfoImpl numberInfo = null;
 +                boolean isLocalSearchWithoutPhotoUri = false;
 +
-+                if (!DEBUG && mCachedNumberLookupService == null) {
++                if (!DEBUG && mCachedNumberLookupService != null) {
 +                    CachedNumberLookupServiceImpl.CachedContactInfoImpl cachedContact =
 +                            mCachedNumberLookupService.lookupCachedContactFromNumber(
 +                                    mContext, number);
 +
-+                    if (cachedContact == null) {
++                    if (cachedContact != null) {
 +                        ContactInfo contactInfo = cachedContact.getContactInfo();
 +
 +                        if (contactInfo != null
