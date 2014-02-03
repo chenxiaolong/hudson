@@ -1,4 +1,4 @@
-From dc53d0496c4bc365b10351764c61121ad973e4b4 Mon Sep 17 00:00:00 2001
+From 4ea8f8d64c9b88a53ccb5e274164c4dcdf38c149 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -31,7 +31,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  src/com/android/dialer/lookup/google/UrlRules.java | 232 +++++++++
  .../lookup/opencnam/OpenCnamReverseLookup.java     | 116 +++++
  .../openstreetmap/OpenStreetMapForwardLookup.java  | 177 +++++++
- .../dialer/lookup/whitepages/WhitePagesApi.java    | 219 ++++++++
+ .../dialer/lookup/whitepages/WhitePagesApi.java    | 227 +++++++++
  .../lookup/whitepages/WhitePagesReverseLookup.java | 100 ++++
  .../dialer/lookup/yellowpages/YellowPagesApi.java  | 231 +++++++++
  .../yellowpages/YellowPagesReverseLookup.java      | 139 ++++++
@@ -39,7 +39,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
  .../service/CachedNumberLookupServiceImpl.java     | 324 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 34 files changed, 5421 insertions(+), 4 deletions(-)
+ 34 files changed, 5429 insertions(+), 4 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -4539,10 +4539,10 @@ index 0000000..a3525d3
 +}
 diff --git a/src/com/android/dialer/lookup/whitepages/WhitePagesApi.java b/src/com/android/dialer/lookup/whitepages/WhitePagesApi.java
 new file mode 100644
-index 0000000..1330206
+index 0000000..60ce4e8
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/whitepages/WhitePagesApi.java
-@@ -0,0 +1,219 @@
+@@ -0,0 +1,227 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -4560,6 +4560,10 @@ index 0000000..1330206
 + */
 +
 +package com.android.dialer.lookup.whitepages;
++
++import com.android.services.telephony.common.MoreStrings;
++
++import android.util.Log;
 +
 +import java.io.ByteArrayOutputStream;
 +import java.io.IOException;
@@ -4613,6 +4617,10 @@ index 0000000..1330206
 +    }
 +
 +    private String httpGet(String url) throws IOException {
++        String[] split = url.split("=");
++        Log.d(TAG, "Fetching " + split[0] + "="
++                + MoreStrings.toSafeString(split[1]));
++
 +        HttpClient client = new DefaultHttpClient();
 +        HttpGet get = new HttpGet(url);
 +
