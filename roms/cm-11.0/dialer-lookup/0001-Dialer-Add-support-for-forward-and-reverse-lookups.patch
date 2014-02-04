@@ -1,4 +1,4 @@
-From 4ea8f8d64c9b88a53ccb5e274164c4dcdf38c149 Mon Sep 17 00:00:00 2001
+From dd24a89d1ea466b3c7a3925c16119329462b86cd Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -37,9 +37,9 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../yellowpages/YellowPagesReverseLookup.java      | 139 ++++++
  .../dialer/lookup/zabasearch/ZabaSearchApi.java    | 163 ++++++
  .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
- .../service/CachedNumberLookupServiceImpl.java     | 324 ++++++++++++
+ .../service/CachedNumberLookupServiceImpl.java     | 322 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 34 files changed, 5429 insertions(+), 4 deletions(-)
+ 34 files changed, 5427 insertions(+), 4 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -1295,7 +1295,7 @@ index 0000000..e86a642
 +}
 diff --git a/src/com/android/dialer/lookup/PhoneNumberCacheProvider.java b/src/com/android/dialer/lookup/PhoneNumberCacheProvider.java
 new file mode 100644
-index 0000000..37493e3
+index 0000000..1206fea
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/PhoneNumberCacheProvider.java
 @@ -0,0 +1,467 @@
@@ -1449,7 +1449,7 @@ index 0000000..37493e3
 +            boolean overrideCache = false;
 +
 +            if (sourceType != null && CachedNumberLookupServiceImpl
-+                    .CachedContactInfoImpl.isPeopleApiSource(sourceType)) {
++                    .CachedContactInfoImpl.isLookupSource(sourceType)) {
 +                overrideCache = true;
 +            } else {
 +                int prevSourceType = -1;
@@ -1464,7 +1464,7 @@ index 0000000..37493e3
 +                }
 +
 +                boolean peopleApiSource = CachedNumberLookupServiceImpl
-+                        .CachedContactInfoImpl.isPeopleApiSource(
++                        .CachedContactInfoImpl.isLookupSource(
 +                        prevSourceType);
 +
 +                if (!peopleApiSource) {
@@ -5535,10 +5535,10 @@ index 0000000..5312a31
 +}
 diff --git a/src/com/android/dialer/service/CachedNumberLookupServiceImpl.java b/src/com/android/dialer/service/CachedNumberLookupServiceImpl.java
 new file mode 100644
-index 0000000..40044dd
+index 0000000..c8590c9
 --- /dev/null
 +++ b/src/com/android/dialer/service/CachedNumberLookupServiceImpl.java
-@@ -0,0 +1,324 @@
+@@ -0,0 +1,322 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -5578,12 +5578,10 @@ index 0000000..40044dd
 +import libcore.io.IoUtils;
 +
 +public class CachedNumberLookupServiceImpl implements CachedNumberLookupService {
-+    // TODO: These are unknown
-+    public static final int SOURCE_0 = 0;
 +    public static final int SOURCE_DIRECTORY = 1;
 +    public static final int SOURCE_EXTENDED = 2;
 +    public static final int SOURCE_BUSINESS = 3;
-+    public static final int SOURCE_4 = 4;
++    public static final int SOURCE_PERSON = 4;
 +
 +    public static class CachedContactInfoImpl implements CachedContactInfo {
 +        private final ContactInfo mInfo;
@@ -5632,22 +5630,22 @@ index 0000000..40044dd
 +            return type == SOURCE_BUSINESS || type == SOURCE_EXTENDED;
 +        }
 +
-+        public static boolean isPeopleApiSource(int type) {
-+            return type == SOURCE_BUSINESS || type == SOURCE_4;
++        public static boolean isLookupSource(int type) {
++            return type == SOURCE_BUSINESS || type == SOURCE_PERSON;
 +        }
 +
 +        public int getSourceType() {
 +            return sourceType;
 +        }
 +
-+        public void setPeopleAPISource(boolean isBusiness) {
++        public void setLookupSource(boolean isBusiness) {
 +            int type;
 +            if (isBusiness) {
 +                type = SOURCE_BUSINESS;
 +            } else {
-+                type = SOURCE_4;
++                type = SOURCE_PERSON;
 +            }
-+            setSource(type, "Google Caller ID", 0x7fffffff);
++            setSource(type, "Caller ID", 0x7fffffff);
 +        }
 +    }
 +
@@ -5686,7 +5684,7 @@ index 0000000..40044dd
 +            int sourceType = cursor.getInt(CachedNumberQuery.CACHE_SOURCE_TYPE);
 +
 +            // If reverse lookup is disabled, remove the cache entries
-+            if (CachedContactInfoImpl.isPeopleApiSource(sourceType)
++            if (CachedContactInfoImpl.isLookupSource(sourceType)
 +                    && !LookupSettings.isReverseLookupEnabled(context)) {
 +                purgePeopleApiCacheEntries(context);
 +                return buildCachedContactInfo(ContactInfo.EMPTY);
@@ -5802,7 +5800,7 @@ index 0000000..40044dd
 +                DialerDatabaseHelper.getInstance(context);
 +
 +        helper.purgeSource(SOURCE_BUSINESS);
-+        helper.purgeSource(SOURCE_4);
++        helper.purgeSource(SOURCE_PERSON);
 +    }
 +
 +    private Uri getContactUri(Cursor cursor) {
@@ -5818,7 +5816,7 @@ index 0000000..40044dd
 +                        .build();
 +            } else if (sourceType == SOURCE_EXTENDED
 +                    || sourceType == SOURCE_BUSINESS
-+                    || sourceType == SOURCE_4) {
++                    || sourceType == SOURCE_PERSON) {
 +                Uri.Builder encodedFragment =
 +                        ContactsContract.Contacts.CONTENT_LOOKUP_URI
 +                        .buildUpon().appendPath("encoded")
