@@ -1,4 +1,4 @@
-From dd24a89d1ea466b3c7a3925c16119329462b86cd Mon Sep 17 00:00:00 2001
+From c66c60b4471982db2bdb66b8b49677eb8d326339 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -31,7 +31,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  src/com/android/dialer/lookup/google/UrlRules.java | 232 +++++++++
  .../lookup/opencnam/OpenCnamReverseLookup.java     | 116 +++++
  .../openstreetmap/OpenStreetMapForwardLookup.java  | 177 +++++++
- .../dialer/lookup/whitepages/WhitePagesApi.java    | 227 +++++++++
+ .../dialer/lookup/whitepages/WhitePagesApi.java    | 220 +++++++++
  .../lookup/whitepages/WhitePagesReverseLookup.java | 100 ++++
  .../dialer/lookup/yellowpages/YellowPagesApi.java  | 231 +++++++++
  .../yellowpages/YellowPagesReverseLookup.java      | 139 ++++++
@@ -39,7 +39,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
  .../service/CachedNumberLookupServiceImpl.java     | 322 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 34 files changed, 5427 insertions(+), 4 deletions(-)
+ 34 files changed, 5420 insertions(+), 4 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -4539,10 +4539,10 @@ index 0000000..a3525d3
 +}
 diff --git a/src/com/android/dialer/lookup/whitepages/WhitePagesApi.java b/src/com/android/dialer/lookup/whitepages/WhitePagesApi.java
 new file mode 100644
-index 0000000..60ce4e8
+index 0000000..469e29e
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/whitepages/WhitePagesApi.java
-@@ -0,0 +1,227 @@
+@@ -0,0 +1,220 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -4601,18 +4601,15 @@ index 0000000..60ce4e8
 +        mOutput = httpGet(LOOKUP_URL + mNumber);
 +    }
 +
-+    private void extractCookie() throws IOException {
++    private void findUuidAndReload() throws IOException {
 +        for (String regex : COOKIE_REGEXES) {
 +            Pattern p = Pattern.compile(regex, Pattern.DOTALL);
 +            Matcher m = p.matcher(mOutput);
 +            if (m.find()) {
 +                mCookie = m.group(1).trim();
++                fetchPage();
 +                break;
 +            }
-+        }
-+
-+        if (mCookie == null) {
-+            throw new IOException("HTML response does not contain cookie value");
 +        }
 +    }
 +
@@ -4750,12 +4747,8 @@ index 0000000..60ce4e8
 +
 +    public ContactInfo getContactInfo() throws IOException {
 +        if (mInfo == null) {
-+            // We'll fetch the page twice every time since we do not what
-+            // restrictions on the cookies are present (IP checks, time limits,
-+            // etc.)
 +            fetchPage();
-+            extractCookie();
-+            fetchPage();
++            findUuidAndReload();
 +
 +            buildContactInfo();
 +        }
