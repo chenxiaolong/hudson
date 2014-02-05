@@ -5,6 +5,10 @@ reset_dirs_cm-11.0() {
     'packages/apps/InCallUI/'
     'packages/services/Telephony/'
     'frameworks/base/'
+    'packages/apps/BluetoothExt/'
+    'external/bluetooth/bluedroid/'
+    'packages/apps/Bluetooth/'
+    'hardware/libhardware/'
   )
 
   # Directories that should be reset for one more build
@@ -49,7 +53,22 @@ apply_patches_cm-11.0() {
   apply_patch_file_git ${DIALERLOOKUP}/0001-Frameworks-Add-settings-keys-for-forward-and-reverse.patch
   popd
 
-#  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-#    `# device/samsung/jf-common`                                      \
-#    'http://review.cyanogenmod.org/#/c/53635/' `# jf-common: Fix GPS`
+  python3 ${WORKSPACE}/hudson/gerrit_changes.py \
+    `# frameworks/base/` \
+    'http://review.cyanogenmod.org/#/c/58333/' \
+    `# packages/apps/BluetoothExt/` \
+    'http://review.cyanogenmod.org/#/c/58303/' \
+    `# external/bluetooth/bluedroid/` \
+    'http://review.cyanogenmod.org/#/c/58293/' \
+    'http://review.cyanogenmod.org/#/c/58294/' \
+    'http://review.cyanogenmod.org/#/c/58295/' \
+    'http://review.cyanogenmod.org/#/c/58296/' \
+    'http://review.cyanogenmod.org/#/c/58297/' \
+    `# packages/apps/Bluetooth/` \
+    'http://review.cyanogenmod.org/#/c/58298/' \
+    'http://review.cyanogenmod.org/#/c/58299/' \
+    'http://review.cyanogenmod.org/#/c/58300/' \
+    'http://review.cyanogenmod.org/#/c/58301/' \
+    `# hardware/libhardware/` \
+    'http://review.cyanogenmod.org/#/c/58344/'
 }
