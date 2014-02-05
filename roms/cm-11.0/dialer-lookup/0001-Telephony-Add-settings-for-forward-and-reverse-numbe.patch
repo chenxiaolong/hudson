@@ -1,4 +1,4 @@
-From 55f4282bce891ec8cfd63b96c2f1e6983d314612 Mon Sep 17 00:00:00 2001
+From 4ed4fc3585a660332d6195ae7fb7d6412bdaf6ac Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 13:27:50 -0500
 Subject: [PATCH] Telephony: Add settings for forward and reverse number lookup
@@ -7,9 +7,9 @@ Change-Id: I96d5b4a455095b40cf25ee39f5cba9fe16e11832
 ---
  res/values/array.xml                           |  26 ++++++
  res/values/cm_strings.xml                      |  10 +++
- res/xml/call_feature_setting.xml               |  39 +++++++++
- src/com/android/phone/CallFeaturesSetting.java | 108 +++++++++++++++++++++++++
- 4 files changed, 183 insertions(+)
+ res/xml/call_feature_setting.xml               |  37 ++++++++
+ src/com/android/phone/CallFeaturesSetting.java | 112 +++++++++++++++++++++++++
+ 4 files changed, 185 insertions(+)
 
 diff --git a/res/values/array.xml b/res/values/array.xml
 index 245c09b..f334858 100644
@@ -66,57 +66,55 @@ index bad9646..f671dbd 100644
 +    <string name="choose_reverse_lookup_provider_title">Choose reverse lookup provider</string>
  </resources>
 diff --git a/res/xml/call_feature_setting.xml b/res/xml/call_feature_setting.xml
-index 7913365..f336213 100644
+index 7913365..0f0baa7 100644
 --- a/res/xml/call_feature_setting.xml
 +++ b/res/xml/call_feature_setting.xml
-@@ -63,6 +63,45 @@
+@@ -63,6 +63,43 @@
    </PreferenceCategory>
  
    <PreferenceCategory
-+      android:title="@string/number_lookup">
++      android:title="@string/number_lookup" />
 +
-+      <SwitchPreference
-+          android:key="switch_enable_forward_lookup"
-+          android:title="@string/enable_forward_lookup_title"
-+          android:summary="@string/enable_forward_lookup_summary"
-+          android:defaultValue="false"
++  <SwitchPreference
++      android:key="switch_enable_forward_lookup"
++      android:title="@string/enable_forward_lookup_title"
++      android:summary="@string/enable_forward_lookup_summary"
++      android:defaultValue="false"
++      android:persistent="false" />
++
++  <SwitchPreference
++      android:key="switch_enable_reverse_lookup"
++      android:title="@string/enable_reverse_lookup_title"
++      android:summary="@string/enable_reverse_lookup_summary"
++      android:defaultValue="false"
++      android:persistent="false" />
++
++  <PreferenceScreen
++      android:title="@string/choose_lookup_providers"
++      android:persistent="false">
++
++      <ListPreference
++          android:key="button_choose_forward_lookup_provider"
++          android:title="@string/choose_forward_lookup_provider_title"
++          android:entries="@array/forward_lookup_provider_names"
++          android:entryValues="@array/forward_lookup_providers"
 +          android:persistent="false" />
 +
-+      <SwitchPreference
-+          android:key="switch_enable_reverse_lookup"
-+          android:title="@string/enable_reverse_lookup_title"
-+          android:summary="@string/enable_reverse_lookup_summary"
-+          android:defaultValue="false"
++      <ListPreference
++          android:key="button_choose_reverse_lookup_provider"
++          android:title="@string/choose_reverse_lookup_provider_title"
++          android:entries="@array/reverse_lookup_provider_names"
++          android:entryValues="@array/reverse_lookup_providers"
 +          android:persistent="false" />
 +
-+      <PreferenceScreen
-+          android:title="@string/choose_lookup_providers"
-+          android:persistent="false">
-+
-+          <ListPreference
-+              android:key="button_choose_forward_lookup_provider"
-+              android:title="@string/choose_forward_lookup_provider_title"
-+              android:entries="@array/forward_lookup_provider_names"
-+              android:entryValues="@array/forward_lookup_providers"
-+              android:persistent="false" />
-+
-+          <ListPreference
-+              android:key="button_choose_reverse_lookup_provider"
-+              android:title="@string/choose_reverse_lookup_provider_title"
-+              android:entries="@array/reverse_lookup_provider_names"
-+              android:entryValues="@array/reverse_lookup_providers"
-+              android:persistent="false" />
-+
-+      </PreferenceScreen>
-+
-+  </PreferenceCategory>
++  </PreferenceScreen>
 +
 +  <PreferenceCategory
        android:key="button_misc_category_key"
        android:title="@string/other_settings"
        android:persistent="false" />
 diff --git a/src/com/android/phone/CallFeaturesSetting.java b/src/com/android/phone/CallFeaturesSetting.java
-index 7a07618..ea2e9d8 100644
+index 7a07618..a5fdd21 100644
 --- a/src/com/android/phone/CallFeaturesSetting.java
 +++ b/src/com/android/phone/CallFeaturesSetting.java
 @@ -50,6 +50,7 @@ import android.preference.PreferenceActivity;
@@ -127,19 +125,23 @@ index 7a07618..ea2e9d8 100644
  import android.provider.ContactsContract.CommonDataKinds;
  import android.provider.MediaStore;
  import android.provider.Settings;
-@@ -199,6 +200,11 @@ public class CallFeaturesSetting extends PreferenceActivity
+@@ -199,6 +200,15 @@ public class CallFeaturesSetting extends PreferenceActivity
      private static final String SIP_SETTINGS_CATEGORY_KEY =
              "sip_settings_category_key";
  
-+    private static final String SWITCH_ENABLE_FORWARD_LOOKUP = "switch_enable_forward_lookup";
-+    private static final String SWITCH_ENABLE_REVERSE_LOOKUP = "switch_enable_reverse_lookup";
-+    private static final String BUTTON_CHOOSE_FORWARD_LOOKUP_PROVIDER = "button_choose_forward_lookup_provider";
-+    private static final String BUTTON_CHOOSE_REVERSE_LOOKUP_PROVIDER = "button_choose_reverse_lookup_provider";
++    private static final String SWITCH_ENABLE_FORWARD_LOOKUP =
++            "switch_enable_forward_lookup";
++    private static final String SWITCH_ENABLE_REVERSE_LOOKUP =
++            "switch_enable_reverse_lookup";
++    private static final String BUTTON_CHOOSE_FORWARD_LOOKUP_PROVIDER =
++            "button_choose_forward_lookup_provider";
++    private static final String BUTTON_CHOOSE_REVERSE_LOOKUP_PROVIDER =
++            "button_choose_reverse_lookup_provider";
 +
      private Intent mContactListIntent;
  
      /** Event for Async voicemail change call */
-@@ -289,6 +295,10 @@ public class CallFeaturesSetting extends PreferenceActivity
+@@ -289,6 +299,10 @@ public class CallFeaturesSetting extends PreferenceActivity
      private CheckBoxPreference mVoicemailNotificationVibrate;
      private SipSharedPreferences mSipSharedPreferences;
      private PreferenceScreen mButtonBlacklist;
@@ -150,7 +152,7 @@ index 7a07618..ea2e9d8 100644
  
      private class VoiceMailProvider {
          public VoiceMailProvider(String name, Intent intent) {
-@@ -617,6 +627,12 @@ public class CallFeaturesSetting extends PreferenceActivity
+@@ -617,6 +631,12 @@ public class CallFeaturesSetting extends PreferenceActivity
              }
          } else if (preference == mButtonSipCallOptions) {
              handleSipCallOptionsChange(objValue);
@@ -163,7 +165,7 @@ index 7a07618..ea2e9d8 100644
          }
          // always let the preference setting proceed.
          return true;
-@@ -1659,6 +1675,26 @@ public class CallFeaturesSetting extends PreferenceActivity
+@@ -1659,6 +1679,26 @@ public class CallFeaturesSetting extends PreferenceActivity
              }
          }
  
@@ -190,7 +192,7 @@ index 7a07618..ea2e9d8 100644
          // create intent to bring up contact list
          mContactListIntent = new Intent(Intent.ACTION_GET_CONTENT);
          mContactListIntent.setType(android.provider.Contacts.Phones.CONTENT_ITEM_TYPE);
-@@ -1861,6 +1897,9 @@ public class CallFeaturesSetting extends PreferenceActivity
+@@ -1861,6 +1901,9 @@ public class CallFeaturesSetting extends PreferenceActivity
  
          lookupRingtoneName();
          updateBlacklistSummary();
@@ -200,7 +202,7 @@ index 7a07618..ea2e9d8 100644
      }
  
      private void updateBlacklistSummary() {
-@@ -2013,6 +2052,75 @@ public class CallFeaturesSetting extends PreferenceActivity
+@@ -2013,6 +2056,75 @@ public class CallFeaturesSetting extends PreferenceActivity
          }
      }
  
