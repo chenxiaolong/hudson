@@ -1,11 +1,12 @@
-From c66c60b4471982db2bdb66b8b49677eb8d326339 Mon Sep 17 00:00:00 2001
+From c1dc233251022fb2912b2f66c6aee71e86c476b4 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
 
 Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
 ---
- AndroidManifest.xml                                |  15 +
+ Android.mk                                         |   8 +-
+ AndroidManifest.xml                                |  16 +
  assets/contacts_extensions.properties              |   1 +
  proguard.flags                                     |   5 +
  .../ic_places_picture_180_holo_light.png           | Bin 0 -> 698 bytes
@@ -19,7 +20,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../DialerExtendedPhoneDirectoriesManager.java     |  58 +++
  src/com/android/dialer/lookup/DialerProvider.java  | 531 ++++++++++++++++++++
  src/com/android/dialer/lookup/ForwardLookup.java   | 118 +++++
- src/com/android/dialer/lookup/LookupSettings.java  |  86 ++++
+ src/com/android/dialer/lookup/LookupSettings.java  |  96 ++++
  .../dialer/lookup/PhoneNumberCacheContract.java    |  45 ++
  .../dialer/lookup/PhoneNumberCacheProvider.java    | 467 +++++++++++++++++
  src/com/android/dialer/lookup/ReverseLookup.java   | 419 ++++++++++++++++
@@ -39,7 +40,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
  .../service/CachedNumberLookupServiceImpl.java     | 322 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 34 files changed, 5420 insertions(+), 4 deletions(-)
+ 35 files changed, 5438 insertions(+), 5 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -70,11 +71,43 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  create mode 100644 src/com/android/dialer/lookup/zabasearch/ZabaSearchReverseLookup.java
  create mode 100644 src/com/android/dialer/service/CachedNumberLookupServiceImpl.java
 
+diff --git a/Android.mk b/Android.mk
+index 899d589..588b745 100644
+--- a/Android.mk
++++ b/Android.mk
+@@ -9,13 +9,18 @@ incallui_dir := ../InCallUI
+ src_dirs := src $(contacts_common_dir)/src $(incallui_dir)/src
+ res_dirs := res $(contacts_common_dir)/res $(incallui_dir)/res
+ 
++# Google Play Services resource files
++res_dirs += ../../../external/google/google_play_services/libproject/google-play-services_lib/res
++
+ LOCAL_SRC_FILES := $(call all-java-files-under, $(src_dirs))
+ LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, $(res_dirs))
++LOCAL_ASSET_DIR := $(LOCAL_PATH)/assets
+ 
+ LOCAL_AAPT_FLAGS := \
+     --auto-add-overlay \
+     --extra-packages com.android.contacts.common \
+-    --extra-packages com.android.incallui
++    --extra-packages com.android.incallui \
++    --extra-packages com.google.android.gms
+ 
+ LOCAL_JAVA_LIBRARIES := telephony-common
+ LOCAL_STATIC_JAVA_LIBRARIES := \
+@@ -27,6 +32,7 @@ LOCAL_STATIC_JAVA_LIBRARIES := \
+     android-support-v13 \
+     android-support-v4 \
+     android-ex-variablespeed \
++    gservices
+ 
+ LOCAL_REQUIRED_MODULES := libvariablespeed
+ 
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index e011d80..5eb446a 100644
+index e011d80..e47a465 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -52,6 +52,11 @@
+@@ -52,6 +52,12 @@
       presses home. -->
      <uses-permission android:name="android.permission.STOP_APP_SWITCHES" />
  
@@ -82,11 +115,12 @@ index e011d80..5eb446a 100644
 +    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 +
 +    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
++    <uses-feature android:name="com.google.android.feature.GOOGLE_EXPERIENCE" android:required="true" />
 +
      <application
          android:name="DialerApplication"
          android:label="@string/applicationLabel"
-@@ -305,5 +310,15 @@
+@@ -305,5 +311,15 @@
              </intent-filter>
          </receiver>
  
@@ -1152,10 +1186,10 @@ index 0000000..7041ff2
 +}
 diff --git a/src/com/android/dialer/lookup/LookupSettings.java b/src/com/android/dialer/lookup/LookupSettings.java
 new file mode 100644
-index 0000000..33d953f
+index 0000000..9120925
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/LookupSettings.java
-@@ -0,0 +1,86 @@
+@@ -0,0 +1,96 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -1176,6 +1210,9 @@ index 0000000..33d953f
 +
 +import android.content.Context;
 +import android.provider.Settings;
++
++import com.google.android.gms.common.ConnectionResult;
++import com.google.android.gms.common.GooglePlayServicesUtil;
 +
 +public final class LookupSettings {
 +    private static final String TAG = LookupSettings.class.getSimpleName();
@@ -1220,12 +1257,19 @@ index 0000000..33d953f
 +    }
 +
 +    public static String getReverseLookupProvider(Context context) {
++        boolean gservicesAvailable =
++                GooglePlayServicesUtil.isGooglePlayServicesAvailable(
++                context) == ConnectionResult.SUCCESS;
++
 +        String provider = getString(context,
 +                Settings.System.REVERSE_LOOKUP_PROVIDER);
 +
 +        if (provider == null) {
++            // If Google Play Services is not available, default to the next
++            // provider in the list (OpenCnam)
 +            putString(context,
-+                    Settings.System.REVERSE_LOOKUP_PROVIDER, RLP_GOOGLE);
++                    Settings.System.REVERSE_LOOKUP_PROVIDER,
++                    gservicesAvailable ? RLP_GOOGLE : RLP_OPENCNAM);
 +
 +            provider = getString(context,
 +                    Settings.System.REVERSE_LOOKUP_PROVIDER);
