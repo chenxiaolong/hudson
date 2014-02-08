@@ -1,4 +1,4 @@
-From 3452303e7eadac07cb91e371370d0661bef068ff Mon Sep 17 00:00:00 2001
+From 406e95f6914a929786ef8309048d664cb92bb76c Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 13:27:50 -0500
 Subject: [PATCH] Telephony: Add settings for forward and reverse number lookup
@@ -6,12 +6,12 @@ Subject: [PATCH] Telephony: Add settings for forward and reverse number lookup
 Change-Id: I96d5b4a455095b40cf25ee39f5cba9fe16e11832
 ---
  Android.mk                                     |  14 +++
- AndroidManifest.xml                            |   4 +
+ AndroidManifest.xml                            |   6 +
  res/values/array.xml                           |  26 ++++
  res/values/cm_strings.xml                      |  10 ++
  res/xml/call_feature_setting.xml               |  33 +++++
  src/com/android/phone/CallFeaturesSetting.java | 160 +++++++++++++++++++++++++
- 6 files changed, 247 insertions(+)
+ 6 files changed, 249 insertions(+)
 
 diff --git a/Android.mk b/Android.mk
 index b12d32e..16bc4da 100644
@@ -52,16 +52,18 @@ index b12d32e..16bc4da 100644
  # Build the test package
  include $(call all-makefiles-under,$(LOCAL_PATH))
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index ecca593..24ee15b 100644
+index 701b76b..af80b31 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
-@@ -110,6 +110,10 @@
+@@ -111,6 +111,12 @@
                        android:readPermission="android.permission.READ_CONTACTS"
                        android:writePermission="android.permission.WRITE_CONTACTS" />
  
++<!--
 +        <meta-data
 +            android:name="com.google.android.gms.version"
 +            android:value="@integer/google_play_services_version" />
++-->
 +
          <!-- Workaround for non saved phone number -->
          <receiver android:name=".MyPhoneNumber">
@@ -102,10 +104,10 @@ index 245c09b..f334858 100644
 +
  </resources>
 diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
-index bad9646..f671dbd 100644
+index 10c96f6..641ae8d 100644
 --- a/res/values/cm_strings.xml
 +++ b/res/values/cm_strings.xml
-@@ -84,4 +84,14 @@
+@@ -88,4 +88,14 @@
      <!-- Noise suppression -->
      <string name="noise_suppression_title">Noise suppression</string>
      <string name="noise_suppression_summary">Enable noise suppression for calls</string>
