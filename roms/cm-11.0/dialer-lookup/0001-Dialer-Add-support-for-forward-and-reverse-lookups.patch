@@ -1,4 +1,4 @@
-From 92da706939c83c54a4671a37ad245042603493d5 Mon Sep 17 00:00:00 2001
+From a5a55b117544df9bc576d187f5040f8ad31e3cce Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -6,7 +6,7 @@ Subject: [PATCH] Dialer: Add support for forward and reverse lookups
 Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
 ---
  Android.mk                                         |   8 +-
- AndroidManifest.xml                                |  20 +
+ AndroidManifest.xml                                |  22 +
  assets/contacts_extensions.properties              |   1 +
  proguard.flags                                     |   5 +
  .../ic_places_picture_180_holo_light.png           | Bin 0 -> 698 bytes
@@ -40,7 +40,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
  .../service/CachedNumberLookupServiceImpl.java     | 322 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 35 files changed, 5442 insertions(+), 5 deletions(-)
+ 35 files changed, 5444 insertions(+), 5 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -104,7 +104,7 @@ index 899d589..588b745 100644
  LOCAL_REQUIRED_MODULES := libvariablespeed
  
 diff --git a/AndroidManifest.xml b/AndroidManifest.xml
-index e011d80..2278f58 100644
+index e011d80..5e33587 100644
 --- a/AndroidManifest.xml
 +++ b/AndroidManifest.xml
 @@ -52,6 +52,12 @@
@@ -120,18 +120,20 @@ index e011d80..2278f58 100644
      <application
          android:name="DialerApplication"
          android:label="@string/applicationLabel"
-@@ -63,6 +69,10 @@
+@@ -63,6 +69,12 @@
          <meta-data android:name="com.google.android.backup.api_key"
              android:value="AEdPqrEAAAAIBXgtCEKQ6W0PXVnW-ZVia2KmlV2AxsTw3GjAeQ" />
  
++<!--
 +        <meta-data
 +            android:name="com.google.android.gms.version"
 +            android:value="@integer/google_play_services_version" />
++-->
 +
          <!-- The entrance point for Phone UI.
               stateAlwaysHidden is set to suppress keyboard show up on
               dialpad screen. -->
-@@ -305,5 +315,15 @@
+@@ -305,5 +317,15 @@
              </intent-filter>
          </receiver>
  
