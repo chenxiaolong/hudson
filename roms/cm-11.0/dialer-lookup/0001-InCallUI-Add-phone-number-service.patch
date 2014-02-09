@@ -1,4 +1,4 @@
-From 746a55a733aad0d78c7db742495413d88a076c75 Mon Sep 17 00:00:00 2001
+From e8c2dd39329b1c3d3b48254a89083d5f2942df43 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 16:00:39 -0500
 Subject: [PATCH] InCallUI: Add phone number service
@@ -12,7 +12,7 @@ Change-Id: If95f5529e868110006e1196040a0595a33059ac8
 
 diff --git a/src/com/android/incallui/service/PhoneNumberServiceImpl.java b/src/com/android/incallui/service/PhoneNumberServiceImpl.java
 new file mode 100644
-index 0000000..8d1198c
+index 0000000..2a656a7
 --- /dev/null
 +++ b/src/com/android/incallui/service/PhoneNumberServiceImpl.java
 @@ -0,0 +1,459 @@
@@ -196,7 +196,7 @@ index 0000000..8d1198c
 +                String number = PhoneNumberUtils.formatNumberToE164(
 +                        mPhoneNumber, mCountryIso);
 +
-+                Log.d(TAG, "raw number: " + mPhoneNumber +
++                if (DEBUG) Log.d(TAG, "raw number: " + mPhoneNumber +
 +                        ", formatted e164: " + number);
 +
 +                if (number == null) {
@@ -497,5 +497,5 @@ index 7191f14..850b576 100644
      }
  }
 -- 
-1.8.5.3
+1.8.5.4
 

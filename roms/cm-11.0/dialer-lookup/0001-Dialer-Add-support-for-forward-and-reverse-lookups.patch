@@ -1,4 +1,4 @@
-From a5a55b117544df9bc576d187f5040f8ad31e3cce Mon Sep 17 00:00:00 2001
+From 3b262ed0be98938ea9c3c138050cf2ff8af316b6 Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Fri, 31 Jan 2014 22:41:09 -0500
 Subject: [PATCH] Dialer: Add support for forward and reverse lookups
@@ -18,21 +18,21 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  res/values/strings.xml                             |   3 +
  .../dialer/database/DialerDatabaseHelper.java      |  99 +++-
  .../DialerExtendedPhoneDirectoriesManager.java     |  58 +++
- src/com/android/dialer/lookup/DialerProvider.java  | 531 ++++++++++++++++++++
+ src/com/android/dialer/lookup/DialerProvider.java  | 532 ++++++++++++++++++++
  src/com/android/dialer/lookup/ForwardLookup.java   | 118 +++++
  src/com/android/dialer/lookup/LookupSettings.java  |  96 ++++
  .../dialer/lookup/PhoneNumberCacheContract.java    |  45 ++
  .../dialer/lookup/PhoneNumberCacheProvider.java    | 467 +++++++++++++++++
  src/com/android/dialer/lookup/ReverseLookup.java   | 419 ++++++++++++++++
  .../android/dialer/lookup/google/GoogleAuth.java   | 223 +++++++++
- .../dialer/lookup/google/GoogleForwardLookup.java  | 314 ++++++++++++
- .../lookup/google/GoogleLookupJsonParser.java      | 550 +++++++++++++++++++++
+ .../dialer/lookup/google/GoogleForwardLookup.java  | 316 ++++++++++++
+ .../lookup/google/GoogleLookupJsonParser.java      | 552 +++++++++++++++++++++
  .../dialer/lookup/google/GoogleReverseLookup.java  | 446 +++++++++++++++++
  .../android/dialer/lookup/google/Gservices.java    | 240 +++++++++
  src/com/android/dialer/lookup/google/UrlRules.java | 232 +++++++++
- .../lookup/opencnam/OpenCnamReverseLookup.java     | 116 +++++
+ .../lookup/opencnam/OpenCnamReverseLookup.java     | 118 +++++
  .../openstreetmap/OpenStreetMapForwardLookup.java  | 177 +++++++
- .../dialer/lookup/whitepages/WhitePagesApi.java    | 220 +++++++++
+ .../dialer/lookup/whitepages/WhitePagesApi.java    | 220 ++++++++
  .../lookup/whitepages/WhitePagesReverseLookup.java | 100 ++++
  .../dialer/lookup/yellowpages/YellowPagesApi.java  | 231 +++++++++
  .../yellowpages/YellowPagesReverseLookup.java      | 139 ++++++
@@ -40,7 +40,7 @@ Change-Id: I848db0bbbe6a648064d1eace4993814a16aa9fa0
  .../lookup/zabasearch/ZabaSearchReverseLookup.java | 100 ++++
  .../service/CachedNumberLookupServiceImpl.java     | 322 ++++++++++++
  src/com/android/dialerbind/ObjectFactory.java      |   4 +-
- 35 files changed, 5444 insertions(+), 5 deletions(-)
+ 35 files changed, 5451 insertions(+), 5 deletions(-)
  create mode 100644 assets/contacts_extensions.properties
  create mode 100644 res/drawable-hdpi/ic_places_picture_180_holo_light.png
  create mode 100644 res/drawable-hdpi/ic_places_picture_holo_light.png
@@ -538,10 +538,10 @@ index 0000000..dee2a2b
 +}
 diff --git a/src/com/android/dialer/lookup/DialerProvider.java b/src/com/android/dialer/lookup/DialerProvider.java
 new file mode 100644
-index 0000000..119f711
+index 0000000..d9a9f4d
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/DialerProvider.java
-@@ -0,0 +1,531 @@
+@@ -0,0 +1,532 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -605,6 +605,7 @@ index 0000000..119f711
 +public class DialerProvider extends ContentProvider {
 +    private static final String TAG = DialerProvider.class.getSimpleName();
 +
++    private static final boolean DEBUG = false;
 +    private static final boolean DEBUG_SHOW_DISTANCE = false;
 +    private static final boolean ALLOW_CONTACT_EXPORT = true;
 +
@@ -660,7 +661,7 @@ index 0000000..119f711
 +    @Override
 +    public Cursor query(Uri uri, final String[] projection, String selection,
 +            String[] selectionArgs, String sortOrder) {
-+        Log.v(TAG, "query: " + uri);
++        if (DEBUG) Log.v(TAG, "query: " + uri);
 +
 +        int match = sURIMatcher.match(uri);
 +
@@ -766,7 +767,7 @@ index 0000000..119f711
 +                new LocationListener() {
 +            @Override
 +            public void onLocationChanged(Location location) {
-+                Log.v(TAG, "onLocationChanged: " + location);
++                if (DEBUG) Log.v(TAG, "onLocationChanged: " + location);
 +            }
 +
 +            @Override
@@ -800,7 +801,7 @@ index 0000000..119f711
 +     */
 +    private Cursor handleFilter(String[] projection, String filter,
 +            int maxResults, Location lastLocation) {
-+        Log.v(TAG, "handleFilter(" + filter + ")");
++        if (DEBUG) Log.v(TAG, "handleFilter(" + filter + ")");
 +
 +        if (filter != null) {
 +            try {
@@ -813,7 +814,7 @@ index 0000000..119f711
 +                    fl.lookup(getContext(), filter, lastLocation);
 +
 +            if (results == null || results.length == 0) {
-+                Log.v(TAG, "handleFilter(" + filter + "): No results");
++                if (DEBUG) Log.v(TAG, "handleFilter(" + filter + "): No results");
 +                return null;
 +            }
 +
@@ -821,7 +822,7 @@ index 0000000..119f711
 +            try {
 +                cur = buildResultCursor(projection, results, maxResults);
 +
-+                Log.v(TAG, "handleFilter(" + filter + "): "
++                if (DEBUG) Log.v(TAG, "handleFilter(" + filter + "): "
 +                        + cur.getCount() + " matches");
 +            } catch (JSONException e) {
 +                Log.e(TAG, "JSON failure", e);
@@ -1825,7 +1826,7 @@ index 0000000..1206fea
 +}
 diff --git a/src/com/android/dialer/lookup/ReverseLookup.java b/src/com/android/dialer/lookup/ReverseLookup.java
 new file mode 100644
-index 0000000..04fe00a
+index 0000000..a2814a4
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/ReverseLookup.java
 @@ -0,0 +1,419 @@
@@ -1947,7 +1948,7 @@ index 0000000..04fe00a
 +        private static final String TAG =
 +                ContactBuilder.class.getSimpleName();
 +
-+        private static final boolean DEBUG = true;
++        private static final boolean DEBUG = false;
 +
 +        /** Default photo for businesses if no other image is found */
 +        public static final String PHOTO_URI_BUSINESS =
@@ -2479,10 +2480,10 @@ index 0000000..9928cbb
 +}
 diff --git a/src/com/android/dialer/lookup/google/GoogleForwardLookup.java b/src/com/android/dialer/lookup/google/GoogleForwardLookup.java
 new file mode 100644
-index 0000000..75c075a
+index 0000000..72b9572
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/google/GoogleForwardLookup.java
-@@ -0,0 +1,314 @@
+@@ -0,0 +1,316 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -2527,6 +2528,8 @@ index 0000000..75c075a
 +public class GoogleForwardLookup extends ForwardLookup {
 +    private static final String TAG =
 +            GoogleForwardLookup.class.getSimpleName();
++
++    private static final boolean DEBUG = false;
 +
 +    private static final String QUERY_FILTER = "q";
 +    private static final String QUERY_LANGUAGE = "hl";
@@ -2613,7 +2616,7 @@ index 0000000..75c075a
 +
 +                JSONArray results = new JSONArray(httpResponse);
 +
-+                Log.v(TAG, "Results: " + results);
++                if (DEBUG) Log.v(TAG, "Results: " + results);
 +
 +                return getEntries(results);
 +            } catch (IOException e) {
@@ -2694,11 +2697,11 @@ index 0000000..75c075a
 +        String newUrl = rule.apply(url);
 +
 +        if (newUrl == null) {
-+            Log.w(TAG, "Blocked by " + rule.mName + ": " + url);
++            if (DEBUG) Log.w(TAG, "Blocked by " + rule.mName + ": " + url);
 +            throw new IOException("Blocked by rule: " + rule.mName);
 +        }
 +
-+        Log.v(TAG, "Rule " + rule.mName + ": " + url + " -> " + newUrl);
++        if (DEBUG) Log.v(TAG, "Rule " + rule.mName + ": " + url + " -> " + newUrl);
 +        return newUrl;
 +    }
 +
@@ -2799,10 +2802,10 @@ index 0000000..75c075a
 +}
 diff --git a/src/com/android/dialer/lookup/google/GoogleLookupJsonParser.java b/src/com/android/dialer/lookup/google/GoogleLookupJsonParser.java
 new file mode 100644
-index 0000000..150b681
+index 0000000..c96b3ef
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/google/GoogleLookupJsonParser.java
-@@ -0,0 +1,550 @@
+@@ -0,0 +1,552 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -2989,6 +2992,8 @@ index 0000000..150b681
 +    private static final String TAG =
 +            GoogleLookupJsonParser.class.getSimpleName();
 +
++    private static final boolean DEBUG = false;
++
 +    private GoogleLookupJsonParser() {
 +    }
 +
@@ -3034,7 +3039,7 @@ index 0000000..150b681
 +
 +            String kind = peopleList.getString("kind");
 +            if (!"plus#peopleList".equals(kind)) {
-+                Log.e(TAG, "The value of 'kind' is not recognized: " + kind
++                if (DEBUG) Log.e(TAG, "The value of 'kind' is not recognized: " + kind
 +                        + "JSON: " + peopleList);
 +                return null;
 +            }
@@ -3355,7 +3360,7 @@ index 0000000..150b681
 +}
 diff --git a/src/com/android/dialer/lookup/google/GoogleReverseLookup.java b/src/com/android/dialer/lookup/google/GoogleReverseLookup.java
 new file mode 100644
-index 0000000..723c534
+index 0000000..fe996a1
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/google/GoogleReverseLookup.java
 @@ -0,0 +1,446 @@
@@ -3605,7 +3610,7 @@ index 0000000..723c534
 +        HttpResponse response = client.execute(request);
 +
 +        int responseCode = response.getStatusLine().getStatusCode();
-+        Log.d(TAG, "HTTP response code: " + responseCode);
++        if (DEBUG) Log.d(TAG, "HTTP response code: " + responseCode);
 +
 +        ByteArrayOutputStream out = new ByteArrayOutputStream();
 +        response.getEntity().writeTo(out);
@@ -4291,10 +4296,10 @@ index 0000000..5ed1d62
 +}
 diff --git a/src/com/android/dialer/lookup/opencnam/OpenCnamReverseLookup.java b/src/com/android/dialer/lookup/opencnam/OpenCnamReverseLookup.java
 new file mode 100644
-index 0000000..08be170
+index 0000000..5682863
 --- /dev/null
 +++ b/src/com/android/dialer/lookup/opencnam/OpenCnamReverseLookup.java
-@@ -0,0 +1,116 @@
+@@ -0,0 +1,118 @@
 +/*
 + * Copyright (C) 2014 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 + *
@@ -4334,6 +4339,8 @@ index 0000000..08be170
 +    private static final String TAG =
 +            OpenCnamReverseLookup.class.getSimpleName();
 +
++    private static final boolean DEBUG = false;
++
 +    private static final String LOOKUP_URL =
 +            "https://api.opencnam.com/v2/phone/";
 +
@@ -4366,7 +4373,7 @@ index 0000000..08be170
 +        String displayName;
 +        try {
 +            displayName = httpGetRequest(normalizedNumber);
-+            Log.d(TAG, "Reverse lookup returned name: " + displayName);
++            if (DEBUG) Log.d(TAG, "Reverse lookup returned name: " + displayName);
 +        } catch (IOException e) {
 +            return null;
 +        }
