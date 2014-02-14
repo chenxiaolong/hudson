@@ -54,7 +54,7 @@ apply_patches_cm-11.0() {
     `# hardware/libhardware/` \
     'http://review.cyanogenmod.org/#/c/58344/'
 
-  GERRIT_URL="http://review.cyanogenmod.org" \
+  GERRIT_URL="http://gerrit.cxl.epac.to" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
     'http://gerrit.cxl.epac.to/#/c/16' \
     'http://gerrit.cxl.epac.to/#/c/17' \
