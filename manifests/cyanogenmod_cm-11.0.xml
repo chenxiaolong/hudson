@@ -27,6 +27,10 @@
            path="device/samsung/jflte"
            remote="cxl" />
 
+  <project name="CyanogenMod/android_device_qcom_common"
+           path="device/qcom/common"
+           remote="github" />
+
   <project name="chenxiaolong/CM_device_samsung_jf-common"
            path="device/samsung/jf-common"
            remote="cxl" />
