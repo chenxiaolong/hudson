@@ -56,10 +56,10 @@ apply_patches_cm-11.0() {
 
   GERRIT_URL="http://review.cyanogenmod.org" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
-    'http://gerrit.cxl.epac.to/16' \
-    'http://gerrit.cxl.epac.to/17' \
-    'http://gerrit.cxl.epac.to/18' \
-    'http://gerrit.cxl.epac.to/19' \
-    'http://gerrit.cxl.epac.to/20' \
-    'http://gerrit.cxl.epac.to/21'
+    'http://gerrit.cxl.epac.to/#/c/16' \
+    'http://gerrit.cxl.epac.to/#/c/17' \
+    'http://gerrit.cxl.epac.to/#/c/18' \
+    'http://gerrit.cxl.epac.to/#/c/19' \
+    'http://gerrit.cxl.epac.to/#/c/20' \
+    'http://gerrit.cxl.epac.to/#/c/21'
 }
