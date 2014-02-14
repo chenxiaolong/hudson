@@ -52,7 +52,9 @@ apply_patches_cm-11.0() {
     'http://review.cyanogenmod.org/#/c/58300/' \
     'http://review.cyanogenmod.org/#/c/58301/' \
     `# hardware/libhardware/` \
-    'http://review.cyanogenmod.org/#/c/58344/'
+    'http://review.cyanogenmod.org/#/c/58344/' \
+    `# device/samsung/msm8960-common/` \
+    'http://review.cyanogenmod.org/#/c/57566/'
 
   GERRIT_URL="http://gerrit.cxl.epac.to" \
   python3 ${WORKSPACE}/hudson/gerrit_changes.py \
