@@ -19,9 +19,9 @@
   <!-- JFLTE -->
 
   <project path="vendor/samsung"
-           name="TheMuppets/proprietary_vendor_samsung"
+           name="invisiblek/proprietary_vendor_samsung"
            remote="github"
-           revision="cm-11.0" />
+           revision="consolidation" />
 
   <project name="chenxiaolong/CM_device_samsung_jflte"
            path="device/samsung/jflte"
