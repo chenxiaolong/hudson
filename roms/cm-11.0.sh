@@ -10,10 +10,6 @@ reset_dirs_cm-11.0() {
 
   # Directories that should be reset for one more build
   RESET_DIRS_OLD=(
-    'packages/apps/ContactsCommon/'
-    'packages/apps/Dialer/'
-    'packages/apps/InCallUI/'
-    'packages/services/Telephony/'
   )
 
   for i in ${RESET_DIRS[@]} ${RESET_DIRS_OLD[@]}; do
