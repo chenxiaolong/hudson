@@ -31,10 +31,6 @@
            path="device/qcom/common"
            remote="github" />
 
-  <project name="chenxiaolong/CM_device_samsung_jf-common"
-           path="device/samsung/jf-common"
-           remote="cxl" />
-
   <project name="chenxiaolong/CM_hardware_samsung"
            path="hardware/samsung"
            remote="cxl" />
@@ -49,42 +45,6 @@
 
   <project name="CyanogenMod/android_kernel_samsung_jf"
            path="kernel/samsung/jf"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jfltetmo"
-           path="device/samsung/jfltetmo"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jfltevzw"
-           path="device/samsung/jfltevzw"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jflteatt"
-           path="device/samsung/jflteatt"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jfltecan"
-           path="device/samsung/jfltecan"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jfltespr"
-           path="device/samsung/jfltespr"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jflteusc"
-           path="device/samsung/jflteusc"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jfltecri"
-           path="device/samsung/jfltecri"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jfltecsp"
-           path="device/samsung/jfltecsp"
-           remote="github" />
-
-  <project name="CyanogenMod/android_device_samsung_jfltexx"
-           path="device/samsung/jfltexx"
            remote="github" />
 
 </manifest>
