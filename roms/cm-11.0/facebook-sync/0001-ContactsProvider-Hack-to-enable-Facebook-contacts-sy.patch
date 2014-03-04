@@ -1,4 +1,4 @@
-From 1c14ac84296370f5dec7362e4c0f902c0cb2616d Mon Sep 17 00:00:00 2001
+From 30e31d6ba5f9ed07d04e3ce6bc93fd93dc4e70ae Mon Sep 17 00:00:00 2001
 From: Xiao-Long Chen <chenxiaolong@cxl.epac.to>
 Date: Wed, 11 Sep 2013 16:43:22 -0400
 Subject: [PATCH] ContactsProvider: Hack to enable Facebook contacts sync
@@ -44,7 +44,7 @@ index 0000000..22e3594
 +
 +</resources>
 diff --git a/src/com/android/providers/contacts/ContactsDatabaseHelper.java b/src/com/android/providers/contacts/ContactsDatabaseHelper.java
-index eac08f8..af16661 100644
+index 78c9b8a..bd644b3 100644
 --- a/src/com/android/providers/contacts/ContactsDatabaseHelper.java
 +++ b/src/com/android/providers/contacts/ContactsDatabaseHelper.java
 @@ -946,6 +946,9 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
@@ -68,8 +68,8 @@ index eac08f8..af16661 100644
          ");");
  
          db.execSQL("CREATE INDEX raw_contacts_contact_id_index ON " + Tables.RAW_CONTACTS + " (" +
-@@ -4019,6 +4024,20 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
-                 ContactsContract.PinnedPositions.UNPINNED + ";");
+@@ -4042,6 +4047,20 @@ public class ContactsDatabaseHelper extends SQLiteOpenHelper {
+         }
      }
  
 +    private void addIsRestrictedColumn(SQLiteDatabase db) {
@@ -90,5 +90,5 @@ index eac08f8..af16661 100644
          Rfc822Token[] tokens = Rfc822Tokenizer.tokenize(email);
          if (tokens.length == 0) {
 -- 
-1.8.4.2
+1.9.0
 
