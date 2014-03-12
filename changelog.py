@@ -9,21 +9,22 @@ import sys
 from email.utils import formatdate
 
 if len(sys.argv) < 4:
-  print("Usage: changelog.py [device] [rom] [branch]")
+  print("Usage: changelog.py [device] [rom] [branch] [workspace]")
   exit(1)
-
-html_path = os.environ["WORKSPACE"] + "/archive/changelog.html"
-
-html_file = open(html_path, 'w')
-
-def write_html(string):
-  html_file.write(string + '\n')
 
 current_time = formatdate()
 device = sys.argv[1]
 rom = sys.argv[2]
 branch = sys.argv[3]
+workspace = sys.argv[4]
 repo = ""
+
+html_path = os.path.join(workspace, 'archive', 'changelog.html')
+
+html_file = open(html_path, 'w')
+
+def write_html(string):
+  html_file.write(string + '\n')
 
 # Look for repo tool
 for path in os.environ["PATH"].split(os.pathsep):
@@ -38,7 +39,7 @@ if not repo:
 
 # Read previous build time
 previous_time = ""
-changes = os.environ["WORKSPACE"] + "/changes_%s_%s_%s" % (rom, branch, device)
+changes = os.path.join(workspace, "changes_%s_%s_%s" % (rom, branch, device))
 if not os.path.exists(changes):
   fd = open(changes + '.new', 'w')
   fd.write(current_time)

@@ -1,216 +1,220 @@
 #!/usr/bin/env bash
 
-#set -ex
-set -e
+set -u
 
-source common.sh
+show_usage() {
+    cat << EOF
+Usage ${0} -w <workspace> -r <rom> -b <branch>
 
-for i in distros/*.sh; do
-  source ${i}
+Options:
+  -w,--workspace  Path to workspace
+  -r,--rom        The ROM to build
+  -b,--branch     The ROM's git branch to build
+  -d,--device     The device to build for
+  -o,--romopts    ROM-specific options (in form: param1=value1,param2=value2)
+  -s,--sync       Run \"repo sync\" before building
+  -c,--clean      Clean up tree before building
+  -u,--updatecl   Update changelog timestamp if build succeeds
+  --listroms      List ROMs this script can build
+  --listromopts   List options the ROM script accepts
+  --sourcedir     Path to ROM's source code (optional)
+
+Directories:
+  If '-d' is not set, the source code will be placed in a subdirectory of the
+  workspace named <rom>_<branch>.
+
+  The workspace will contain a directory named 'archive' that holds the zip of
+  completed build, the 'build.prop' file, the changelog, and the manifests.
+
+  The changelog's "last build" timestamp files are stored at the base of the
+  workspace. They will be updated only if '-u' is passed.
+
+Examples:
+  Build CyanogenMod 11.0 for the 'hammerhead' device if the source is in the
+  current directory:
+    $ ${0} -w /path/to/workspace -r cyanogenmod -b cm-11.0 -d hammerhead \\
+        --sourcedir .
+
+  Build CyanogenMod 11.0 nightlies for the 'jflte' device, keeping all
+  source code in the workspace:
+    $ ${0} -w /path/to/workspace -r cyanogenmod -b cm-11.0 -d jflte -s -u
+EOF
+}
+
+args=$(getopt -o w:r:b:d:o:scu \
+    -l workspace:rom:branch:device:romopts:sync,clean,updatecl,listroms,listromopts \
+    -n build.sh -- "${@}")
+
+if [ "${?}" -ne 0 ]; then
+    echo "Failed to parse arguments!"
+    show_usage
+    exit 1
+fi
+
+eval set -- "${args}"
+
+romopts=""
+sync=false
+clean=false
+updatecl=false
+listroms=false
+listromopts=false
+romdir=""
+
+while true; do
+    case "${1}" in
+    -w|--workspace)
+        shift
+        workspace="${1}"
+        shift
+        ;;
+    -r|--rom)
+        shift
+        rom="${1}"
+        shift
+        ;;
+    -b|--branch)
+        shift
+        branch="${1}"
+        shift
+        ;;
+    -d|--device)
+        shift
+        device="${1}"
+        shift
+        ;;
+    -o|--romopts)
+        shift
+        romopts="${1}"
+        shift
+        ;;
+    -s|--sync)
+        sync=true
+        shift
+        ;;
+    -c|--clean)
+        clean=true
+        shift
+        ;;
+    -u|--updatecl)
+        updatecl=true
+        shift
+        ;;
+    --listroms)
+        listroms=true
+        shift
+        ;;
+    --listromopts)
+        listromopts=true
+        shift
+        ;;
+    --sourcedir)
+        shift
+        romdir="${1}"
+        shift
+        ;;
+    --)
+        shift
+        break
+        ;;
+    esac
 done
 
-for i in roms/rom_*.sh; do
-  source ${i}
-done
+topdir=$(cd "$(dirname "${0}")" && pwd)
 
-if [ -f /etc/arch-release ]; then
-  DISTRO=arch
-elif [ -f /etc/debian-release ]; then
-  DISTRO=debian
-elif [ -f /etc/fedora-release ]; then
-  DISTRO=fedora
-elif [ -f /etc/os-release ]; then
-  if grep -q Ubuntu /etc/os-release; then
-    DISTRO=ubuntu
-  fi
+if [[ "${listroms}" == "true" ]]; then
+    basename -s .sh "${topdir}"/roms/*.sh
+    exit
 fi
 
-if [ -z "${DISTRO}" ]; then
-  echo "Your Linux distribution is not supported!"
-  exit 1
+argerror=false
+
+if [[ -z "${workspace}" ]]; then
+    echo "Workspace is not set. Be sure to pass the -w|--workspace parameter."
+    argerror=true
 fi
 
-if declare -f ${DISTRO}_checkdeps >/dev/null; then
-  ${DISTRO}_checkdeps
+if [[ -z "${rom}" ]]; then
+    echo "ROM is not set. Be sure to pass the -r|--rom parameter."
+    argerror=true
 fi
 
-if declare -f ${DISTRO}_envsetup >/dev/null; then
-  ${DISTRO}_envsetup
+if [[ -z "${branch}" ]]; then
+    echo "Branch is not set. Be sure to pass the -b|--branch parameter."
+    argerror=true
 fi
 
-if [ -z "${HOME}" ]; then
-  echo HOME not in environment, guessing...
-  export HOME=$(awk -F: -v v="${USER}" '{if ($1==v) print $6}' /etc/passwd)
+if [[ -z "${device}" ]]; then
+    echo "Device is not set. Be sure to pass the -d|--device parameter."
+    argerror=true
 fi
 
-if [ -z "${WORKSPACE}" ]; then
-  echo WORKSPACE not specified
-  exit 1
+if [[ "${argerror}" == "true" ]]; then
+    exit 1
 fi
 
-if [ -z "${CLEAN}" ]; then
-  echo CLEAN not specified
-  exit 1
+source "${topdir}/builder/common.sh"
+source "${topdir}/builder/distro.sh"
+source "${topdir}/builder/rom.sh"
+
+if ! detect_distro; then
+    echo "Your Linux distribution is not supported!"
+    exit 1
 fi
 
-if [ -z "${ROM}" ]; then
-  echo ROM not specified
-  exit 1
+callfunc ${distro}_checkdeps
+callfunc ${distro}_envsetup
+
+if ! load_rom; then
+    echo "ROM ${rom} does not exist!"
+    exit 1
 fi
 
-if [ -z "${REPO_BRANCH}" ]; then
-  echo REPO_BRANCH not specified
-  exit 1
+if [[ "${listromopts}" == "true" ]]; then
+    listromopts
+    exit
 fi
 
-if [ -z "${LUNCH}" ]; then
-  echo LUNCH not specified
-  exit 1
-fi
-
-if [ -z "${RELEASE_TYPE}" ]; then
-  echo RELEASE_TYPE not specified
-  exit 1
-fi
-
-if [ -z "${SYNC}" ]; then
-  SYNC=true
-fi
-
-# colorization fix in Jenkins
-export CL_RED="\"\033[31m\""
-export CL_GRN="\"\033[32m\""
-export CL_YLW="\"\033[33m\""
-export CL_BLU="\"\033[34m\""
-export CL_MAG="\"\033[35m\""
-export CL_CYN="\"\033[36m\""
-export CL_RST="\"\033[0m\""
-
-cd $WORKSPACE
-rm -rf archive
-mkdir -p archive
-
-export PATH="$(pwd)/bin:${PATH}"
-
-if ! which repo &>/dev/null; then
-  mkdir -p bin/
-  curl http://commondatastorage.googleapis.com/git-repo-downloads/repo > bin/repo
-  chmod a+x bin/repo
-  REPO="$(pwd)/bin/repo"
-else
-  REPO="$(which repo)"
-fi
-
-# Set up environment
-if declare -f ${ROM}_envsetup >/dev/null; then
-  time ${ROM}_envsetup
-else
-  time common_envsetup
-fi
-echo "^^^ TIME SPENT IN envsetup ^^^"
-
-# Create build directory
-BUILD_DIR=${ROM}_${REPO_BRANCH}
-mkdir -p ${BUILD_DIR}
-cd ${BUILD_DIR}
+###
 
 cleanup() {
   #(repo forall -c "git reset --hard") >/dev/null || true
-  rm -f .repo/local_manifests/dyn-*.xml
-  rm -f .repo/local_manifests/roomservice.xml
+  rm -f "${romdir}"/.repo/local_manifests/dyn-*.xml
+  rm -f "${romdir}".repo/local_manifests/roomservice.xml
+  #callfunc "${rom}_cleanup"
 }
 
 trap "cleanup" SIGINT SIGTERM SIGKILL EXIT
 
-# Stuff to do before initializing repos
-if declare -f ${ROM}_preinit >/dev/null; then
-  time ${ROM}_preinit
-else
-  time common_preinit
-fi
-echo "^^^ TIME SPENT IN preinit ^^^"
+exitiffail() {
+    local run="${1}"
+    shift
+    "${run}" "${@}" || { echo "Failed." && exit 1; }
+}
 
-# Initialize repos
-if declare -f ${ROM}_repoinit >/dev/null; then
-  time ${ROM}_repoinit
-else
-  time common_repoinit
+if [[ -z "${romdir}" ]]; then
+    romdir="${workspace}/${rom}_${branch}"
 fi
-echo "^^^ TIME SPENT IN repoinit ^^^"
+mkdir -p "${romdir}"
+pushd "${romdir}"
 
-if declare -f ${ROM}_presync >/dev/null; then
-  time ${ROM}_presync
-else
-  time common_presync
-fi
-echo "^^^ TIME SPENT IN presync ^^^"
+exitiffail setdevice "${device}"
+exitiffail setromopts "${romopts}"
+exitiffail checkprereqs
+exitiffail envsetup
+exitiffail preinit
+exitiffail repoinit
+exitiffail presync
 
-printline '='
-echo "Core nanifest:"
-printline '-'
-cat .repo/manifest.xml
-printline '='
+display_manifests
 
-LOCAL_MANIFESTS="$(find .repo/local_manifests -name '*.xml' || true)"
-if [[ ! -z "${LOCAL_MANIFESTS}" ]]; then
-  for i in ${LOCAL_MANIFESTS}; do
-    printline '='
-    echo "${i}"
-    printline '-'
-    cat "${i}"
-    printline '='
-  done
-fi
+exitiffail syncrepos
+exitiffail postsync
+exitiffail prelunch
+exitiffail prebuild
+exitiffail build
+exitiffail postbuild
 
-if [ "x${SYNC}" = "xtrue" ]; then
-  time repo sync -d -c >/dev/null
-  echo "^^^ TIME SPENT ON repo sync ^^^"
-else
-  echo '### repo sync disabled for this build! ###'
-fi
+popd
 
-if declare -f ${ROM}_postsync >/dev/null; then
-  time ${ROM}_postsync
-else
-  time common_postsync
-fi
-echo "^^^ TIME SPENT IN postsync ^^^"
-
-if declare -f ${ROM}_translatedevice >/dev/null; then
-  export LUNCH_OLD=${LUNCH}
-  LUNCH=$(${ROM}_translatedevice ${LUNCH})
-fi
-
-if declare -f ${ROM}_prelunch >/dev/null; then
-  time ${ROM}_prelunch
-else
-  time common_prelunch
-fi
-echo "^^^ TIME SPENT IN prelunch ^^^"
-
-# Hackish, but necessary because lunch is appending things to the beginning of
-# $PATH. envsetup should be idempotent anyway.
-if declare -f ${DISTRO}_envsetup >/dev/null; then
-  ${DISTRO}_envsetup
-fi
-
-if declare -f ${ROM}_prebuild >/dev/null; then
-  time ${ROM}_prebuild
-else
-  time common_prebuild
-fi
-echo "^^^ TIME SPENT IN prebuild ^^^"
-
-if declare -f ${ROM}_build >/dev/null; then
-  time ${ROM}_build
-else
-  time common_build
-fi
-echo "^^^ TIME SPENT IN build ^^^"
-
-if declare -f ${ROM}_postbuild >/dev/null; then
-  time ${ROM}_postbuild
-else
-  time common_postbuild
-fi
-echo "^^^ TIME SPENT IN postbuild ^^^"
+echo "Done."
