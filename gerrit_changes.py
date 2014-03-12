@@ -7,7 +7,11 @@ import os
 import re
 import subprocess
 import sys
-import urllib.request
+
+if sys.hexversion < 0x03000000:
+  from urllib import urlopen
+else:
+  from urllib.request import urlopen
 
 def run_command(command, \
                 stdin_data = None, \
@@ -86,7 +90,7 @@ for change in sys.argv[1:]:
   counter = 0
   while counter < 5:
     try:
-      f = urllib.request.urlopen("%s/query?q=change:%s" % (gerrit_url, change))
+      f = urlopen("%s/query?q=change:%s" % (gerrit_url, change))
       break
     except:
       counter += 1
@@ -126,7 +130,7 @@ for change in sys.argv[1:]:
     print("%s is not a directory!" % projectpath)
     sys.exit(1)
 
-  f = urllib.request.urlopen("%s/changes/%s/revisions/current/review" % \
+  f = urlopen("%s/changes/%s/revisions/current/review" % \
                              (gerrit_url, number))
   d = f.read().decode()
   d = '\n'.join(d.split('\n')[1:])
