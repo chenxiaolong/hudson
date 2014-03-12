@@ -69,7 +69,7 @@ ubuntu_checkdeps() {
         fi
     done
 
-    if [[ ! -z "${NOTINSTALLED[@]}" ]]; then
+    if [[ "${#NOTINSTALLED[@]}" -gt 0 ]]; then
         error "Missing packages: ${NOTINSTALLED[@]}"
         exit 1
     fi
