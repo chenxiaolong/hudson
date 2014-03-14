@@ -19,30 +19,29 @@ cyanogenmod_setromopts() {
 }
 
 cyanogenmod_listromopts() {
-    echo "releasetype  - One of 'experimental' (default), 'nightly', or 'release'"
+    echo "releasetype  - One of RELEASE, NIGHTLY, SNAPSHOT, or EXPERIMENTAL"
     echo "extraversion - Extra string to append to the version"
 }
 
 cyanogenmod_checkprereqs() {
     if [[ "${cm_releasetype-unset}" == "unset" ]]; then
         warning "CyanogenMod ROM argument 'releasetype' was not set. Defaulting to 'experimental'"
-        cm_releasetype="experimental"
+        cm_releasetype="EXPERIMENTAL"
     fi
 
-    if [[ "${cm_releasetype}" == "experimental" ]]; then
-        export CM_EXPERIMENTAL=true
-    elif [[ "${cm_releasetype}" == "nightly" ]]; then
-        export CM_NIGHTLY=true
-    elif [[ "${cm_releasetype}" == "release" ]]; then
-        export CM_RELEASE=true
-    else
+
+    if [[ "${cm_releasetype}" != "RELEASE" ]] \
+            && [[ "${cm_releasetype}" == "NIGHTLY" ]] \
+            && [[ "${cm_releasetype}" == "SNAPSHOT" ]] \
+            && [[ "${cm_releasetype}" == "EXPERIMENTAL" ]]; then
         error "Unrecognized value for 'releasetype': ${cm_releasetype}"
         return 1
     fi
 
+    export CM_BUILDTYPE="${cm_releasetype}"
+
     if [[ "${cm_extraversion+set}" == "set" ]]; then
         export CM_EXTRAVERSION="${cm_extraversion}"
-        #export CM_EXPERIMENTAL=true
     fi
 
     info "CyanogenMod release type: ${cm_releasetype}"
