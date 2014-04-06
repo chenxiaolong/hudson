@@ -18,5 +18,6 @@ apply_patches_cm-11.0() {
     apply_patch_file_git "${fbsync}/0001-ContactsProvider-Hack-to-enable-Facebook-contacts-sy.patch"
     popd
 
-    #python3 "${topdir}/gerrit_changes.py" \
+    python3 "${topdir}/gerrit_changes.py" \
+        'http://review.cyanogenmod.org/#/c/62152/'
 }
