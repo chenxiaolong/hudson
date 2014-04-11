@@ -19,5 +19,18 @@ apply_patches_cm-11.0() {
     popd
 
     python3 "${topdir}/gerrit_changes.py" \
-        'http://review.cyanogenmod.org/#/c/62152/'
+        'http://review.cyanogenmod.org/#/c/62152/' \
+        'http://review.cyanogenmod.org/#/c/62375/' \
+        'http://review.cyanogenmod.org/#/c/62369/' \
+        'http://review.cyanogenmod.org/#/c/62361/' \
+        'http://review.cyanogenmod.org/#/c/62363/' \
+        'http://review.cyanogenmod.org/#/c/62365/' \
+        'http://review.cyanogenmod.org/#/c/62366/' \
+        'http://review.cyanogenmod.org/#/c/62367/' \
+        'http://review.cyanogenmod.org/#/c/62368/' \
+        'http://review.cyanogenmod.org/#/c/62371/' \
+        'http://review.cyanogenmod.org/#/c/62372/' \
+        'http://review.cyanogenmod.org/#/c/62373/' \
+        'http://review.cyanogenmod.org/#/c/62374/' \
+        'http://review.cyanogenmod.org/#/c/62362/'
 }
