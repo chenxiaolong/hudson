@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
-# Based on CyanogenMod's repopick.py from https://github.com/CyanogenMod/hudson
-
+import argparse
 import json
 import os
 import re
@@ -9,172 +8,280 @@ import subprocess
 import sys
 
 if sys.hexversion < 0x03000000:
-  from urllib import urlopen
+    from urllib import urlopen
+    from urllib import URLError
 else:
-  from urllib.request import urlopen
+    from urllib.request import urlopen
+    from urllib.error import URLError
 
-def run_command(command, \
-                stdin_data = None, \
-                cwd = None, \
-                universal_newlines = True):
-  try:
-    process = subprocess.Popen(
-      command,
-      stdin = subprocess.PIPE,
-      stdout = subprocess.PIPE,
-      stderr = subprocess.PIPE,
-      cwd = cwd,
-      universal_newlines = universal_newlines
+
+# Get default URL (used if only the change IDs are provided as parameters)
+if 'GERRIT_URL' in os.environ:
+    default_host = os.environ['GERRIT_URL']
+    if default_host[-1] == '/':
+        default_host = default_host[:-1]
+else:
+    default_host = None
+
+
+class Commit:
+    def __init__(self):
+        self.host = default_host
+        self.url = ""
+        self.changeid = ""
+        self.project = ""
+        self.projectpath = ""
+        self.patchset = 0
+        self.ref = ""
+
+    def cherrypick(self):
+        exit_status, output, error = run_command(
+            ['git', 'fetch', self.host + '/' + self.project, self.ref],
+            cwd=self.projectpath
+        )
+        if exit_status != 0:
+            raise Exception(
+                'Failed to run command (exit status %i):\n' % exit_status +
+                '--- stdout ---\n' + output +
+                '--- stderr ---\n' + error +
+                '--- end ---'
+            )
+
+        exit_status, output, error = run_command(
+            ['git', 'merge', '--no-edit', 'FETCH_HEAD'],
+            cwd=self.projectpath
+        )
+        if exit_status != 0:
+            raise Exception(
+                'Failed to run command (exit status: %i):\n' % exit_status +
+                '--- stdout ---\n' + output +
+                '--- stderr ---\n' + error +
+                '--- end ---'
+            )
+
+    def parse(self, arg):
+        if '://' in arg:
+            self.parse_url(arg)
+        elif arg[0] == 'I':
+            self.parse_commit_id(arg)
+        elif re.search(r'^[0-9]+$', arg):
+            self.parse_change_id(arg)
+        else:
+            raise Exception('Could not parse argument: ' + arg)
+
+        self.projectpath = self.get_project_path()
+        self.fetch_latest_revision()
+
+    def parse_url(self, url):
+        match = re.search(r'(?:/#/c)?/([0-9]+)/?', arg)
+        if not match:
+            raise Exception('Invalid URL: %s' % arg)
+
+        host = re.search(r'^(.+://.+?)/', arg)
+        if not host:
+            raise Exception('Invalid URL: %s' % arg)
+
+        self.host = host.group(1)
+        self.url = arg
+        self.changeid = match.group(1)
+        data = self.query_gerrit(self.changeid)
+        self.project = data['project']
+
+    def parse_commit_id(self, commit_id):
+        data = self.query_gerrit(commit_id)
+        self.changeid = data['number']
+        self.project = data['project']
+        self.url = '%s/#/c/%s/' % (self.host, self.changeid)
+
+    def parse_change_id(self, change_id):
+        self.changeid = change_id
+        data = self.query_gerrit(change_id)
+        self.project = data['project']
+        self.url = '%s/#/c/%s/' % (self.host, self.changeid)
+
+    def query_gerrit(self, query):
+        if not self.host:
+            raise Exception('GERRIT_URL environment variable is not set')
+
+        query_url = "%s/query?q=change:%s" % (self.host, query)
+
+        # Sometimes 504's a bit
+        counter = 0
+        while counter < 5:
+            try:
+                f = urlopen(query_url)
+                d = f.read().decode()
+                d = d.split('\n')[0]
+                data = json.loads(d)
+                return data
+            except URLError as e:
+                if int(e.code / 100) != 5:
+                    raise Exception('Failed to query gerrit: ' + str(e))
+                else:
+                    print('Failed to query gerrit, trying again ...')
+                    counter += 1
+
+        raise Exception('Failed to query gerrit after 5 tries')
+
+    def get_project_path(self):
+        path = None
+
+        for i in repos:
+            if self.project == i[1]:
+                path = i[0]
+                break
+
+        if not path:
+            for i in repos:
+                if re.sub('CyanogenMod/android', 'chenxiaolong/CM',
+                          self.project) == i[1]:
+                    path = i[0]
+                    break
+
+        if not path:
+            raise Exception('The path for project %s was not found' %
+                            self.project)
+
+        if not os.path.isdir(path):
+            raise Exception('The path %s is not a directory' % path)
+
+        return path
+
+    def fetch_latest_revision(self):
+        f = urlopen("%s/changes/%s/revisions/current/review" %
+                    (self.host, self.changeid))
+        d = f.read().decode()
+        d = '\n'.join(d.split('\n')[1:])
+        data = json.loads(d)
+
+        current_revision = data['current_revision']
+        patchset = 0
+        ref = ""
+
+        for i in data['revisions']:
+            if i == current_revision:
+                fetch = data['revisions'][i]['fetch']
+                if 'http' in fetch:
+                    ref = fetch['http']['ref']
+                else:
+                    ref = fetch['anonymous http']['ref']
+                patchset = data['revisions'][i]['_number']
+                break
+
+        self.patchset = patchset
+        self.ref = ref
+
+
+def run_command(command,
+                stdin_data=None,
+                cwd=None,
+                universal_newlines=True):
+    try:
+        process = subprocess.Popen(
+            command,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            cwd=cwd,
+            universal_newlines=universal_newlines
+        )
+        output, error = process.communicate(input=stdin_data)
+
+        exit_status = process.returncode
+        return (exit_status, output, error)
+    except:
+        raise Exception("Failed to run command: \"%s\"" % ' '.join(command))
+
+
+def find_repo():
+    for path in os.environ['PATH'].split(os.pathsep):
+        f = os.path.join(path, 'repo')
+        if os.path.isfile(f) and os.access(f, os.X_OK):
+            return f
+    return None
+
+
+def get_repo_list():
+    exit_status, output, error = run_command(
+        [repo, 'list']
     )
-    output, error = process.communicate(input = stdin_data)
+    lines = output.split('\n')
 
-    exit_status = process.returncode
-    return (exit_status, output, error)
-  except:
-    exit_with("Failed to run command: \"%s\"" % ' '.join(command), fail = True)
-    sys.exit(1)
+    repos = []
+    for line in lines:
+        if not line:
+            continue
 
-if not "GERRIT_URL" in os.environ:
-  print("GERRIT_URL not specified!")
-  sys.exit(1)
+        repos.append(re.split(r'\s*:\s*', line))
 
-gerrit_url = os.environ['GERRIT_URL']
+    return repos
 
-if gerrit_url[-1] == '/':
-  gerrit_url = gerrit_url[:-1]
-
-repo = ""
 
 # Look for repo tool
-for path in os.environ["PATH"].split(os.pathsep):
-  temp = os.path.join(path, "repo")
-  if os.path.isfile(temp) and os.access(temp, os.X_OK):
-    repo = temp
-    break
-
+repo = find_repo()
 if not repo:
-  print("repo not found!")
-  sys.exit(1)
+    print("repo not found!")
+    sys.exit(1)
 
-process = subprocess.Popen(
-  [ repo, 'list' ],
-  stdout = subprocess.PIPE,
-  universal_newlines = True
-)
+repos = get_repo_list()
 
-temp = process.communicate()[0].split('\n')
-repos = []
-for line in temp:
-  if not line:
-    continue
+parser = argparse.ArgumentParser()
+parser.add_argument('-f', '--file',
+                    dest='filepath',
+                    help='Load commit list from a file',
+                    action='store')
+parser.add_argument('-u', '--url',
+                    dest='urlpath',
+                    help='Load commit list from a URL',
+                    action='store')
+parser.add_argument('commit',
+                    help='List of commits',
+                    nargs='*')
+args = parser.parse_args()
 
-  split = re.split('\s*:\s*', line)
+commits = []
+for i in args.commit:
+    commits.append(i)
 
-  repos.append(split)
+if args.filepath:
+    with open(args.filepath, 'r') as f:
+        lines = f.readlines()
+        for line in lines:
+            commits.append(line.strip('\n').strip('\r'))
 
-for change in sys.argv[1:]:
-  if not change:
-    continue
+if args.urlpath:
+    with urlopen(args.urlpath) as u:
+        lines = u.readlines()
+        for line in lines:
+            temp = line.decode('UTF-8')
+            commits.append(temp.strip('\n').strip('\r'))
 
-  if '://' in change:
-    match = re.search(r'#/c/([0-9]+)/?', change)
-    if not match:
-      print("Invalid URL: %s" % change)
-      sys.exit(1)
-    change = match.group(1)
+if not commits:
+    print('No commits were specified')
+    sys.exit(1)
 
-  print("=" * 80)
-  print("Cherrypicking %s ..." % change)
 
-  # Sometimes 504's a bit
-  counter = 0
-  while counter < 5:
+for arg in commits:
+    if not arg:
+        continue
+
+    print('=' * 80)
+
+    commit = Commit()
+
     try:
-      f = urlopen("%s/query?q=change:%s" % (gerrit_url, change))
-      break
-    except:
-      counter += 1
-    
-  
-  d = f.read().decode()
+        commit.parse(arg)
 
-  #print("Received from gerrit:")
-  #print("---")
-  #print(d)
-  #print("---")
+        print('Cherrypicking %s ...' % commit.changeid)
+        print('URL:       %s' % commit.url)
+        print('Project:   %s' % commit.project)
+        print('Path:      %s' % commit.projectpath)
+        print("Patch set: %i" % commit.patchset)
+        print("Ref:       %s" % commit.ref)
 
-  d = d.split('\n')[0]
-  data = json.loads(d)
-  project = data['project']
-  projectpath = ""
-  number = data['number']
-
-  print("URL: %s/#/c/%s/ ..." % (gerrit_url, number))
-
-  for i in repos:
-    if project == i[1]:
-      projectpath = i[0]
-      break
-
-  if not projectpath:
-    for i in repos:
-      if re.sub("CyanogenMod/android", "chenxiaolong/CM", project) == i[1]:
-        projectpath = i[0]
-        break
-
-    if not projectpath:
-      print("Project %s not found!" % project)
-      sys.exit(1)
-
-  if not os.path.isdir(projectpath):
-    print("%s is not a directory!" % projectpath)
-    sys.exit(1)
-
-  f = urlopen("%s/changes/%s/revisions/current/review" % \
-                             (gerrit_url, number))
-  d = f.read().decode()
-  d = '\n'.join(d.split('\n')[1:])
-  data = json.loads(d)
-
-  current_revision = data['current_revision']
-  patchset = 0
-  ref = ""
-
-  for i in data['revisions']:
-    if i == current_revision:
-      fetch = data['revisions'][i]['fetch']
-      if 'http' in fetch:
-        ref = fetch['http']['ref']
-      else:
-        ref = fetch['anonymous http']['ref']
-      patchset = data['revisions'][i]['_number']
-      break
-
-  print("Patch set: %i" % patchset)
-  print("Ref: %s" % ref)
-
-  exit_status, output, error = run_command(
-    [ 'git', 'fetch', gerrit_url + '/' + project, ref ],
-    cwd = projectpath
-  )
-  if exit_status != 0:
-    print("--- STDOUT ---")
-    print(output)
-    print("--- STDERR ---")
-    print(error)
-    print("--- END ---")
-    sys.exit(1)
-
-  exit_status, output, error = run_command(
-    [ 'git', 'merge', '--no-edit', 'FETCH_HEAD' ],
-    cwd = projectpath
-  )
-  if exit_status != 0:
-    print("--- STDOUT ---")
-    print(output)
-    print("--- STDERR ---")
-    print(error)
-    print("--- END ---")
-    sys.exit(1)
+        commit.cherrypick()
+    except Exception as e:
+        print(str(e))
+        sys.exit(1)
 
 print("=" * 80)
