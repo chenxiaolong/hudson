@@ -8,8 +8,8 @@ import subprocess
 import sys
 
 if sys.hexversion < 0x03000000:
-    from urllib import urlopen
-    from urllib import URLError
+    from urllib2 import urlopen
+    from urllib2 import URLError
 else:
     from urllib.request import urlopen
     from urllib.error import URLError
@@ -250,11 +250,12 @@ if args.filepath:
             commits.append(line.strip('\n').strip('\r'))
 
 if args.urlpath:
-    with urlopen(args.urlpath) as u:
-        lines = u.readlines()
-        for line in lines:
-            temp = line.decode('UTF-8')
-            commits.append(temp.strip('\n').strip('\r'))
+    u = urlopen(args.urlpath)
+    lines = u.readlines()
+    for line in lines:
+        temp = line.decode('UTF-8')
+        commits.append(temp.strip('\n').strip('\r'))
+    u.close()
 
 if not commits:
     print('No commits were specified')
