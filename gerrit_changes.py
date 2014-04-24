@@ -52,6 +52,10 @@ class Commit:
             cwd=self.projectpath
         )
         if exit_status != 0:
+            run_command(
+                ['git', 'reset', '--hard', 'HEAD'],
+                cwd=self.projectpath
+            )
             raise Exception(
                 'Failed to run command (exit status: %i):\n' % exit_status +
                 '--- stdout ---\n' + output +
