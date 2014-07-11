@@ -60,7 +60,7 @@ ubuntu_checkdeps() {
             'schedtool'
             'libwxgtk2.8-dev'
             'python'
-            'oracle-java6-installer')
+            `# 'oracle-java6-installer'`)
 
     NOTINSTALLED=()
     for i in ${NEEDED[@]}; do
